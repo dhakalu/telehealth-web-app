@@ -1,0 +1,37 @@
+import { ActionFunctionArgs, redirect } from "@remix-run/node";
+import axios, { Axios, AxiosError } from "axios";
+import { authCookie, getAppPath } from "~/auth";
+import { ApiError } from "~/routes/_auth.provider.signup";
+
+export const signInAction = (accountType: "provider" | "patient") => async ({ request }: ActionFunctionArgs) => {
+  const formData = await request.formData();
+  const email = formData.get("email");
+  const password = formData.get("password");
+
+  try {
+    const response = await axios.post("http://localhost:8090/login", {
+        email,
+        password,
+        account_type: accountType,
+    });
+    console.log("Login response:", response.data);
+    const user = response.data;
+    const status = response.status;
+    if (!user || !user.sub) {
+        return Response.json({error: "Invalid username or passwrod"}, {
+            status,
+        });
+    }
+    const appPath = getAppPath(request);
+    return redirect(`/${appPath}`, {
+        headers: {
+            "Set-Cookie": await authCookie.serialize(JSON.stringify(user))
+        }
+    });
+  } catch (error) {
+    console.error("Login error:", error);
+    return  Response.json({error: ((error as AxiosError).response?.data as ApiError)?.error || ""}, {
+      status: (error  as AxiosError).response?.status || 500,
+    });
+  }
+}
