@@ -6,11 +6,9 @@ type ChatParticipantType = "patient" | "provider";
 
 interface ChatComponentProps {
   wsUrl: string;
-  senderType?: ChatParticipantType;
-  receiverType?: ChatParticipantType;
-  providerId: string;
-  patientId: string;
+  chat: Chat;
   senderId?: string;
+  receiverId?: string;
   initialMessages?: ChatMessage[];
 }
 
@@ -23,21 +21,19 @@ export interface Chat {
 }
 
 export interface ChatMessage {
-  senderType: string;
-  patientId: string;
-  providerId: string;
-  receiverType: string;
+  chatId: string;
   text: string;
   senderId?: string;
+  sentAt?: string;
 }
 
 
 export const ChatComponent: React.FC<ChatComponentProps> = ({
   wsUrl,
-  senderType,
-  receiverType,
-  providerId,
-  patientId,
+  chat,
+  // providerId,
+  // patientId,
+  receiverId,
   senderId,
   initialMessages = [],
 }) => {
@@ -48,8 +44,13 @@ export const ChatComponent: React.FC<ChatComponentProps> = ({
   const [connected, setConnected] = useState(false);
   const bottomRef = useRef<HTMLDivElement>(null);
 
+  const {chatId, patient, provider} = chat;
+
+  const receiver = patient.sub == receiverId ? patient: provider;
+  const receiverName = `${receiver.given_name} ${receiver.family_name}`
+
   useEffect(() => {
-    ws.current = new WebSocket(`${wsUrl}?patientId=${patientId}&providerId=${providerId}&senderType=${senderType}`);
+    ws.current = new WebSocket(`${wsUrl}?receiverId=${receiverId}&senderId=${senderId}`);
     ws.current.onopen = () => setConnected(true);
     ws.current.onclose = () => setConnected(false);
     ws.current.onmessage = (event) => {
@@ -57,16 +58,12 @@ export const ChatComponent: React.FC<ChatComponentProps> = ({
         const msg = JSON.parse(event.data);
         setMessages((prev) => [...prev, msg]);
       } catch {
-        console.error("Failed to parse message:", event.data);
-        // roles of senderType and receiverType are 
-        // reversed in the received message
         setMessages((prev) => [
           ...prev,
           { 
-            senderType: senderType ? String(receiverType) : "", 
-            patientId: patientId ? String(patientId) : "", 
-            providerId: providerId ? String(providerId) : "", 
-            receiverType: receiverType ? String(senderType) : "", 
+            chatId,
+            senderId, 
+            receiverId,
             text: "Invalid message format received"
           }
         ]);
@@ -75,8 +72,7 @@ export const ChatComponent: React.FC<ChatComponentProps> = ({
     return () => {
       ws.current?.close();
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [wsUrl, providerId, patientId, senderType]);
+  }, [wsUrl, chatId, senderId]);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -86,10 +82,9 @@ export const ChatComponent: React.FC<ChatComponentProps> = ({
     e.preventDefault();
     if (!input.trim() || !ws.current || ws.current.readyState !== 1) return;
     const msg = {
-       senderType: senderType ? String(senderType) : "", 
-       patientId: patientId ? String(patientId) : "", 
-       providerId: providerId ? String(providerId) : "", 
-       receiverType: receiverType ? String(receiverType) : "", 
+       chatId,
+       senderId,
+       receiverId,
        text: input 
     };
     console.log('sending message', msg)
@@ -102,7 +97,7 @@ export const ChatComponent: React.FC<ChatComponentProps> = ({
   return (
     <div className="w-full p-6 bg-white rounded shadow mt-10 flex flex-col h-full">
       <h2 className="text-xl font-bold mb-4">
-        Chat with 
+        Chat with {receiverName}
       </h2>
       <div className="flex-1 overflow-y-auto border rounded p-4 bg-gray-50 mb-4">
         {messages.map((msg, idx) => {

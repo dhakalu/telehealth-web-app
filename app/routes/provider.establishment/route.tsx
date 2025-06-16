@@ -25,6 +25,14 @@ type Encounter = {
     provider: User
 }
 
+type Establishment = {
+    id: string;
+     providerId: string;
+    patientId: string;
+    patient: User,
+    provider: User,
+}
+
 
 export const  loader: LoaderFunction = async ({request}) => {
     const user =  await requireAuthCookie(request);
@@ -44,18 +52,18 @@ export const  loader: LoaderFunction = async ({request}) => {
     }
 }
 
-export default function EncountersPage() {
+export default function EstablishmentsPage() {
 
-    const encounters = useLoaderData<Encounter[]>() || [];
+    const establishments = useLoaderData<Establishment[]>() || [];
     const navigate = useNavigate();
 
 
-    const [selectedEncounterId, setSelectedEncounterId] = useState<string | null>(encounters && encounters.length > 0 ? encounters[0].chatId : null);
+    const [selectedEstablishmentId, setSelectedEstablishmentId] = useState<string | null>(establishments && establishments.length > 0 ? establishments[0].chatId : null);
 
-    const handleSelectEncounter = (encounter: Encounter) => {
-        const encounterId = encounter.id;
-        setSelectedEncounterId(encounterId);
-        navigate(`${encounterId}/chat/${encounter.patientId}`);
+    const handleSelectEestablishment = (establishment: Establishment) => {
+        const establishmentId = establishment.id;
+        setSelectedEstablishmentId(establishmentId);
+        navigate(`${establishmentId}/chat/${establishment.patientId}`);
     }
 
     return (
@@ -64,22 +72,22 @@ export default function EncountersPage() {
                 <div className="bg-white p-6 rounded-none shadow-md w-full max-w-5xl flex h-full m-auto">
                     {/* Left column: Chat list */}
                     <div className="w-1/3 border-r pr-4 overflow-y-auto">
-                        <h2 className="text-lg font-bold mb-4">Active Patients</h2>
-                        {encounters && encounters.length > 0 ? (
+                        <h2 className="text-lg font-bold mb-4">Current Patients</h2>
+                        {establishments && establishments.length > 0 ? (
                             <ul>
-                                {encounters.map((encounter) => (
+                                {establishments.map((establishment) => (
                                     <li
-                                        key={encounter.id}
-                                        className={`mb-2 p-2 rounded cursor-pointer ${selectedEncounterId === encounter.id ? "bg-blue-100" : "hover:bg-gray-100"}`}
-                                        onClick={() => handleSelectEncounter(encounter)}
+                                        key={establishment.id}
+                                        className={`mb-2 p-2 rounded cursor-pointer ${selectedEstablishmentId === establishment.id ? "bg-blue-100" : "hover:bg-gray-100"}`}
+                                        onClick={() => handleSelectEestablishment(establishment)}
                                     >
-                                        <div className="font-medium">Patient: {encounter.patient?.name}</div>
-                                        <div className="text-xs text-gray-500">Patient Id: {encounter.patientId}</div>
+                                        <div className="font-medium">Patient: {establishment.patient?.given_name} {establishment.patient?.family_name}</div>
+                                        <div className="text-xs text-gray-500">Patient Id: {establishment.patientId}</div>
                                     </li>
                                 ))}
                             </ul>
                         ) : (
-                            <div className="text-gray-500 mt-8 text-center">No active encounters</div>
+                            <div className="text-gray-500 mt-8 text-center">No active patients</div>
                         )}
                     </div>
                     {/* Right column: Selected chat */}

@@ -43,16 +43,14 @@ export const loader: LoaderFunction = async ({ request, params }) => {
 }
 
 export default function PractitionerChat(){
-  const { user, chat, messages } = useLoaderData<{user: any, chat: Chat, messages: ChatMessage[]}>();
+  const { chat, messages } = useLoaderData<{user: any, chat: Chat, messages: ChatMessage[]}>();
 
   return (
     <ChatComponent
       wsUrl={WS_BASE}
-      senderType="provider"
-      receiverType="patient"
-      providerId={chat.providerId}
-      patientId={chat.patientId || ""}
-        senderId={user.sub}
+      chat={chat}
+      receiverId={chat.patientId}
+      senderId={chat.providerId}
       initialMessages={messages}
     />
   );

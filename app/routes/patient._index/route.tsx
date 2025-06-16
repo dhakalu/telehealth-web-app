@@ -1,13 +1,15 @@
 import { useLoaderData } from "@remix-run/react";
 import { User } from "../provider.complete-profile/route";
-import { LoaderFunction } from "@remix-run/node";
+import { LoaderFunction, redirect } from "@remix-run/node";
 import { requireAuthCookie } from "~/auth";
 
 
 export const loader: LoaderFunction = async ({ request }) => {
   const user =  await requireAuthCookie(request);
-  
- return {user};
+  if (user.status === "incomplete") {
+      return redirect("/patient/complete-profile");
+  }
+  return {user};
 }
 
 

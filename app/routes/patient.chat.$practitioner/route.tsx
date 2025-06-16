@@ -17,9 +17,12 @@ export const loader: LoaderFunction = async ({ request, params }) => {
 
     
   try {
-      const chatUrl = `http://localhost:8090/chat/by-patient-and-provider?patientId=${patientId}&practitionerId=${providerId}`
+      const chatUrl = `http://localhost:8090/chat`
       console.log('chat url', chatUrl)
-      const chatResponse = await axios.get(chatUrl);
+      const chatResponse = await axios.put(chatUrl, {
+        providerId,
+        patientId
+      });
       const chat = chatResponse.data as Chat;
       const messages = await axios.get(`http://localhost:8090/chat/${chat.chatId}/messages`)
       return {
@@ -30,9 +33,18 @@ export const loader: LoaderFunction = async ({ request, params }) => {
   } catch (error) {
       console.error(error)
       if (axios.isAxiosError(error) && error.response) {
+
+        if (error.response.status == 404) {
+          return {
+            user,
+            chat: null,
+            messages: []
+          }
+        }
+
         return Response.json(
-        error.response.data,
-        { status: error.response.status }
+          error.response.data,
+          { status: error.response.status }
         );
         } else {
         console.error("Error fetching chat:", error);
@@ -52,11 +64,9 @@ export default function PatientChat(){
     <div className="min-h-screen flex flex-col bg-gray-50">
       <ChatComponent
         wsUrl={WS_BASE}
-        senderType="patient"
-        receiverType="provider"
-        patientId={chat.patientId}
-        providerId={chat.providerId || ""}
-        senderId={user.sub}
+        chat={chat}
+        receiverId={chat.providerId}
+        senderId={chat.patientId}
         initialMessages={messages}
       />
     </div>

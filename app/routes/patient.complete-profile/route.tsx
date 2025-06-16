@@ -4,30 +4,6 @@ import axios, { Axios, AxiosError } from "axios";
 import { getAppPath, requireAuthCookie } from "~/auth";
 
 
-export type User = {
-    sub: string;
-    name?: string;
-    given_name?: string;
-    family_name?: string;
-    middle_name?: string;
-    nickname?: string;
-    preferred_username?: string;
-    profile?: string;
-    picture?: string;
-    website?: string;
-    email?: string;
-    email_verified?: boolean;
-    gender?: string;
-    birthdate?: string;
-    zoneinfo?: string;
-    locale?: string;
-    phone_number?: string;
-    phone_number_verified?: boolean;
-    address?: string;
-    updated_at?: number;
-    account_type?: string;
-    status?: string;
-}
 
 export const  loader: LoaderFunction = async ({request}) => {
     const user =  await requireAuthCookie(request);
@@ -38,28 +14,9 @@ export const action = async ({request}: ActionFunctionArgs) => {
     const formData = await request.formData();
     const user = await requireAuthCookie(request);
     const practitionerData = {
-        resourceType: "Practitioner",
-        identifier: [{
-            system: "http://example.com/practitioner-id",
-            value: user.sub,
-        }],
+        resourceType: "Patient",
+        id: user.sub,
         active: true,
-        qualification: [{
-            identifier: [{
-                system: "http://example.com/qualification-id",
-                value: formData.get("qualification") as string,
-            }],
-            code: {
-                text: formData.get("specialty") as string,
-            },
-            period: {
-                start: formData.get("issued_on"),
-                end: formData.get("expires_on") || null
-            },
-            issuer: {
-                reference: formData.get("issued_by") as string
-            }
-        }],
         gender: formData.get("gender") as string,
         birthDate: formData.get("birthdate") as string,
         address: [{
@@ -85,11 +42,11 @@ export const action = async ({request}: ActionFunctionArgs) => {
     }
 
     try {
-        await axios.post("http://localhost:8090/practitioner", practitionerData)
+        await axios.post("http://localhost:8090/patient", practitionerData)
         await axios.patch(`http://localhost:8090/user/${user.sub}/status`, {
             status: "complete",
         });
-        return redirect(`/provider`, {})
+        return redirect(`/patient`, {})
     } catch (error) {
         console.error("Error saving practitioner data:", error);
         return Response.json({ error: "Failed to save practitioner data" }, { status: (error as AxiosError).response?.status || 500 });
@@ -98,10 +55,6 @@ export const action = async ({request}: ActionFunctionArgs) => {
 }
 
 export default function CompleteProfilePage() {
-
-    const user = useLoaderData<User>();
-
-
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-50 p-8">
             <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-md">
@@ -127,25 +80,7 @@ export default function CompleteProfilePage() {
                     <label className="mb-1 text-sm font-medium">
                         Phone Number <span className="text-red-600">*</span>
                     </label>
-                    <input name="phone_number"  placeholder="Phone Number" className="input" type="text" required />
-                    </div>
-
-                    <h3>Qualifications</h3>
-                    <div className="flex flex-col">
-                        <label className="mb-1 text-sm font-medium">Qualification <span className="text-red-600">*</span></label>
-                        <input name="qualification" placeholder="E.g. MD, MBBS" className="input" required />
-                    </div>
-                    <div className="flex flex-col">
-                        <label className="mb-1 text-sm font-medium">Specialty <span className="text-red-600">*</span></label>
-                        <input name="specialty" placeholder="E.g.Dermatology" className="input" required />
-                    </div>
-                    <div className="flex flex-col">
-                        <label className="mb-1 text-sm font-medium">Issued On <span className="text-red-600">*</span></label>
-                        <input name="issued_on" type="date" className="input" required />
-                    </div>
-                    <div className="flex flex-col">
-                        <label className="mb-1 text-sm font-medium">Issued By <span className="text-red-600">*</span></label>
-                        <input name="issued_by" placeholder="Issuing Authority or Organization" className="input" required />
+                        <input name="phone_number"  placeholder="Phone Number" className="input" type="text" required />
                     </div>
 
                     <h3>Address</h3>

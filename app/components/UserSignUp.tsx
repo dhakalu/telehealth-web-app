@@ -33,35 +33,10 @@ export const UserSignUp: React.FC<UserSignUpProps> = ({ type, error }) => {
         </div>
         <div className="flex flex-col">
           <label className="mb-1 text-sm font-medium">
-            Date of Birth <span className="text-red-600">*</span>
-          </label>
-          <input name="birthdate" type="date" className="input" required />
-        </div>
-        <div className="flex flex-col">
-          <label className="mb-1 text-sm font-medium">
-            Gender <span className="text-red-600">*</span>
-          </label>
-          <select name="gender" className="input" required>
-            <option value="">Select Gender</option>
-            <option value="male">Male</option>
-            <option value="female">Female</option>
-            <option value="other">Other</option>
-            <option value="unknown">Prefer not to say</option>
-          </select>
-        </div>
-        <div className="flex flex-col">
-          <label className="mb-1 text-sm font-medium">
             Email <span className="text-red-600">*</span>
           </label>
           <input name="email"  placeholder="Email" className="input" type="email" required />
-        </div>
-        <div className="flex flex-col">
-          <label className="mb-1 text-sm font-medium">
-            Phone Number <span className="text-red-600">*</span>
-          </label>
-          <input name="phone_number"  placeholder="Phone Number" className="input" type="text" required />
-        </div>
-        
+        </div>  
         <div className="flex flex-col">
           <label className="mb-1 text-sm font-medium">
             Password <span className="text-red-600">*</span>

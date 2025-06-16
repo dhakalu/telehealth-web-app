@@ -6,9 +6,9 @@ import { User } from "../provider.complete-profile/route";
 
 export const loader: LoaderFunction = async ({request}) => {
     const user = await requireAuthCookie(request);
-    // if (user.status === "incomplete") {
-    //     return redirect("/provider/complete-profile");
-    // }
+    if (user.status === "incomplete") {
+        return redirect("/provider/complete-profile");
+    }
     return user;
 }
 
