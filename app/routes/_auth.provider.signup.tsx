@@ -1,7 +1,7 @@
 import axios, { AxiosError } from "axios";
 import { UserSignUp } from "../components/UserSignUp";
 import { redirect, useActionData } from "@remix-run/react";
-import { ActionFunctionArgs, LoaderFunction } from "@remix-run/node";
+import { LoaderFunction } from "@remix-run/node";
 import { authCookie, getAppPath } from "~/auth";
 import { signupAction } from "~/common-actions/signup";
 
@@ -18,13 +18,13 @@ export const loader: LoaderFunction = async ({ request }) => {
   return null;
 }
 
-export const action = signupAction("provider");
+export const action = signupAction("practitioner");
 
 export default function UserSignUpPage() {
   const { error } = useActionData<{error?: string}>() || {};
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 p-8">
-      <UserSignUp type={"provider"} error={error!} />
+      <UserSignUp type={"practitioner"} error={error!} />
     </div>
   );
 }

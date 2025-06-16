@@ -27,10 +27,9 @@ export const getAppPath = (request: Request) => {
 export async function requireAuthCookie(request: Request) {
     let cookie = await authCookie.parse(request.headers.get("Cookie"));
     
-    const app = getAppPath(request);
     if (!cookie) {
         console.warn("No auth cookie found, redirecting to login.");
-        throw redirect(`/${app}/login`, {
+        throw redirect("/login", {
             headers: {
                 "Set-Cookie": await authCookie.serialize("", {
                     maxAge: -1, // Expire the cookie

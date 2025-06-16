@@ -59,7 +59,7 @@ export default function EncountersPage() {
   <Link
     to="chat"
     className={`px-6 py-3 -mb-px border-b-2 font-medium text-sm transition-colors duration-200 ${
-      location.pathname.endsWith('/chat')
+      location.pathname.includes('/chat/')
         ? 'border-blue-600 text-blue-600'
         : 'border-transparent text-gray-500 hover:text-blue-600 hover:border-blue-300'
     }`}
@@ -69,7 +69,7 @@ export default function EncountersPage() {
   <Link
     to="qa"
     className={`px-6 py-3 -mb-px border-b-2 font-medium text-sm transition-colors duration-200 ${
-      location.pathname.endsWith('/qa')
+      location.pathname.includes('/qa/')
         ? 'border-blue-600 text-blue-600'
         : 'border-transparent text-gray-500 hover:text-blue-600 hover:border-blue-300'
     }`}

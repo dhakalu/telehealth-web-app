@@ -22,7 +22,7 @@ export default function NotFound() {
             },
             {
                 label: "View Patients",
-                href: "/provider/view-patients"
+                href: "/provider/establishment"
             }
           ]} 
           user={user}

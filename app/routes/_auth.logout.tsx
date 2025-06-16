@@ -5,8 +5,7 @@ import { authCookie } from "~/auth";
 
 export const loader: LoaderFunction = async ({ request }) => {
     const url = new URL(request.url);
-    const appPath = url.searchParams.get("appPath") || "";
-    throw redirect(`/${appPath}/login`, {
+    throw redirect("/login", {
         headers: {
             "Set-Cookie": await authCookie.serialize("", {
                 maxAge: -1, // Expire the cookie

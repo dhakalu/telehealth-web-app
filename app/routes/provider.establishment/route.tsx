@@ -29,7 +29,7 @@ type Encounter = {
 export const  loader: LoaderFunction = async ({request}) => {
     const user =  await requireAuthCookie(request);
     try {
-        const response = await axios.get(`${API_BASE_URL}/encounter/provider/${user.sub}`);
+        const response = await axios.get(`${API_BASE_URL}/establishment/by-practitioner/${user.sub}`);
         return response.data;
     } catch (error) {
         if (axios.isAxiosError(error)) {
@@ -52,9 +52,10 @@ export default function EncountersPage() {
 
     const [selectedEncounterId, setSelectedEncounterId] = useState<string | null>(encounters && encounters.length > 0 ? encounters[0].chatId : null);
 
-    const handleSelectEncounter = (encounterId: string) => {
+    const handleSelectEncounter = (encounter: Encounter) => {
+        const encounterId = encounter.id;
         setSelectedEncounterId(encounterId);
-        navigate(encounterId);
+        navigate(`${encounterId}/chat/${encounter.patientId}`);
     }
 
     return (
@@ -70,7 +71,7 @@ export default function EncountersPage() {
                                     <li
                                         key={encounter.id}
                                         className={`mb-2 p-2 rounded cursor-pointer ${selectedEncounterId === encounter.id ? "bg-blue-100" : "hover:bg-gray-100"}`}
-                                        onClick={() => handleSelectEncounter(encounter.id)}
+                                        onClick={() => handleSelectEncounter(encounter)}
                                     >
                                         <div className="font-medium">Patient: {encounter.patient?.name}</div>
                                         <div className="text-xs text-gray-500">Patient Id: {encounter.patientId}</div>

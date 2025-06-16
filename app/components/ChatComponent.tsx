@@ -10,8 +10,8 @@ interface ChatComponentProps {
   receiverType?: ChatParticipantType;
   providerId: string;
   patientId: string;
-  participiantType?: ChatParticipantType;
-  initialMessages?: Message[];
+  senderId?: string;
+  initialMessages?: ChatMessage[];
 }
 
 export interface Chat {
@@ -22,13 +22,15 @@ export interface Chat {
   provider: User;
 }
 
-export interface Message {
+export interface ChatMessage {
   senderType: string;
   patientId: string;
   providerId: string;
   receiverType: string;
   text: string;
+  senderId?: string;
 }
+
 
 export const ChatComponent: React.FC<ChatComponentProps> = ({
   wsUrl,
@@ -36,11 +38,11 @@ export const ChatComponent: React.FC<ChatComponentProps> = ({
   receiverType,
   providerId,
   patientId,
-  participiantType,
+  senderId,
   initialMessages = [],
 }) => {
   console.log('initialMessages', initialMessages)
-  const [messages, setMessages] = useState<Message[]>(initialMessages);
+  const [messages, setMessages] = useState<ChatMessage[]>(initialMessages);
   const [input, setInput] = useState("");
   const ws = useRef<WebSocket | null>(null);
   const [connected, setConnected] = useState(false);
@@ -96,17 +98,15 @@ export const ChatComponent: React.FC<ChatComponentProps> = ({
     setInput("");
   };
 
-  // Ensure participiantType defaults to senderType if not provided
-  const effectiveParticipantType = participiantType || senderType;
 
   return (
     <div className="w-full p-6 bg-white rounded shadow mt-10 flex flex-col h-full">
       <h2 className="text-xl font-bold mb-4">
-        Chat with {effectiveParticipantType === "patient" ? "Provider" : "Patient"}
+        Chat with 
       </h2>
       <div className="flex-1 overflow-y-auto border rounded p-4 bg-gray-50 mb-4">
         {messages.map((msg, idx) => {
-          const isMine = msg.senderType === effectiveParticipantType;
+          const isMine = msg.senderId === senderId;
           return (
             <div
               key={idx}

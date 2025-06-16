@@ -3,7 +3,7 @@ import axios, { Axios, AxiosError } from "axios";
 import { authCookie, getAppPath } from "~/auth";
 import { ApiError } from "~/routes/_auth.provider.signup";
 
-export const signInAction = (accountType: "provider" | "patient") => async ({ request }: ActionFunctionArgs) => {
+export const signInAction = () => async ({ request }: ActionFunctionArgs) => {
   const formData = await request.formData();
   const email = formData.get("email");
   const password = formData.get("password");
@@ -11,8 +11,6 @@ export const signInAction = (accountType: "provider" | "patient") => async ({ re
   try {
     const response = await axios.post("http://localhost:8090/login", {
         email,
-        password,
-        account_type: accountType,
     });
     console.log("Login response:", response.data);
     const user = response.data;
@@ -22,8 +20,8 @@ export const signInAction = (accountType: "provider" | "patient") => async ({ re
             status,
         });
     }
-    const appPath = getAppPath(request);
-    return redirect(`/${appPath}`, {
+    const appPath = user.account_type == "patient" ? "/patient" : "/provider"
+    return redirect(appPath, {
         headers: {
             "Set-Cookie": await authCookie.serialize(JSON.stringify(user))
         }

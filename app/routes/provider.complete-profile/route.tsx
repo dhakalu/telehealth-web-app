@@ -107,14 +107,6 @@ export default function CompleteProfilePage() {
                 <p className="text-gray-600 mb-6">Please fill out the following information to complete your profile.</p>
                 <Form method="post" className="space-y-4">
                     <div className="flex flex-col">
-                        <label className="mb-1 text-sm font-medium">Practitioner ID <span className="text-red-600">*</span></label>
-                        <input disabled name="id" className="input" required defaultValue={user?.sub} />
-                    </div>
-                    <div className="flex flex-col">
-                        <label className="mb-1 text-sm font-medium" defaultValue={user?.name}>Full Name <span className="text-red-600">*</span></label>
-                        <input name="name" className="input" required />
-                    </div>
-                    <div className="flex flex-col">
                         <label className="mb-1 text-sm font-medium">Qualification <span className="text-red-600">*</span></label>
                         <input name="qualification" className="input" required />
                     </div>

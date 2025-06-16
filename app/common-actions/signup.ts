@@ -1,9 +1,8 @@
 import { ActionFunctionArgs, redirect } from "@remix-run/node";
 import axios, { AxiosError } from "axios";
-import { getAppPath } from "~/auth";
 import { ApiError } from "~/routes/_auth.provider.signup";
 
-export const signupAction = (accountType: "patient" | "provider") => {
+export const signupAction = (accountType: "patient" | "practitioner") => {
     return async ({ request }: ActionFunctionArgs) => {
   const formData = await request.formData();
   const data = Object.fromEntries(formData);
@@ -23,8 +22,7 @@ export const signupAction = (accountType: "patient" | "provider") => {
             }
         );
     }
-    const appPath = getAppPath(request);
-    return redirect(`${appPath}/login`);
+    return redirect("/login");
   } catch (error) {
     console.error("Login error:", error);
     return Response.json({error: (((error as AxiosError).response?.data) as ApiError)?.error || ""}, {

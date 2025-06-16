@@ -4,24 +4,26 @@ import { LoaderFunction, redirect } from "@remix-run/node";
 import { authCookie, getAppPath } from "~/auth";
 import { useActionData } from "@remix-run/react";
 import { signInAction } from "~/common-actions/signin";
+import { User } from "./provider.complete-profile/route";
 
 export const loader: LoaderFunction = async ({ request }) => {
   const cookie =  await authCookie.parse(request.headers.get("Cookie"));
   if (cookie) {
-    const appPath = getAppPath(request);
-    return redirect(`/${appPath}`);
+    const user = JSON.parse(cookie) as User;
+    const appPath = user.account_type === "patient" ? "/patient" : "/provider"
+    return redirect(appPath)
   }
   return null;
 }
 
-export const action = signInAction("patient");
+export const action = signInAction();
 
 export default function UserLoginPage() {
   const { error } = useActionData<{error: string}>() || {};
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 p-8">
-      <UserLogin signupUrl="/patient/signup"  error={error} />
+      <UserLogin signupUrl="/provider/signup"  error={error} />
     </div>
   );
 }

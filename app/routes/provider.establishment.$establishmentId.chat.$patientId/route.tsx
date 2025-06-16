@@ -1,9 +1,7 @@
-import React from "react";
-import { useParams } from "react-router-dom";
 import {Chat, ChatComponent, ChatMessage} from "../../components/ChatComponent";
-import { useLoaderData } from "@remix-run/react";
-import { requireAuthCookie } from "~/auth";
 import { LoaderFunction } from "@remix-run/node";
+import { requireAuthCookie } from "~/auth";
+import { useLoaderData } from "@remix-run/react";
 import axios from "axios";
 
 const WS_BASE = "ws://localhost:8090/ws";
@@ -12,8 +10,8 @@ export const loader: LoaderFunction = async ({ request, params }) => {
   const user =  await requireAuthCookie(request);
 
   // fetch encounter-id
-  const {practitioner: providerId} = params
-  const patientId = user.sub
+  const {patientId} = params
+  const providerId = user.sub
 
     
   try {
@@ -44,21 +42,19 @@ export const loader: LoaderFunction = async ({ request, params }) => {
   }
 }
 
-
-export default function PatientChat(){
+export default function PractitionerChat(){
   const { user, chat, messages } = useLoaderData<{user: any, chat: Chat, messages: ChatMessage[]}>();
 
   return (
-    <div className="min-h-screen flex flex-col bg-gray-50">
-      <ChatComponent
-        wsUrl={WS_BASE}
-        senderType="patient"
-        receiverType="provider"
-        patientId={chat.patientId}
-        providerId={chat.providerId || ""}
+    <ChatComponent
+      wsUrl={WS_BASE}
+      senderType="provider"
+      receiverType="patient"
+      providerId={chat.providerId}
+      patientId={chat.patientId || ""}
         senderId={user.sub}
-        initialMessages={messages}
-      />
-    </div>
+      initialMessages={messages}
+    />
   );
 };
+
