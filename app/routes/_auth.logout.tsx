@@ -3,8 +3,7 @@ import { redirect } from "@remix-run/react";
 import { authCookie } from "~/auth";
 
 
-export const loader: LoaderFunction = async ({ request }) => {
-    const url = new URL(request.url);
+export const loader: LoaderFunction = async () => {
     throw redirect("/login", {
         headers: {
             "Set-Cookie": await authCookie.serialize("", {

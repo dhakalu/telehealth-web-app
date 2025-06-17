@@ -19,7 +19,7 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
       payload
     );
     return Response.json({ cost: res.data.estimated_cost, providerId });
-  } catch (error: any) {
+  } catch (error) {
     let message = "Failed to fetch estimate.";
     let status = 500
     if (axios.isAxiosError(error) && error.response?.data?.message) {

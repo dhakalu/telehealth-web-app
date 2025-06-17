@@ -1,4 +1,3 @@
-import axios, { AxiosError } from "axios";
 import { UserSignUp } from "../components/UserSignUp";
 import { redirect, useActionData } from "@remix-run/react";
 import { LoaderFunction } from "@remix-run/node";

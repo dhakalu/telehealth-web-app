@@ -1,6 +1,5 @@
-import React from "react";
 import { PractitionerList } from "../../components/PractitionerList";
-import { authCookie, requireAuthCookie } from "~/auth";
+import { requireAuthCookie } from "~/auth";
 import { useLoaderData } from "@remix-run/react";
 import { User } from "../provider.complete-profile/route";
 import { LoaderFunction } from "@remix-run/node";

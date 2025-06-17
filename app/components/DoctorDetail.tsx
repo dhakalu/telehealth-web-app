@@ -69,14 +69,17 @@ export const loader: LoaderFunction = async ({params}) => {
     try {
       const res = await axios.get(`${process.env.API_URL || "http://localhost:8090"}/practitioner/${practitionerId}`);
       return {data: res.data};
-    } catch (error: any) {
-      return { error: error?.response?.data?.error || error.message || "cannot fetch provider" };
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        return { error: error.response?.data?.error || error.message || "cannot fetch provider" };
+      }
+      return { error: (error as Error).message || "cannot fetch provider" };
     }
 }
 
 
 export const DoctorDetail: React.FC<DoctorDetailProps> = ({ doctor }) => {
-  const { data, error} = useLoaderData<{data: FHIRPractitioner, error: string}>()
+  const { data } = useLoaderData<{data: FHIRPractitioner, error: string}>()
 const photoUrl = data?.photo?.[0].url;
 const name = getName(data);
 const rating = data.extension?.rating || 0;

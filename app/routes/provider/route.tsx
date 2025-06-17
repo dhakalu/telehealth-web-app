@@ -1,6 +1,7 @@
 import { LoaderFunction } from "@remix-run/node";
-import { Outlet, redirect, useLoaderData } from "@remix-run/react";
-import { requireAuthCookie } from "~/auth";
+import { Outlet, useLoaderData } from "@remix-run/react";
+// Update the import path below to the correct location of requireAuthCookie
+import { requireAuthCookie } from "~/auth"; // or "./auth" or the actual relative path
 import AppHeader from "~/components/common/AppHeader";
 import { User } from "../provider.complete-profile/route";
 

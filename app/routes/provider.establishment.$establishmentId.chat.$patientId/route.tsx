@@ -43,7 +43,7 @@ export const loader: LoaderFunction = async ({ request, params }) => {
 }
 
 export default function PractitionerChat(){
-  const { chat, messages } = useLoaderData<{user: any, chat: Chat, messages: ChatMessage[]}>();
+  const { chat, messages } = useLoaderData<{chat: Chat, messages: ChatMessage[]}>();
 
   return (
     <ChatComponent
@@ -54,5 +54,5 @@ export default function PractitionerChat(){
       initialMessages={messages}
     />
   );
-};
+}
 
