@@ -76,9 +76,12 @@ export const PractitionerList: React.FC<{
           return (
             <li key={idx} className="border rounded p-3 bg-white shadow flex items-center justify-between">
               <div>
-                <div className="font-semibold">
+                <a
+                  href={`/patient/profile/${p.id}`}
+                  className="font-semibold text-blue-600 hover:underline"
+                >
                   {p.name}
-                </div>
+                </a>
                 <div className="flex items-center gap-2 mb-1">
                   <StarRating rating={p.rating} />
                   {typeof p.rating === 'number' && <span className="text-xs text-gray-500">{p.rating.toFixed(1)}</span>}
