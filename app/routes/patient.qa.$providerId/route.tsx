@@ -1,7 +1,7 @@
 import React from "react";
 import { PractitionerList } from "../../components/PractitionerList";
 import { Form } from "@remix-run/react";
-import { ActionFunctionArgs, redirect } from "@remix-run/node";
+import { ActionFunctionArgs, redirect, json } from "@remix-run/node";
 import axios from "axios";
 import { requireAuthCookie } from "~/auth";
 
@@ -106,20 +106,19 @@ export const action = async ({ request, params }: ActionFunctionArgs) => {
   });
 
   try {
-    await axios.post("http://localhost:8090/qa", {
+    const response = await axios.post("http://localhost:8090/qa", {
       providerId: params.providerId,
       patientId: user.sub,
       answers: answers
     });
-  } catch (error){
-
-  }
-
-
-  // Here you would typically send the answers to your backend or process them as needed
-  console.log("Screening Answers:", answers);
-
-  return redirect(`/patient/chat/${params.providerId}`)
+    const savedQA = response.data;
+    return redirect(`/patient/estimates/${params.providerId}/${savedQA.id}`)
+  } catch (error: any) {
+    return Response.json(
+      { error: error?.response?.data?.message || error.message || "An error occurred" },
+      { status: error?.response?.status || 500 }
+    );
+  } 
 }
 
 export default function ScreeningQuestionAnswers() {
