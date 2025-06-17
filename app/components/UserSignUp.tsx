@@ -1,5 +1,5 @@
 import { Form } from "@remix-run/react";
-import React, { useState } from "react";
+import React from "react";
 
 type UserSignUpProps = {
   type?: "patient" | "practitioner";

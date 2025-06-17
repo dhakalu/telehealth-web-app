@@ -1,8 +1,7 @@
 import { createCookie, redirect } from "@remix-run/node";
-import { get } from "node_modules/axios/index.cjs";
 import { User } from "./routes/provider.complete-profile/route";
 
-let secret = process.env.COOKIE_SECRET || "default";
+const secret = process.env.COOKIE_SECRET || "default";
 if (secret === "default") {
     console.warn(
         "COOKIE_SECRET is not set. Using a default secret for cookies, which is not secure for production."
@@ -10,7 +9,7 @@ if (secret === "default") {
 }
 
 
-export let authCookie = createCookie("auth", {
+export const authCookie = createCookie("auth", {
     httpOnly: true,
     path: "/",
     sameSite: "lax",
@@ -25,7 +24,7 @@ export const getAppPath = (request: Request) => {
 }
 
 export async function requireAuthCookie(request: Request) {
-    let cookie = await authCookie.parse(request.headers.get("Cookie"));
+    const cookie = await authCookie.parse(request.headers.get("Cookie"));
     
     if (!cookie) {
         console.warn("No auth cookie found, redirecting to login.");

@@ -1,9 +1,6 @@
-import { ActionFunctionArgs, LoaderFunction } from "@remix-run/node";
-import { Form, Link, Outlet, redirect, useLoaderData, useLocation, useNavigate } from "@remix-run/react"
-import axios, { Axios, AxiosError } from "axios";
-import { getAppPath, requireAuthCookie } from "~/auth";
-import React, { useState } from "react";
-import { ChatComponent, Chat } from "~/components/ChatComponent";
+import { LoaderFunction } from "@remix-run/node";
+import { Link, Outlet, useLocation } from "@remix-run/react"
+import axios from "axios";
 import { User } from "../provider.complete-profile/route";
 
 export const API_BASE_URL = "http://localhost:8090";
@@ -11,7 +8,7 @@ export const API_BASE_URL = "http://localhost:8090";
 
 type EncounterType = "in-person" | "telehealth"
 
-type Encounter = {
+export type Encounter = {
     id: string;
     providerId: string;
     patientId: string;
@@ -27,8 +24,7 @@ type Encounter = {
 }
 
 
-export const  loader: LoaderFunction = async ({request, params}) => {
-    const user =  await requireAuthCookie(request);
+export const  loader: LoaderFunction = async ({ params }) => {
     const { encounterId } = params; 
     try {
         const response = await axios.get(`${API_BASE_URL}/encounter/${encounterId}`);
@@ -48,8 +44,6 @@ export const  loader: LoaderFunction = async ({request, params}) => {
 
 export default function EncountersPage() {
 
-    const encounters = useLoaderData<Encounter>() || {};
-    const navigate = useNavigate();
     const location = useLocation();
 
 

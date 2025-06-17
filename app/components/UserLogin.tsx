@@ -24,7 +24,7 @@ export const UserLogin: React.FC<{ error?: string; signupUrl?: string }> = ({ er
         Login
       </button>
       <div className="text-center mt-4">
-        <a href={signupUrl} className="text-blue-600 hover:underline">Don't have an account? Sign up</a>
+        <a href={signupUrl} className="text-blue-600 hover:underline">Don&apos;t have an account? Sign up</a>
       </div>
     </Form>
   );

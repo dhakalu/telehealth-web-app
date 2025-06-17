@@ -1,7 +1,7 @@
 import { ActionFunctionArgs, LoaderFunction } from "@remix-run/node";
-import { Form, redirect, useLoaderData } from "@remix-run/react"
-import axios, { Axios, AxiosError } from "axios";
-import { getAppPath, requireAuthCookie } from "~/auth";
+import { Form, redirect } from "@remix-run/react"
+import axios, { AxiosError } from "axios";
+import { requireAuthCookie } from "~/auth";
 
 
 export type User = {
@@ -99,7 +99,6 @@ export const action = async ({request}: ActionFunctionArgs) => {
 
 export default function CompleteProfilePage() {
 
-    const user = useLoaderData<User>();
 
 
     return (

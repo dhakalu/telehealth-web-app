@@ -1,13 +1,11 @@
 import { ActionFunctionArgs, redirect } from "@remix-run/node";
-import axios, { Axios, AxiosError } from "axios";
-import { authCookie, getAppPath } from "~/auth";
+import axios, { AxiosError } from "axios";
+import { authCookie } from "~/auth";
 import { ApiError } from "~/routes/_auth.provider.signup";
 
 export const signInAction = () => async ({ request }: ActionFunctionArgs) => {
   const formData = await request.formData();
   const email = formData.get("email");
-  const password = formData.get("password");
-
   try {
     const response = await axios.post("http://localhost:8090/login", {
         email,

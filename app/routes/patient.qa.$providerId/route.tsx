@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Form } from "@remix-run/react";
-import { ActionFunctionArgs, redirect, json } from "@remix-run/node";
+import { ActionFunctionArgs, redirect } from "@remix-run/node";
 import axios from "axios";
 import { requireAuthCookie } from "~/auth";
 
@@ -85,12 +85,6 @@ const screeningQuestions: Question[] = [
   },
 ];
 
-type Answer = {
-  providerId: string;
-  patientId: string;
-  answers: Record<string, string | string[]>;
-}
-
 export const action = async ({ request, params }: ActionFunctionArgs) => {
   const user = await requireAuthCookie(request);
   const formData = await request.formData();
@@ -112,10 +106,16 @@ export const action = async ({ request, params }: ActionFunctionArgs) => {
     });
     const savedQA = response.data;
     return redirect(`/patient/estimates/${params.providerId}/${savedQA.id}`)
-  } catch (error: any) {
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      return Response.json(
+      { error: error.response?.data?.message || error.message || "An error occurred" },
+      { status: error.response?.status || 500 }
+      );
+    }
     return Response.json(
-      { error: error?.response?.data?.message || error.message || "An error occurred" },
-      { status: error?.response?.status || 500 }
+      { error: error instanceof Error ? error.message : "An unknown error occurred" },
+      { status: 500 }
     );
   } 
 }
@@ -130,10 +130,15 @@ export default function ScreeningQuestionAnswers() {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     if (q.type === "checkbox") {
       const prev = Array.isArray(answers[q.question]) ? (answers[q.question] as string[]) : [];
-      if (e.target.checked) {
-        setAnswers({ ...answers, [q.question]: [...prev, e.target.value] });
-      } else {
-        setAnswers({ ...answers, [q.question]: prev.filter(v => v !== e.target.value) });
+      if (
+        e.target instanceof HTMLInputElement &&
+        e.target.type === "checkbox"
+      ) {
+        if (e.target.checked) {
+          setAnswers({ ...answers, [q.question]: [...prev, e.target.value] });
+        } else {
+          setAnswers({ ...answers, [q.question]: prev.filter(v => v !== e.target.value) });
+        }
       }
     } else {
       setAnswers({ ...answers, [q.question]: e.target.value });
@@ -147,7 +152,7 @@ export default function ScreeningQuestionAnswers() {
     if (current > 0) setCurrent(current - 1);
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async () => {
     setSubmitting(true);
     // let the form submit as normal, answers will be picked up by the action
   };

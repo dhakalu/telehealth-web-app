@@ -1,5 +1,3 @@
-import React from "react";
-import { useParams } from "react-router-dom";
 import {Chat, ChatComponent, ChatMessage} from "../../components/ChatComponent";
 import { useLoaderData } from "@remix-run/react";
 import { requireAuthCookie } from "~/auth";
@@ -58,7 +56,7 @@ export const loader: LoaderFunction = async ({ request, params }) => {
 
 
 export default function PatientChat(){
-  const { user, chat, messages } = useLoaderData<{user: any, chat: Chat, messages: ChatMessage[]}>();
+  const { chat, messages } = useLoaderData<{ chat: Chat, messages: ChatMessage[]}>();
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
@@ -71,4 +69,4 @@ export default function PatientChat(){
       />
     </div>
   );
-};
+}

@@ -10,7 +10,7 @@ export const API_BASE_URL = "http://localhost:8090";
 
 type EncounterType = "in-person" | "telehealth"
 
-type Encounter = {
+export type Encounter = {
     id: string;
     providerId: string;
     patientId: string;
@@ -58,7 +58,7 @@ export default function EstablishmentsPage() {
     const navigate = useNavigate();
 
 
-    const [selectedEstablishmentId, setSelectedEstablishmentId] = useState<string | null>(establishments && establishments.length > 0 ? establishments[0].chatId : null);
+    const [selectedEstablishmentId, setSelectedEstablishmentId] = useState<string | null>(establishments && establishments.length > 0 ? establishments[0].id : null);
 
     const handleSelectEestablishment = (establishment: Establishment) => {
         const establishmentId = establishment.id;

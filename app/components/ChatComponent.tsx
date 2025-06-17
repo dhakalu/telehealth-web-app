@@ -1,8 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import AppHeader from "./common/AppHeader";
 import { User } from "~/routes/provider.complete-profile/route";
-
-type ChatParticipantType = "patient" | "provider";
 
 interface ChatComponentProps {
   wsUrl: string;

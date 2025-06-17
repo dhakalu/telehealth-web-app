@@ -33,7 +33,7 @@ export const PractitionerList: React.FC<{
         return res.json();
       })
       .then((data) => {
-        setPractitioners(Array.isArray(data) ? data : data.entry?.map((e: any) => e.resource) || []);
+        setPractitioners(Array.isArray(data) ? data : data.entry?.map((e: { resource: PractitionerSearchItem}) => e.resource) || []);
         setLoading(false);
       })
       .catch((err) => {
