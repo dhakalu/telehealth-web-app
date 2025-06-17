@@ -1,5 +1,4 @@
-import React from "react";
-import { PractitionerList } from "../../components/PractitionerList";
+import React, { useState } from "react";
 import { Form } from "@remix-run/react";
 import { ActionFunctionArgs, redirect, json } from "@remix-run/node";
 import axios from "axios";
@@ -122,56 +121,98 @@ export const action = async ({ request, params }: ActionFunctionArgs) => {
 }
 
 export default function ScreeningQuestionAnswers() {
+
+  const [current, setCurrent] = useState(0);
+  const [answers, setAnswers] = useState<Record<string, string | string[]>>({});
+  const [submitting, setSubmitting] = useState(false);
+  const q = screeningQuestions[current];
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    if (q.type === "checkbox") {
+      const prev = Array.isArray(answers[q.question]) ? (answers[q.question] as string[]) : [];
+      if (e.target.checked) {
+        setAnswers({ ...answers, [q.question]: [...prev, e.target.value] });
+      } else {
+        setAnswers({ ...answers, [q.question]: prev.filter(v => v !== e.target.value) });
+      }
+    } else {
+      setAnswers({ ...answers, [q.question]: e.target.value });
+    }
+  };
+
+  const handleNext = () => {
+    if (current < screeningQuestions.length - 1) setCurrent(current + 1);
+  };
+  const handlePrev = () => {
+    if (current > 0) setCurrent(current - 1);
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    setSubmitting(true);
+    // let the form submit as normal, answers will be picked up by the action
+  };
+
   return (
-    <Form method="post" className="max-w-2xl mx-auto p-6 bg-white rounded shadow space-y-6">
+    <Form method="post" className="max-w-2xl mx-auto p-6 bg-white rounded shadow space-y-6" onSubmit={handleSubmit}>
       <h2 className="text-2xl font-bold mb-2">Screening Questions</h2>
       <p className="text-gray-600 mb-4">Almost there, before we connect with a doctor, please answer the following questions.</p>
-      {screeningQuestions.map((q, idx) => (
-        <div key={idx} className="space-y-2">
-          <label className="block font-medium">
-            {q.question}
-            {q.isRequired && <span className="text-red-500 ml-1">*</span>}
-          </label>
-          {q.type === "text" && (
-            <input
-              type="text"
-              className="w-full border rounded px-3 py-2"
-              name={`question-${idx}`}
-              required={q.isRequired}
-            />
-          )}
-          {q.type === "checkbox" && q.options && (
-            <div className="flex flex-wrap gap-4">
-              {q.options.map((opt, oidx) => (
-                <label key={oidx} className="flex items-center gap-2">
-                  <input
-                    type="checkbox"
-                    name={`question-${idx}`}
-                    value={opt}
-                  />
-                  {opt}
-                </label>
-              ))}
-            </div>
-          )}
-          {q.type === "radio" && q.options && (
-            <div className="flex flex-wrap gap-4">
-              {q.options.map((opt, oidx) => (
-                <label key={oidx} className="flex items-center gap-2">
-                  <input
-                    type="radio"
-                    name={`question-${idx}`}
-                    value={opt}
-                    required={q.isRequired}
-                  />
-                  {opt}
-                </label>
-              ))}
-            </div>
-          )}
-        </div>
-      ))}
-      <button type="submit" className="mt-6 px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Submit</button>
+      <div className="space-y-2">
+        <label className="block font-medium">
+          {q.question}
+          {q.isRequired && <span className="text-red-500 ml-1">*</span>}
+        </label>
+        {q.type === "text" && (
+          <input
+            type="text"
+            className="w-full border rounded px-3 py-2"
+            name={`question-${current}`}
+            required={q.isRequired}
+            value={typeof answers[q.question] === 'string' ? answers[q.question] as string : ''}
+            onChange={handleChange}
+          />
+        )}
+        {q.type === "checkbox" && q.options && (
+          <div className="flex flex-wrap gap-4">
+            {q.options.map((opt, oidx) => (
+              <label key={oidx} className="flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  name={`question-${current}`}
+                  value={opt}
+                  checked={Array.isArray(answers[q.question]) && (answers[q.question] as string[]).includes(opt)}
+                  onChange={handleChange}
+                />
+                {opt}
+              </label>
+            ))}
+          </div>
+        )}
+        {q.type === "radio" && q.options && (
+          <div className="flex flex-wrap gap-4">
+            {q.options.map((opt, oidx) => (
+              <label key={oidx} className="flex items-center gap-2">
+                <input
+                  type="radio"
+                  name={`question-${current}`}
+                  value={opt}
+                  checked={answers[q.question] === opt}
+                  required={q.isRequired}
+                  onChange={handleChange}
+                />
+                {opt}
+              </label>
+            ))}
+          </div>
+        )}
+      </div>
+      <div className="flex gap-4 mt-6">
+        <button type="button" className="px-4 py-2 rounded bg-gray-200" onClick={handlePrev} disabled={current === 0}>Previous</button>
+        {current < screeningQuestions.length - 1 ? (
+          <button type="button" className="px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700" onClick={handleNext}>Next</button>
+        ) : (
+          <button type="submit" className="px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700" disabled={submitting}>Submit</button>
+        )}
+      </div>
     </Form>
   );
 }
