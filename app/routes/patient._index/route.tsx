@@ -2,20 +2,37 @@ import { useLoaderData } from "@remix-run/react";
 import { User } from "../provider.complete-profile/route";
 import { LoaderFunction, redirect } from "@remix-run/node";
 import { requireAuthCookie } from "~/auth";
+import axios from "axios";
 
 
 export const loader: LoaderFunction = async ({ request }) => {
   const user =  await requireAuthCookie(request);
-  if (user.status === "incomplete") {
+
+  try {
+    const response = axios.get(`${process.env.API_BASE_URL}/patient/${user.sub}`);
+    user.status = (await response).data.status;
+    if (user.status === "incomplete") {
       return redirect("/patient/complete-profile");
+    }
+  } catch (error) {
+    console.error("Error fetching user data:", error);
+    return {error: "Failed to fetch user data"};
   }
   return {user};
 }
 
 
 export default function PatientHome() {
-  const {user} = useLoaderData<{user: User}>();
+  const {user, error} = useLoaderData<{user: User, error: string}>();
 
+  if (error) {
+    return (
+      <div className="max-w-xl mx-auto p-8 bg-red-100 text-red-800 rounded shadow mt-10">
+        <h2 className="text-2xl font-bold mb-4">Error</h2>
+        <p>{error}</p>
+      </div>
+    );
+  }
   return (
     <div className="max-w-xl mx-auto p-8 bg-white rounded shadow mt-10">
       <h2 className="text-2xl font-bold mb-4">Welcome, {user.given_name}!</h2>

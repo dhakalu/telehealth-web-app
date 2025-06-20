@@ -13,7 +13,6 @@ export const loader: LoaderFunction = async ({ request, params }) => {
   const {practitioner: providerId} = params
   const patientId = user.sub
 
-    
   try {
       const chatUrl = `http://localhost:8090/chat`
       console.log('chat url', chatUrl)

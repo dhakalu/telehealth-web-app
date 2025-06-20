@@ -1,6 +1,7 @@
 import { ActionFunctionArgs, LoaderFunction } from "@remix-run/node";
 import { Form, redirect } from "@remix-run/react"
 import axios, { AxiosError } from "axios";
+import { API_BASE_URL } from "~/api";
 import { requireAuthCookie } from "~/auth";
 
 
@@ -42,16 +43,15 @@ export const action = async ({request}: ActionFunctionArgs) => {
     }
 
     try {
-        await axios.post("http://localhost:8090/patient", practitionerData)
-        await axios.patch(`http://localhost:8090/user/${user.sub}/status`, {
+        await axios.post(`${API_BASE_URL}/patient`, practitionerData)
+        await axios.patch(`${API_BASE_URL}/user/${user.sub}/status`, {
             status: "complete",
         });
-        return redirect(`/patient`, {})
+        return redirect(`/patient/find-doctors`, {})
     } catch (error) {
         console.error("Error saving practitioner data:", error);
         return Response.json({ error: "Failed to save practitioner data" }, { status: (error as AxiosError).response?.status || 500 });
     }
-
 }
 
 export default function CompleteProfilePage() {

@@ -1,6 +1,7 @@
 import { ActionFunctionArgs, LoaderFunction } from "@remix-run/node";
 import { Form, redirect } from "@remix-run/react"
 import axios, { AxiosError } from "axios";
+import { API_BASE_URL } from "~/api";
 import { requireAuthCookie } from "~/auth";
 
 
@@ -37,6 +38,9 @@ export const  loader: LoaderFunction = async ({request}) => {
 export const action = async ({request}: ActionFunctionArgs) => {
     const formData = await request.formData();
     const user = await requireAuthCookie(request);
+    if (user.status === "complete") {
+        return redirect(`/provider`, {});
+    }
     const practitionerData = {
         resourceType: "Practitioner",
         identifier: [{
@@ -81,12 +85,11 @@ export const action = async ({request}: ActionFunctionArgs) => {
                 use: "work",
             },
         ],
-
     }
 
     try {
-        await axios.post("http://localhost:8090/practitioner", practitionerData)
-        await axios.patch(`http://localhost:8090/user/${user.sub}/status`, {
+        await axios.post(`${API_BASE_URL}/practitioner`, practitionerData)
+        await axios.patch(`${API_BASE_URL}/user/${user.sub}/status`, {
             status: "complete",
         });
         return redirect(`/provider`, {})
