@@ -23,7 +23,7 @@ export const NotFoundPage: React.FC = () => (
             Sorry, we couldn't find the page you're looking for. Even this dog is sad about it.
         </p>
         <a
-            href="/"
+            href="/login"
             style={{
                 padding: '0.75rem 2rem',
                 background: '#fff',

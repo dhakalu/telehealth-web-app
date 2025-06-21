@@ -6,6 +6,10 @@ import axios from "axios";
 export const loader: LoaderFunction = async ({request}) => {
      const user =  await requireAuthCookie(request);
 
+     if (user.account_type === "patient") {
+        return redirect("/patient/find-doctors");
+     }
+
   try {
     const response = axios.get(`${process.env.API_BASE_URL}/practitioner/${user.sub}`);
     user.status = (await response).data.status;

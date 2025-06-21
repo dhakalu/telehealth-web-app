@@ -9,6 +9,10 @@ import ErrorPage from "~/components/common/ErrorPage";
 export const loader: LoaderFunction = async ({ request }) => {
   const user =  await requireAuthCookie(request);
 
+  if (user.account_type !== "patient") {
+    return redirect("/provider/establishment");
+  }
+
   try {
     const response = axios.get(`${process.env.API_BASE_URL}/patient/${user.sub}`);
     user.status = (await response).data.status;

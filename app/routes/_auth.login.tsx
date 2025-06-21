@@ -1,7 +1,7 @@
 import { UserLogin } from "../components/UserLogin";
 import { LoaderFunction, redirect } from "@remix-run/node";
 import { authCookie } from "~/auth";
-import { useActionData, useFetcher, useNavigation, useTra } from "@remix-run/react";
+import { useActionData, useNavigation, } from "@remix-run/react";
 import { signInAction } from "~/common-actions/signin";
 import { User } from "./provider.complete-profile/route";
 
