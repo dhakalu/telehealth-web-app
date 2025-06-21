@@ -55,6 +55,8 @@ export const action = async ({request}: ActionFunctionArgs) => {
 }
 
 export default function CompleteProfilePage() {
+
+
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-50 p-8">
             <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-md">

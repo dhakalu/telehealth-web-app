@@ -4,6 +4,7 @@ import { requireAuthCookie } from "~/auth";
 import { LoaderFunction } from "@remix-run/node";
 import axios from "axios";
 import { API_BASE_URL } from "~/api";
+import ErrorPage from "~/components/common/ErrorPage";
 
 
 export const loader: LoaderFunction = async ({ request, params }) => {
@@ -60,9 +61,9 @@ export default function PatientChat(){
 
   if (error) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="text-red-600 text-lg">{error}</div>
-      </div>
+      <ErrorPage
+        error={error}
+      />
     );
   }
 

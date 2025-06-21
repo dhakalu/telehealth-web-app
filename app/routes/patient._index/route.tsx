@@ -3,6 +3,7 @@ import { User } from "../provider.complete-profile/route";
 import { LoaderFunction, redirect } from "@remix-run/node";
 import { requireAuthCookie } from "~/auth";
 import axios from "axios";
+import ErrorPage from "~/components/common/ErrorPage";
 
 
 export const loader: LoaderFunction = async ({ request }) => {
@@ -27,10 +28,7 @@ export default function PatientHome() {
 
   if (error) {
     return (
-      <div className="max-w-xl mx-auto p-8 bg-red-100 text-red-800 rounded shadow mt-10">
-        <h2 className="text-2xl font-bold mb-4">Error</h2>
-        <p>{error}</p>
-      </div>
+      <ErrorPage error={error} />
     );
   }
   return (
