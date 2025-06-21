@@ -63,7 +63,7 @@ export default function EstablishmentsPage() {
     const handleSelectEestablishment = (establishment: Establishment) => {
         const establishmentId = establishment.id;
         setSelectedEstablishmentId(establishmentId);
-        navigate(`${establishmentId}/chat/${establishment.patientId}`);
+        navigate(`${establishment.patientId}/chat`);
     }
 
     if (error) {
@@ -75,9 +75,9 @@ export default function EstablishmentsPage() {
     return (
         <div className="min-h-screen bg-gray-50 flex flex-col">
             <div className="flex-1 flex items-stretch justify-stretch">
-                <div className="bg-white p-6 rounded-none shadow-md w-full max-w-5xl flex h-full m-auto">
+                <div className="bg-white p-6 rounded-none shadow-md w-full flex h-full">
                     {/* Left column: Chat list */}
-                    <div className="w-1/3 border-r pr-4 overflow-y-auto">
+                    <div className="w-1/4 border-r pr-4 overflow-y-auto">
                         <h2 className="text-lg font-bold mb-4">Current Patients</h2>
                         {establishments && establishments.length > 0 ? (
                             <ul>
@@ -97,7 +97,7 @@ export default function EstablishmentsPage() {
                         )}
                     </div>
                     {/* Right column: Selected chat */}
-                    <div className="w-2/3 pl-4 flex flex-col h-full">
+                    <div className="w-3/4 pl-4 flex flex-col h-full">
                         <Outlet />
                     </div>
                 </div>

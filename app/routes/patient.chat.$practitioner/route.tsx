@@ -27,7 +27,7 @@ export const loader: LoaderFunction = async ({ request, params }) => {
         user,
         chat: chat,
         messages: messages.data || [],
-        wsUrl: `${API_BASE_URL.replace('https', 'wss')}/ws`
+        wsUrl: `${API_BASE_URL.replace('http', 'ws')}/ws`
       }
   } catch (error) {
       console.error(error)
