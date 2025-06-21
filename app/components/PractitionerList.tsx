@@ -3,7 +3,6 @@ import axios from "axios";
 import { StarRating } from "./RatingStar";
 import { ReviewModal } from "./ReviewModal";
 
-const baseURL = "http://localhost:8090";
 
 export interface PractitionerSearchItem {
   id: string;
@@ -20,7 +19,8 @@ export type Establishment = {
 
 export const PractitionerList: React.FC<{
   patientId: string
-}> = ({patientId}) => {
+  baseURL?: string
+}> = ({patientId, baseURL}) => {
   const [practitioners, setPractitioners] = useState<PractitionerSearchItem[]>([]);
   const [reviewModalDoctorId, setReviewModalDoctorId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
@@ -46,9 +46,9 @@ export const PractitionerList: React.FC<{
     if (!doctorId) return;
     try {
       await axios.put(`${baseURL}/establishment`, {
-        practitionerId: doctorId,
-        patientId: patientId,
-        status: "pending"
+          practitionerId: doctorId,
+          patientId: patientId,
+          status: "pending"
         }, {
         headers: {
           "Content-Type": "application/json",
@@ -67,7 +67,6 @@ export const PractitionerList: React.FC<{
   return (
     <div className="p-4">
       <h2 className="text-xl font-bold mb-4">Practitioner List</h2>
-      
       {
         !practitioners.length ?<div className="text-gray-600">No practitioners available at this time</div>:<ul className="space-y-2">
         {practitioners.map((p, idx) => {

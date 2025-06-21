@@ -3,6 +3,7 @@ import { useLoaderData, useNavigate } from "@remix-run/react";
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import Confetti from "react-confetti";
+import { API_BASE_URL } from "~/api";
 
 export const loader = async ({ params }: LoaderFunctionArgs) => {
   
@@ -15,7 +16,7 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
 
   try {
     const res = await axios.post(
-      `${process.env.API_URL || "http://localhost:8090"}/cost-estimation`,
+      `${API_BASE_URL}/cost-estimation`,
       payload
     );
     return Response.json({ cost: res.data.estimated_cost, providerId });

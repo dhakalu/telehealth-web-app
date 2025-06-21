@@ -18,12 +18,8 @@ export default function NotFound() {
         <AppHeader 
           links={[
             {
-              label: "Home",
-              href: "/provider"
-            },
-            {
-                label: "View Patients",
-                href: "/provider/establishment"
+              label: "Help & Support",
+              href: "/help"
             }
           ]} 
           user={user}

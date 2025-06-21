@@ -3,8 +3,8 @@ import { useLoaderData } from "@remix-run/react";
 import { requireAuthCookie } from "~/auth";
 import { LoaderFunction } from "@remix-run/node";
 import axios from "axios";
+import { API_BASE_URL } from "~/api";
 
-const WS_BASE = "ws://localhost:8090/ws";
 
 export const loader: LoaderFunction = async ({ request, params }) => {
   const user =  await requireAuthCookie(request);
@@ -13,20 +13,20 @@ export const loader: LoaderFunction = async ({ request, params }) => {
   const {practitioner: providerId} = params
   const patientId = user.sub
 
-    
   try {
-      const chatUrl = `http://localhost:8090/chat`
+      const chatUrl = `${API_BASE_URL}/chat`
       console.log('chat url', chatUrl)
       const chatResponse = await axios.put(chatUrl, {
         providerId,
         patientId
       });
       const chat = chatResponse.data as Chat;
-      const messages = await axios.get(`http://localhost:8090/chat/${chat.chatId}/messages`)
+      const messages = await axios.get(`${chatUrl}/${chat.chatId}/messages`)
       return {
         user,
         chat: chat,
-        messages: messages.data || []
+        messages: messages.data || [],
+        wsUrl: `${API_BASE_URL.replace('https', 'wss')}/ws`
       }
   } catch (error) {
       console.error(error)
@@ -44,7 +44,7 @@ export const loader: LoaderFunction = async ({ request, params }) => {
           error.response.data,
           { status: error.response.status }
         );
-        } else {
+      } else {
         console.error("Error fetching chat:", error);
         return Response.json(
             { error: "Internal server error" },
@@ -56,12 +56,20 @@ export const loader: LoaderFunction = async ({ request, params }) => {
 
 
 export default function PatientChat(){
-  const { chat, messages } = useLoaderData<{ chat: Chat, messages: ChatMessage[]}>();
+  const { chat, messages, error, wsUrl } = useLoaderData<{ chat: Chat, messages: ChatMessage[], error: string, wsUrl: string}>();
+
+  if (error) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="text-red-600 text-lg">{error}</div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
       <ChatComponent
-        wsUrl={WS_BASE}
+        wsUrl={wsUrl}
         chat={chat}
         receiverId={chat.providerId}
         senderId={chat.patientId}

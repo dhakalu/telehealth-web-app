@@ -2,13 +2,14 @@ import { LoaderFunctionArgs } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import axios from "axios";
 import { DoctorDetail } from "../../components/DoctorDetail";
+import { API_BASE_URL } from "~/api";
 
 export const loader = async ({ params }: LoaderFunctionArgs) => {
   const { doctorId } = params;
   if (!doctorId) throw new Response("Doctor ID required", { status: 400 });
   let res;
   try {
-    res = await axios.get(`${process.env.API_URL || "http://localhost:8090"}/practitioner/${doctorId}`);
+    res = await axios.get(`${API_BASE_URL}/practitioner/${doctorId}`);
     return {
       data: res.data
     };
