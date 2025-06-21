@@ -17,7 +17,7 @@ export const loader: LoaderFunction = async ({ request, params }) => {
   try {
       const medicationUrl = `${API_BASE_URL}/patient/${patientId}/medication`
       const medicationResponse = await axios.get(medicationUrl);
-      const medications = medicationResponse.data as Chat;
+      const medications = medicationResponse.data as Medication[];
       return {
         user,
         baseUrl: API_BASE_URL,
