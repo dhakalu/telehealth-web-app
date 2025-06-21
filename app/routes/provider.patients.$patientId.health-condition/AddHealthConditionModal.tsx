@@ -14,8 +14,7 @@ const initialForm: Omit<HealthCondition, "id"> = {
   name: "",
   status: "",
   notes: "",
-  start_date: "",
-  end_date: "",
+  diagnosed_on: null,
 };
 
 const AddHealthConditionModal: React.FC<AddHealthConditionModalProps> = ({ open, onClose, onAdd, patientId, baseUrl }) => {
@@ -36,7 +35,7 @@ const AddHealthConditionModal: React.FC<AddHealthConditionModalProps> = ({ open,
     setError(null);
     try {
       // Replace with your actual API endpoint
-      const response =  await axios.post(`${baseUrl}/patient/${patientId}/health-condition`, form);
+      const response =  await axios.post(`${baseUrl}/patient/${patientId}/health-condition`, {...form, diagnosed_on: new Date().toISOString().split('T')[0]});
       const createdHealthCondition = response.data as HealthCondition;
       if (onAdd) {
         onAdd(createdHealthCondition);
@@ -85,28 +84,6 @@ const AddHealthConditionModal: React.FC<AddHealthConditionModalProps> = ({ open,
               name="notes"
               placeholder="Notes"
               value={form.notes}
-              onChange={handleChange}
-              className="w-full border px-2 py-1 rounded"
-            />
-          </div>
-          <div>
-            <label htmlFor="start_date" className="block mb-1 font-medium">Start Date</label>
-            <input
-              id="start_date"
-              name="start_date"
-              type="date"
-              value={form.start_date || ""}
-              onChange={handleChange}
-              className="w-full border px-2 py-1 rounded"
-            />
-          </div>
-          <div>
-            <label htmlFor="end_date" className="block mb-1 font-medium">End Date</label>
-            <input
-              id="end_date"
-              name="end_date"
-              type="date"
-              value={form.end_date || ""}
               onChange={handleChange}
               className="w-full border px-2 py-1 rounded"
             />

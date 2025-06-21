@@ -3,6 +3,5 @@ export type HealthCondition = {
   name: string;
   status: string;
   notes: string;
-  start_date: string | null;
-  end_date: string | null;
+  diagnosed_on: string | null;
 };
