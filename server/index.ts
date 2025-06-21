@@ -216,11 +216,11 @@ app.use(
 					'blob:',
 				],
 				'script-src': [
-					"'strict-dynamic'",
+					"'unsafe-inline'",
+					// "'strict-dynamic'",
 					"'unsafe-eval'",
 					"'self'",
-					// @ts-expect-error middleware is the worst
-					(req, res) => `'nonce-${res.locals.cspNonce}'`,
+					// (req, res) => `'nonce-${res.locals.cspNonce}'`,
 				],
 				'script-src-attr': [
 					"'unsafe-inline'",

@@ -36,10 +36,10 @@ resource "aws_ecs_task_definition" "telehealth" {
           name = "API_BASE_URL"
           value = "https://${var.environment}.amruta.online/api"
         },
-        {
-          name  = "PORT"
-          value = local.port
-        },
+        # {
+        #   name  = "PORT"
+        #   value = "${local.port}"
+        # },
         {
           name  = "ENVIRONMENT"
           value = var.environment

@@ -13,7 +13,7 @@ variable "environment" {
 variable "image_tag" {
   description = "Docker image tag to use for the ECS task"
   type        = string
-  default     = "0.0.2"
+  default     = "0.0.7"
 }
 
 

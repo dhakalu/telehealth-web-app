@@ -2,7 +2,7 @@
 $region = "us-east-1"
 $accountId = (aws sts get-caller-identity --query Account --output text)
 $repository = "telehealth-ui"
-$imageTag = "0.0.2"
+$imageTag = "0.0.7"
 
 
 
@@ -10,7 +10,7 @@ $imageTag = "0.0.2"
 aws ecr get-login-password --region $region | docker login --username AWS --password-stdin "$accountId.dkr.ecr.$region.amazonaws.com"
 
 # Tag the image
-docker tag "service:${imageTag}" "${accountId}.dkr.ecr.${region}.amazonaws.com/${repository}:${imageTag}"
+docker tag "ui:${imageTag}" "${accountId}.dkr.ecr.${region}.amazonaws.com/${repository}:${imageTag}"
 
 # Push the image
 docker push "${accountId}.dkr.ecr.${region}.amazonaws.com/${repository}:${imageTag}"

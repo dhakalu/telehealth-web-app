@@ -35,7 +35,7 @@ resource "aws_lb_target_group" "telehealth" {
   vpc_id      = data.aws_ssm_parameter.vpc_id.value
   target_type = "ip"
   health_check {
-    path                = "/app/"
+    path                = "/"
     protocol            = "HTTP"
     matcher             = "200-399"
     interval            = 30
@@ -56,7 +56,7 @@ resource "aws_lb_listener_rule" "api_forward" {
 
   condition {
     path_pattern {
-      values = ["/app*"]
+      values = ["/*"]
     }
   }
 }
