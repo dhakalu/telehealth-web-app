@@ -18,7 +18,7 @@ export const loader: LoaderFunction = async ({ request }) => {
     console.error("Error fetching user data:", error);
     return {error: "Failed to fetch user data"};
   }
-  return {user};
+  return redirect("/patient/find-doctors");
 }
 
 

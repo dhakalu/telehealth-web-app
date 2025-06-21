@@ -3,8 +3,9 @@ import { LoaderFunction } from "@remix-run/node";
 import { requireAuthCookie } from "~/auth";
 import { useLoaderData } from "@remix-run/react";
 import axios from "axios";
+import { API_BASE_URL } from "~/api";
+import ErrorPage from "~/components/common/ErrorPage";
 
-const WS_BASE = "ws://localhost:8090/ws";
 
 export const loader: LoaderFunction = async ({ request, params }) => {
   const user =  await requireAuthCookie(request);
@@ -15,15 +16,16 @@ export const loader: LoaderFunction = async ({ request, params }) => {
 
     
   try {
-      const chatUrl = `http://localhost:8090/chat/by-patient-and-provider?patientId=${patientId}&practitionerId=${providerId}`
+      const chatUrl = `${API_BASE_URL}/chat/by-patient-and-provider?patientId=${patientId}&practitionerId=${providerId}`
       console.log('chat url', chatUrl)
       const chatResponse = await axios.get(chatUrl);
       const chat = chatResponse.data as Chat;
-      const messages = await axios.get(`http://localhost:8090/chat/${chat.chatId}/messages`)
+      const messages = await axios.get(`${API_BASE_URL}/chat/${chat.chatId}/messages`)
       return {
         user,
         chat: chat,
-        messages: messages.data || []
+        messages: messages.data || [],
+        wsUrl: `${API_BASE_URL.replace('https', 'wss')}/ws`
       }
   } catch (error) {
       console.error(error)
@@ -43,11 +45,14 @@ export const loader: LoaderFunction = async ({ request, params }) => {
 }
 
 export default function PractitionerChat(){
-  const { chat, messages } = useLoaderData<{chat: Chat, messages: ChatMessage[]}>();
+  const { chat, messages, error, wsUrl } = useLoaderData<{chat: Chat, messages: ChatMessage[], error: string, wsUrl: string}>();
 
+  if (error) {
+    return <ErrorPage error={error} />;
+  }
   return (
     <ChatComponent
-      wsUrl={WS_BASE}
+      wsUrl={wsUrl}
       chat={chat}
       receiverId={chat.patientId}
       senderId={chat.providerId}

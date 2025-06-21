@@ -4,9 +4,8 @@ import axios from "axios";
 import { requireAuthCookie } from "~/auth";
 import { useState } from "react";
 import { User } from "../provider.complete-profile/route";
-
-export const API_BASE_URL = "http://localhost:8090";
-
+import { API_BASE_URL } from "~/api";
+import ErrorPage from "~/components/common/ErrorPage";
 
 type EncounterType = "in-person" | "telehealth"
 
@@ -38,12 +37,13 @@ export const  loader: LoaderFunction = async ({request}) => {
     const user =  await requireAuthCookie(request);
     try {
         const response = await axios.get(`${API_BASE_URL}/establishment/by-practitioner/${user.sub}`);
-        return response.data;
+        return {establishments: response.data};
     } catch (error) {
         if (axios.isAxiosError(error)) {
             if (error.response?.status === 404) {
                 return []; // User not found, return the user data to complete profile
             } else {
+                console.error("Error fetching practitioner data:", error);
                 return Response.json({ error: "Failed to fetch practitioner data" }, { status: error.response?.status || 500 });
             }
         } else {
@@ -54,7 +54,7 @@ export const  loader: LoaderFunction = async ({request}) => {
 
 export default function EstablishmentsPage() {
 
-    const establishments = useLoaderData<Establishment[]>() || [];
+    const {establishments, error } = useLoaderData<{establishments: Establishment[], error: string}>() || [];
     const navigate = useNavigate();
 
 
@@ -64,6 +64,12 @@ export default function EstablishmentsPage() {
         const establishmentId = establishment.id;
         setSelectedEstablishmentId(establishmentId);
         navigate(`${establishmentId}/chat/${establishment.patientId}`);
+    }
+
+    if (error) {
+        return (
+            <ErrorPage error={error} />
+        );
     }
 
     return (

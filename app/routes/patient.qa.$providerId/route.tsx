@@ -3,6 +3,7 @@ import { Form } from "@remix-run/react";
 import { ActionFunctionArgs, redirect } from "@remix-run/node";
 import axios from "axios";
 import { requireAuthCookie } from "~/auth";
+import { API_BASE_URL } from "~/api";
 
 type Question = {
   question: string;
@@ -99,7 +100,7 @@ export const action = async ({ request, params }: ActionFunctionArgs) => {
   });
 
   try {
-    const response = await axios.post("http://localhost:8090/qa", {
+    const response = await axios.post(`${API_BASE_URL}/qa`, {
       providerId: params.providerId,
       patientId: user.sub,
       answers: answers

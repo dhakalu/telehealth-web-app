@@ -34,7 +34,6 @@ export const ChatComponent: React.FC<ChatComponentProps> = ({
   senderId,
   initialMessages = [],
 }) => {
-  console.log('initialMessages', initialMessages)
   const [messages, setMessages] = useState<ChatMessage[]>(initialMessages);
   const [input, setInput] = useState("");
   const ws = useRef<WebSocket | null>(null);
