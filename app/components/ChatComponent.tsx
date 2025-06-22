@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { User } from "~/routes/provider.complete-profile/route";
+import { User } from "~/routes/provider/complete-profile";
 
 interface ChatComponentProps {
   wsUrl: string;

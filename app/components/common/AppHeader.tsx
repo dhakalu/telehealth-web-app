@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { User } from "~/routes/provider.complete-profile/route";
+import { User } from "~/routes/provider/complete-profile";
 
 interface AppHeaderProps {
   links?: { label: string; href: string }[];

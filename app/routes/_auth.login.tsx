@@ -1,9 +1,9 @@
 import { UserLogin } from "../components/UserLogin";
-import { LoaderFunction, redirect } from "@remix-run/node";
+import { LoaderFunction, redirect } from "react-router";
 import { authCookie } from "~/auth";
-import { useActionData, useNavigation, } from "@remix-run/react";
+import { useActionData, useNavigation } from "react-router";
 import { signInAction } from "~/common-actions/signin";
-import { User } from "./provider.complete-profile/route";
+import { User } from "./provider/complete-profile";
 
 export const loader: LoaderFunction = async ({ request }) => {
   const cookie =  await authCookie.parse(request.headers.get("Cookie"));

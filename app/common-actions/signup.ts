@@ -1,4 +1,4 @@
-import { ActionFunctionArgs, redirect } from "@remix-run/node";
+import { ActionFunctionArgs, redirect } from "react-router";
 import axios, { AxiosError } from "axios";
 import { ApiError } from "~/routes/_auth.provider.signup";
 

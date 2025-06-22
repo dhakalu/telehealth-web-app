@@ -1,8 +1,8 @@
 import React from "react";
 import { StarRating } from "./RatingStar";
-import { LoaderFunction } from "@remix-run/node";
+import { LoaderFunction } from "react-router";
 import axios from "axios";
-import { useLoaderData } from "@remix-run/react";
+import { useLoaderData } from "react-router";
 
 // FHIR Practitioner resource type (simplified for this context)
 export type FHIRPractitioner = {

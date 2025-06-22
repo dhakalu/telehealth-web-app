@@ -1,8 +1,8 @@
 import crypto from 'crypto'
 import path from 'path'
 import { fileURLToPath } from 'url'
-import { createRequestHandler, type RequestHandler } from '@remix-run/express'
-import { installGlobals, type ServerBuild } from '@remix-run/node'
+import { createRequestHandler, type RequestHandler } from '@react-router/express';
+import { type ServerBuild } from 'react-router';
 import { ip as ipAddress } from 'address'
 import chalk from 'chalk'
 import closeWithGrace from 'close-with-grace'
@@ -17,7 +17,6 @@ import serverTiming from 'server-timing'
 import sourceMapSupport from 'source-map-support'
 
 sourceMapSupport.install()
-installGlobals()
 
 const viteDevServer =
 	process.env.NODE_ENV === 'production'
@@ -30,7 +29,7 @@ const viteDevServer =
 
 const getBuild = async (): Promise<ServerBuild> => {
 	if (viteDevServer) {
-		return viteDevServer.ssrLoadModule('virtual:remix/server-build') as any
+		return viteDevServer.ssrLoadModule('virtual:react-router/server-build') as any;
 	}
 	// @ts-ignore (this file may or may not exist yet)
 	return import('../build/server/index.js') as Promise<ServerBuild>

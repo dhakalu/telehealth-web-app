@@ -1,9 +1,9 @@
-import { LoaderFunction } from "@remix-run/node";
-import { Outlet, useLoaderData } from "@remix-run/react";
+import { LoaderFunction } from "react-router";
+import { Outlet, useLoaderData } from "react-router";
 // Update the import path below to the correct location of requireAuthCookie
 import { requireAuthCookie } from "~/auth"; // or "./auth" or the actual relative path
 import AppHeader from "~/components/common/AppHeader";
-import { User } from "../provider.complete-profile/route";
+import { User } from "./complete-profile";
 
 export const loader: LoaderFunction = async ({request}) => {
     const user = await requireAuthCookie(request);

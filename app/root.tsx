@@ -6,8 +6,8 @@ import {
   Scripts,
   ScrollRestoration,
   useRouteError,
-} from "@remix-run/react";
-import type { LinksFunction } from "@remix-run/node";
+} from "react-router";
+import type { LinksFunction } from "react-router";
 import React from "react";
 
 import "./tailwind.css";

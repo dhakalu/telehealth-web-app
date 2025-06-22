@@ -1,6 +1,6 @@
 import { UserSignUp } from "../components/UserSignUp";
-import { redirect, useActionData } from "@remix-run/react";
-import { LoaderFunction } from "@remix-run/node";
+import { redirect, useActionData } from "react-router";
+import { LoaderFunction } from "react-router";
 import { authCookie, getAppPath } from "~/auth";
 import { signupAction } from "~/common-actions/signup";
 
