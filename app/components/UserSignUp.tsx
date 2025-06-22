@@ -2,17 +2,27 @@ import { Form } from "react-router";
 import React from "react";
 
 type UserSignUpProps = {
-  type?: "patient" | "practitioner";
   error: string | null;
 };
 
-export const UserSignUp: React.FC<UserSignUpProps> = ({ type, error }) => {
+export const UserSignUp: React.FC<UserSignUpProps> = ({ error }) => {
 
   return (
     <Form className="max-w-xl mx-auto p-6 bg-white rounded shadow space-y-4" method="post">
-      <h2 className="text-2xl font-bold mb-4">{type == "patient" ? "Patient": "Provider"} Sign Up</h2>
+      <h2 className="text-2xl font-bold mb-4">Sign Up</h2>
       <div className="text-sm text-gray-500 mb-2">* indicates required fields</div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {/* Required: User Type */}
+        <div className="flex flex-col">
+          <label className="mb-1 text-sm font-medium">
+            User Type <span className="text-red-600">*</span>
+          </label>
+          <select name="account_type" className="input" required>
+            <option value="patient" disabled selected>Select User Type</option>
+            <option value="practitioner">Practitioner</option>
+            <option value="patient">Patient</option>
+          </select>
+        </div>
         {/* Required: Given Name (firstName) */}
         <div className="flex flex-col">
           <label className="mb-1 text-sm font-medium">

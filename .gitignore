@@ -4,7 +4,7 @@ node_modules
 /build
 /server-build
 .env
-
+.react-router/
 **/.terraform
 **/.tfstate
 **/.terraform.lock.hcl

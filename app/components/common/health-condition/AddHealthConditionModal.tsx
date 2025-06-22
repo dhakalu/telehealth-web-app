@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { HealthCondition } from "./types";
 import axios from "axios";
+import { Input } from "~/components/common/Input";
+import { Select } from "~/components/common/Select";
 
 export type AddHealthConditionModalProps = {
   open: boolean;
@@ -55,40 +57,39 @@ const AddHealthConditionModal: React.FC<AddHealthConditionModalProps> = ({ open,
         <h2 className="text-lg font-semibold mb-4">Add Health Condition</h2>
         {error && <div className="text-red-500 mb-2">{error}</div>}
         <form onSubmit={handleSubmit} className="space-y-3">
-          <div>
-            <label htmlFor="name" className="block mb-1 font-medium">Name</label>
-            <input
-              id="name"
-              name="name"
-              placeholder="Name"
-              value={form.name}
-              onChange={handleChange}
-              className="w-full border px-2 py-1 rounded"
-              required
-            />
-          </div>
-          <div>
-            <label htmlFor="status" className="block mb-1 font-medium">Status</label>
-            <input
-              id="status"
-              name="status"
-              placeholder="Status"
-              value={form.status}
-              onChange={handleChange}
-              className="w-full border px-2 py-1 rounded"
-            />
-          </div>
-          <div>
-            <label htmlFor="notes" className="block mb-1 font-medium">Notes</label>
-            <textarea
-              id="notes"
-              name="notes"
-              placeholder="Notes"
-              value={form.notes}
-              onChange={handleChange}
-              className="w-full border px-2 py-1 rounded"
-            />
-          </div>
+          <Input
+            label="Name"
+            id="name"
+            name="name"
+            placeholder="Name"
+            value={form.name}
+            onChange={handleChange}
+            className="w-full"
+            required
+          />
+          <Select
+            label="Status"
+            id="status"
+            name="status"
+            value={form.status}
+            onChange={e => setForm(prev => ({ ...prev, status: e.target.value }))}
+            className="w-full"
+            options={[
+              { value: "active", label: "Active" },
+              { value: "inactive", label: "Inactive" },
+            ]}
+            required
+          />
+          <Input
+            label="Notes"
+            id="notes"
+            name="notes"
+            placeholder="Notes"
+            value={form.notes}
+            onChange={handleChange}
+            className="w-full"
+            textarea
+          />
           <div className="flex justify-end gap-2 mt-4">
             <button
               type="button"

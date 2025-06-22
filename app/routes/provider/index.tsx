@@ -17,8 +17,21 @@ export const loader: LoaderFunction = async ({request}) => {
       return redirect("/provider/complete-profile");
     }
   } catch (error) {
-    console.error("Error fetching user data:", error);
-    return {error: "Failed to fetch user data"};
+    if (axios.isAxiosError(error) && error.response) {
+      if (error.response.status === 404) {
+        return redirect("/provider/complete-profile");
+      }
+      return Response.json(
+        { error: error.response.data.error || "Failed to fetch user data" },
+        { status: error.response.status }
+      );
+    } else {
+      console.error("Error fetching user data:", error);
+      return Response.json(
+        { error: "Internal server error" },
+        { status: 500 }
+      );
+    }
   }
   return redirect("/provider/patients")
 }

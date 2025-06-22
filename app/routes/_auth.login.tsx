@@ -24,7 +24,7 @@ export default function UserLoginPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 p-8">
-      <UserLogin signupUrl="/provider/signup"  error={error} isLoading={isSubmitting} />
+      <UserLogin signupUrl="/signup"  error={error} isLoading={isSubmitting} />
     </div>
   );
 }
