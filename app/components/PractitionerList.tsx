@@ -117,7 +117,7 @@ export const PractitionerList: React.FC<{
                         rating,
                         comment,
                         reviewerId: patientId,
-                        encounterId: "91eac2ad-617d-4fa1-90e8-ad02e4cf3dca",
+                        encounterId: "badfb50c-89d3-4297-9c6f-3f7c4a38f28f",
                         revieweeId: reviewModalDoctorId,
                       });
                       setReviewModalDoctorId(null);
