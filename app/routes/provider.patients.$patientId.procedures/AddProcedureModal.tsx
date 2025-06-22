@@ -1,24 +1,26 @@
 import React, { useState } from "react";
-import { HealthCondition } from "./types";
+import { Procedure } from "./types";
 import axios from "axios";
 
-export type AddHealthConditionModalProps = {
+export type AddProcedureModalProps = {
   open: boolean;
   onClose: () => void;
-  onAdd?: (hc: HealthCondition) => void;
+  onAdd?: (proc: Procedure) => void;
   patientId: string;
   baseUrl: string;
-  practionerId: string;
 };
 
-const initialForm: Omit<HealthCondition, "id"> = {
+const initialForm: Omit<Procedure, "id" | "created_at" | "deleted_at"> = {
   name: "",
-  status: "",
+  performed_on: "",
+  performed_by: "",
+  location: "",
+  outcome: "",
   notes: "",
-  diagnosed_on: null,
+  source_id: "",
 };
 
-const AddHealthConditionModal: React.FC<AddHealthConditionModalProps> = ({ open, onClose, onAdd, patientId, baseUrl, practionerId }) => {
+const AddProcedureModal: React.FC<AddProcedureModalProps> = ({ open, onClose, onAdd, patientId, baseUrl }) => {
   const [form, setForm] = useState(initialForm);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -35,15 +37,14 @@ const AddHealthConditionModal: React.FC<AddHealthConditionModalProps> = ({ open,
     setSubmitting(true);
     setError(null);
     try {
-      // Replace with your actual API endpoint
-      const response =  await axios.post(`${baseUrl}/patient/${patientId}/health-condition`, {...form, diagnosed_on: new Date().toISOString().split('T')[0], source_id: practionerId});
-      const createdHealthCondition = response.data as HealthCondition;
+      const response = await axios.post(`${baseUrl}/patient/${patientId}/procedure`, form);
+      const createdProcedure = response.data as Procedure;
       if (onAdd) {
-        onAdd(createdHealthCondition);
+        onAdd(createdProcedure);
       }
       onClose();
     } catch (err) {
-      setError("Failed to add health condition.");
+      setError("Failed to add procedure.");
     } finally {
       setSubmitting(false);
     }
@@ -52,7 +53,7 @@ const AddHealthConditionModal: React.FC<AddHealthConditionModalProps> = ({ open,
   return (
     <div className="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50">
       <div className="bg-white rounded shadow-lg p-6 w-full max-w-lg max-h-[90vh] overflow-y-auto">
-        <h2 className="text-lg font-semibold mb-4">Add Health Condition</h2>
+        <h2 className="text-lg font-semibold mb-4">Add Procedure</h2>
         {error && <div className="text-red-500 mb-2">{error}</div>}
         <form onSubmit={handleSubmit} className="space-y-3">
           <div>
@@ -68,12 +69,45 @@ const AddHealthConditionModal: React.FC<AddHealthConditionModalProps> = ({ open,
             />
           </div>
           <div>
-            <label htmlFor="status" className="block mb-1 font-medium">Status</label>
+            <label htmlFor="performed_on" className="block mb-1 font-medium">Performed On</label>
             <input
-              id="status"
-              name="status"
-              placeholder="Status"
-              value={form.status}
+              id="performed_on"
+              name="performed_on"
+              type="date"
+              value={form.performed_on || ""}
+              onChange={handleChange}
+              className="w-full border px-2 py-1 rounded"
+            />
+          </div>
+          <div>
+            <label htmlFor="performed_by" className="block mb-1 font-medium">Performed By</label>
+            <input
+              id="performed_by"
+              name="performed_by"
+              placeholder="Performed By"
+              value={form.performed_by}
+              onChange={handleChange}
+              className="w-full border px-2 py-1 rounded"
+            />
+          </div>
+          <div>
+            <label htmlFor="location" className="block mb-1 font-medium">Location</label>
+            <input
+              id="location"
+              name="location"
+              placeholder="Location"
+              value={form.location}
+              onChange={handleChange}
+              className="w-full border px-2 py-1 rounded"
+            />
+          </div>
+          <div>
+            <label htmlFor="outcome" className="block mb-1 font-medium">Outcome</label>
+            <input
+              id="outcome"
+              name="outcome"
+              placeholder="Outcome"
+              value={form.outcome}
               onChange={handleChange}
               className="w-full border px-2 py-1 rounded"
             />
@@ -85,6 +119,17 @@ const AddHealthConditionModal: React.FC<AddHealthConditionModalProps> = ({ open,
               name="notes"
               placeholder="Notes"
               value={form.notes}
+              onChange={handleChange}
+              className="w-full border px-2 py-1 rounded"
+            />
+          </div>
+          <div>
+            <label htmlFor="source_id" className="block mb-1 font-medium">Source ID</label>
+            <input
+              id="source_id"
+              name="source_id"
+              placeholder="Source ID"
+              value={form.source_id}
               onChange={handleChange}
               className="w-full border px-2 py-1 rounded"
             />
@@ -112,4 +157,4 @@ const AddHealthConditionModal: React.FC<AddHealthConditionModalProps> = ({ open,
   );
 };
 
-export default AddHealthConditionModal;
+export default AddProcedureModal;

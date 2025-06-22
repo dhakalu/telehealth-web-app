@@ -10,8 +10,8 @@ const columns: Column<Medication>[] = [
   { header: "Frequency", accessor: (med) => med.frequency },
   { header: "Status", accessor: (med) => med.status },
   { header: "Notes", accessor: (med) => med.notes },
-  { header: "Start Date", accessor: (med) => formatDate(med.start_date) },
-  { header: "End Date", accessor: (med) => formatDate(med.end_date) },
+  { header: "Start Date", accessor: (med) => formatDate(med?.start_date) },
+  { header: "End Date", accessor: (med) => formatDate(med?.end_date) },
 ];
 
 export function MedicationTable({ medications }: { medications: Medication[] }) {

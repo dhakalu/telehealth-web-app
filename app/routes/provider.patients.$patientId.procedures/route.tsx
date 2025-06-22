@@ -5,22 +5,21 @@ import axios from "axios";
 import { API_BASE_URL } from "~/api";
 import ErrorPage from "~/components/common/ErrorPage";
 import React, { useState } from "react";
-import { HealthConditionTable } from "./HealthConditionTable";
-import { HealthCondition } from "./types";
-import AddHealthConditionModal from "./AddHealthConditionModal";
-import { User } from "../provider.complete-profile/route";
+import { ProcedureTable } from "./ProcedureTable";
+import { Procedure } from "./types";
+import AddProcedureModal from "./AddProcedureModal";
 
 export const loader: LoaderFunction = async ({ request, params }) => {
   const user = await requireAuthCookie(request);
   const { patientId } = params;
   try {
-    const url = `${API_BASE_URL}/patient/${patientId}/health-condition`;
+    const url = `${API_BASE_URL}/patient/${patientId}/procedure`;
     const response = await axios.get(url);
-    const healthConditions = response.data as HealthCondition[];
+    const procedures = response.data as Procedure[];
     return {
       user,
       baseUrl: API_BASE_URL,
-      healthConditions,
+      procedures,
     };
   } catch (error) {
     console.error(error);
@@ -38,8 +37,8 @@ export const loader: LoaderFunction = async ({ request, params }) => {
   }
 };
 
-export default function PatientHealthCondition() {
-  const { healthConditions, error, baseUrl, user } = useLoaderData<{ user: User, healthConditions: HealthCondition[]; error: string; baseUrl: string }>();
+export default function PatientProcedures() {
+  const { procedures, error, baseUrl } = useLoaderData<{ procedures: Procedure[]; error: string; baseUrl: string }>();
   const [addModalOpen, setModalOpen] = useState(false);
   const { patientId } = useParams<{ patientId: string }>();
   if (error) {
@@ -49,11 +48,11 @@ export default function PatientHealthCondition() {
     <>
       <div className="flex justify-end mb-4">
         <button onClick={() => setModalOpen(true)} className="px-4 py-2 bg-blue-600 text-white rounded">
-          Add Health Condition
+          Add Procedure
         </button>
       </div>
-      <AddHealthConditionModal patientId={patientId || ""} baseUrl={baseUrl} open={addModalOpen} onClose={() => setModalOpen(false)} practionerId={user.sub} />
-      <HealthConditionTable healthConditions={healthConditions} />
+      <AddProcedureModal patientId={patientId || ""} baseUrl={baseUrl} open={addModalOpen} onClose={() => setModalOpen(false)} />
+      <ProcedureTable procedures={procedures} />
     </>
   );
 }
