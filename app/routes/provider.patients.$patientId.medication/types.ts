@@ -7,6 +7,6 @@ export type Medication = {
   frequency: string;
   status: string;
   notes: string;
-  start_date: string | null;
-  end_date: string | null;
+  start_date?: string | null;
+  end_date?: string | null;
 };

@@ -19,8 +19,8 @@ export default function AddMedicationModal({ baseUrl, open, onClose, onAdd, pati
     frequency: "",
     status: "",
     notes: "",
-    start_date: "",
-    end_date: "",
+    // start_date: null,
+    // end_date: null
   });
 
   const [submitting, setSubmitting] = useState(false);

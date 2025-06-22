@@ -10,7 +10,7 @@ export const loader: LoaderFunction = async ({ request }) => {
   const user =  await requireAuthCookie(request);
 
   if (user.account_type !== "patient") {
-    return redirect("/provider/establishment");
+    return redirect("/provider/patients");
   }
 
   try {
