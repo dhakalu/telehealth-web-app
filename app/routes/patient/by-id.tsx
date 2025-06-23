@@ -5,6 +5,8 @@ import { requireAuthCookie } from "~/auth";
 import axios from "axios";
 import ErrorPage from "~/components/common/ErrorPage";
 import { Tab, TabNav } from "~/components/common/TabNav";
+export { ErrorBoundary } from "~/root";
+
 
 
 export const loader: LoaderFunction = async ({ request }) => {

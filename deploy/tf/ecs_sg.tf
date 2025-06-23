@@ -3,21 +3,8 @@ data "aws_ssm_parameter" "alb_sg" {
   name = "/http/alb/subnet_id"
 }
 
-data "aws_ssm_parameter" "db_sg" {
-  name = "/rds/${var.environment}/db_security_group_id"
-}
-
 locals {
   alb_security_group_id = data.aws_ssm_parameter.alb_sg.value
-  db_security_group_id = data.aws_ssm_parameter.db_sg.value
-}
-
-resource "aws_vpc_security_group_ingress_rule" "db_access" {
-  security_group_id = local.db_security_group_id
-  ip_protocol       = "tcp"
-  from_port         = 5432
-  to_port           = 5432
-  referenced_security_group_id = aws_security_group.ecs_service.id
 }
 
 

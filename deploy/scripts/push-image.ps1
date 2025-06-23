@@ -2,7 +2,7 @@
 $region = "us-east-1"
 $accountId = (aws sts get-caller-identity --query Account --output text)
 $repository = "telehealth-ui"
-$imageTag = "0.0.9"
+$imageTag = "0.0.10"
 
 
 
