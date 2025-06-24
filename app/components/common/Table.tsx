@@ -15,7 +15,7 @@ export type TableProps<T> = {
 
 export function Table<T extends { id: string }>({ columns, data, emptyMessage = "No data found.", tableClassName = "min-w-full border border-gray-200 mt-4" }: TableProps<T>) {
   if (!data || data.length === 0) {
-    return <div>{emptyMessage}</div>;
+    return <div className="mt-4">{emptyMessage}</div>;
   }
   return (
     <table className={tableClassName}>
