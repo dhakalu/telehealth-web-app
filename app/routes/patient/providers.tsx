@@ -3,18 +3,11 @@ import { useState } from "react";
 import { LoaderFunction, useLoaderData, useNavigate } from "react-router";
 import { API_BASE_URL } from "~/api";
 import { requireAuthCookie } from "~/auth";
+import ErrorPage from "~/components/common/ErrorPage";
 import PageHeader from "~/components/common/PageHeader";
 import { ReviewModal } from "~/components/ReviewModal";
 import { User } from "../provider/complete-profile";
 
-// Mock function to fetch practitioners summary
-async function fetchPractitionerSummary() {
-    // Replace with real API call
-    return [
-        { id: "1", name: "Dr. Alice Smith", email: "alice.smith@example.com" },
-        { id: "2", name: "Dr. Bob Jones", email: "bob.jones@example.com" },
-    ];
-}
 
 // Loader for React Router
 export const loader: LoaderFunction = async ({ request }) => {
@@ -74,6 +67,12 @@ export default function Providers() {
     const handleAddReview = (e: React.MouseEvent<HTMLButtonElement>, p: PractitionerSummary) => {
         e.stopPropagation();
         setReviewModalDoctor(p);
+    }
+
+    if (error) {
+        return (
+            <ErrorPage error={error} />
+        )
     }
 
     return (

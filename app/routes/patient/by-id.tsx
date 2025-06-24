@@ -20,7 +20,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 
 
 export default function PatientHome() {
-  const { user, error } = useLoaderData<{ user: User, error: string }>();
+  const { error } = useLoaderData<{ user: User, error: string }>();
 
   if (error) {
     return (
