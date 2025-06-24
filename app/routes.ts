@@ -13,14 +13,16 @@ export default remixRoutesOptionAdapter((defineRoutes) => {
       route("estimates/:providerId/:questionnaireId", "./routes/patient/estimates.tsx");
       route("profile/:doctorId", "./routes/patient/doctor-profile.tsx");
       route("qa/:providerId", "./routes/patient/qa.tsx");
+      route("providers", "./routes/patient/providers.tsx")
       route(":patientId", "./routes/patient/by-id.tsx", () => {
-          route("allergy", "./routes/patient/allergy.tsx");
-          route("medication", "./routes/patient/medication.tsx");
-          route("immunization", "./routes/patient/immunization.tsx");
-          route("health-condition", "./routes/patient/health-condition.tsx");
-          route("procedure", "./routes/patient/procedure.tsx");
-          // // route("vital", "./routes/common/vital/index.tsx");
-          // route("result", "./routes/common/result/index.tsx");
+
+        route("allergy", "./routes/patient/allergy.tsx");
+        route("medication", "./routes/patient/medication.tsx");
+        route("immunization", "./routes/patient/immunization.tsx");
+        route("health-condition", "./routes/patient/health-condition.tsx");
+        route("procedure", "./routes/patient/procedure.tsx");
+        // // route("vital", "./routes/common/vital/index.tsx");
+        // route("result", "./routes/common/result/index.tsx");
       });
     });
     route("/signup", "./routes/_auth.provider.signup.tsx");
