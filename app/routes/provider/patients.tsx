@@ -1,11 +1,11 @@
-import { LoaderFunction } from "react-router";
-import { Outlet, useLoaderData, useNavigate } from "react-router";
+import { LoaderFunction, Outlet, useLoaderData, useNavigate } from "react-router";
+
 import axios from "axios";
-import { requireAuthCookie } from "~/auth";
 import { useState } from "react";
-import { User } from "./complete-profile";
 import { API_BASE_URL } from "~/api";
+import { requireAuthCookie } from "~/auth";
 import ErrorPage from "~/components/common/ErrorPage";
+import { User } from "./complete-profile";
 
 type EncounterType = "in-person" | "telehealth"
 
@@ -16,7 +16,7 @@ export type Encounter = {
     reason: string;
     start: string;
     end?: string | null;
-    type?: EncounterType; 
+    type?: EncounterType;
     status: string;
     notes?: string | null;
     createdAt: string;
@@ -26,18 +26,18 @@ export type Encounter = {
 
 type Establishment = {
     id: string;
-     providerId: string;
+    providerId: string;
     patientId: string;
     patient: User,
     provider: User,
 }
 
 
-export const  loader: LoaderFunction = async ({request}) => {
-    const user =  await requireAuthCookie(request);
+export const loader: LoaderFunction = async ({ request }) => {
+    const user = await requireAuthCookie(request);
     try {
         const response = await axios.get(`${API_BASE_URL}/establishment/by-practitioner/${user.sub}`);
-        return {establishments: response.data};
+        return { establishments: response.data };
     } catch (error) {
         if (axios.isAxiosError(error)) {
             if (error.response?.status === 404) {
@@ -54,7 +54,7 @@ export const  loader: LoaderFunction = async ({request}) => {
 
 export default function EstablishmentsPage() {
 
-    const {establishments, error } = useLoaderData<{establishments: Establishment[], error: string}>() || [];
+    const { establishments, error } = useLoaderData<{ establishments: Establishment[], error: string }>() || [];
     const navigate = useNavigate();
 
 

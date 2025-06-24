@@ -1,14 +1,14 @@
-import { LoaderFunction } from "react-router";
-import { redirect, useLoaderData } from "react-router";
-import { requireAuthCookie } from "~/auth";
+import { LoaderFunction, redirect, useLoaderData } from "react-router";
+
 import axios from "axios";
+import { requireAuthCookie } from "~/auth";
 
-export const loader: LoaderFunction = async ({request}) => {
-     const user =  await requireAuthCookie(request);
+export const loader: LoaderFunction = async ({ request }) => {
+  const user = await requireAuthCookie(request);
 
-     if (user.account_type === "patient") {
-        return redirect("/patient/find-doctors");
-     }
+  if (user.account_type === "patient") {
+    return redirect("/patient/find-doctors");
+  }
 
   try {
     const response = axios.get(`${process.env.API_BASE_URL}/practitioner/${user.sub}`);
@@ -38,15 +38,15 @@ export const loader: LoaderFunction = async ({request}) => {
 
 export default function NotFound() {
 
-    const {error} = useLoaderData<{error: string}>();
+  const { error } = useLoaderData<{ error: string }>();
 
-    if (error) {
-        return (
-            <div className="max-w-xl mx-auto p-8 bg-red-100 text-red-800 rounded shadow mt-10">
-                <h2 className="text-2xl font-bold mb-4">Error</h2>
-                <p>{error}</p>
-            </div>
-        );
-    }
-    return null;
+  if (error) {
+    return (
+      <div className="max-w-xl mx-auto p-8 bg-red-100 text-red-800 rounded shadow mt-10">
+        <h2 className="text-2xl font-bold mb-4">Error</h2>
+        <p>{error}</p>
+      </div>
+    );
+  }
+  return null;
 }

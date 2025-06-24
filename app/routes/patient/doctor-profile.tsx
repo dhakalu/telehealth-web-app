@@ -1,8 +1,8 @@
-import { LoaderFunctionArgs } from "react-router";
-import { useLoaderData } from "react-router";
+import { LoaderFunctionArgs, useLoaderData } from "react-router";
+
 import axios from "axios";
-import { DoctorDetail } from "../../components/DoctorDetail";
 import { API_BASE_URL } from "~/api";
+import { DoctorDetail } from "../../components/DoctorDetail";
 
 export const loader = async ({ params }: LoaderFunctionArgs) => {
   const { doctorId } = params;
@@ -22,12 +22,12 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
         message = error.response.data.message;
       }
     }
-    return Response.json({ error:  message}, { status });
+    return Response.json({ error: message }, { status });
   }
 };
 
 export default function DoctorDetailRoute() {
-  const {data, error } = useLoaderData<typeof loader>();
+  const { data, error } = useLoaderData<typeof loader>();
   if (error) {
     return (
       <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "60vh" }}>

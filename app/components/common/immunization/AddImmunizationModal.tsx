@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import { Immunization } from "./types";
 import axios from "axios";
+import React, { useState } from "react";
 import { Input } from "~/components/common/Input";
+import { Immunization } from "./types";
 
 export type AddImmunizationModalProps = {
   open: boolean;
@@ -41,7 +41,11 @@ const AddImmunizationModal: React.FC<AddImmunizationModalProps> = ({ open, onClo
       }
       onClose();
     } catch (err) {
-      setError("Failed to add immunization.");
+      if (axios.isAxiosError(err)) {
+        setError(err.response?.data?.message || "Failed to add immunization.");
+      } else {
+        setError("Unknown issue");
+      }
     } finally {
       setSubmitting(false);
     }

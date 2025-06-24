@@ -1,17 +1,17 @@
-import { ActionFunctionArgs, LoaderFunction } from "react-router";
-import { Form, redirect } from "react-router";
+import { ActionFunctionArgs, Form, LoaderFunction, redirect } from "react-router";
+
 import axios, { AxiosError } from "axios";
 import { API_BASE_URL } from "~/api";
 import { requireAuthCookie } from "~/auth";
 
 
 
-export const  loader: LoaderFunction = async ({request}) => {
-    const user =  await requireAuthCookie(request);
+export const loader: LoaderFunction = async ({ request }) => {
+    const user = await requireAuthCookie(request);
     return user;
 }
 
-export const action = async ({request}: ActionFunctionArgs) => {
+export const action = async ({ request }: ActionFunctionArgs) => {
     const formData = await request.formData();
     const user = await requireAuthCookie(request);
     const practitionerData = {
@@ -64,25 +64,25 @@ export default function CompleteProfilePage() {
                 <p className="text-gray-600 mb-6">Please fill out the following information to complete your profile.</p>
                 <Form method="post" className="space-y-4">
                     <div className="flex flex-col">
-                    <label className="mb-1 text-sm font-medium">
-                        Date of Birth <span className="text-red-600">*</span>
-                    </label>
-                    <input name="birthdate" type="date" className="input" required />
+                        <label className="mb-1 text-sm font-medium">
+                            Date of Birth <span className="text-red-600">*</span>
+                        </label>
+                        <input name="birthdate" type="date" className="input" required />
                     </div>
                     <div className="flex flex-col">
-                    <label className="mb-1 text-sm font-medium">
-                        Gender <span className="text-red-600">*</span>
-                    </label>
-                    <select name="gender" className="input" required>
-                        <option value="male">Male</option>
-                        <option value="female">Female</option>
-                    </select>
+                        <label className="mb-1 text-sm font-medium">
+                            Gender <span className="text-red-600">*</span>
+                        </label>
+                        <select name="gender" className="input" required>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                        </select>
                     </div>
                     <div className="flex flex-col">
-                    <label className="mb-1 text-sm font-medium">
-                        Phone Number <span className="text-red-600">*</span>
-                    </label>
-                        <input name="phone_number"  placeholder="Phone Number" className="input" type="text" required />
+                        <label className="mb-1 text-sm font-medium">
+                            Phone Number <span className="text-red-600">*</span>
+                        </label>
+                        <input name="phone_number" placeholder="Phone Number" className="input" type="text" required />
                     </div>
 
                     <h3>Address</h3>

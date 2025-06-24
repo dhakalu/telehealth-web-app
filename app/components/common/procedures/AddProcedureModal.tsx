@@ -1,6 +1,6 @@
+import axios from "axios";
 import React, { useState } from "react";
 import { Procedure } from "./types";
-import axios from "axios";
 
 export type AddProcedureModalProps = {
   open: boolean;
@@ -44,7 +44,12 @@ const AddProcedureModal: React.FC<AddProcedureModalProps> = ({ open, onClose, on
       }
       onClose();
     } catch (err) {
-      setError("Failed to add procedure.");
+
+      if (axios.isAxiosError(err) && err.response?.data?.message) {
+        setError(err.response.data.message);
+      } else {
+        setError("Failed to add procedure.");
+      }
     } finally {
       setSubmitting(false);
     }

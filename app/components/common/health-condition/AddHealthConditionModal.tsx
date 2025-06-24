@@ -1,8 +1,8 @@
-import React, { useState } from "react";
-import { HealthCondition } from "./types";
 import axios from "axios";
+import React, { useState } from "react";
 import { Input } from "~/components/common/Input";
 import { Select } from "~/components/common/Select";
+import { HealthCondition } from "./types";
 
 export type AddHealthConditionModalProps = {
   open: boolean;
@@ -38,14 +38,18 @@ const AddHealthConditionModal: React.FC<AddHealthConditionModalProps> = ({ open,
     setError(null);
     try {
       // Replace with your actual API endpoint
-      const response =  await axios.post(`${baseUrl}/patient/${patientId}/health-condition`, {...form, diagnosed_on: new Date().toISOString().split('T')[0], source_id: practionerId});
+      const response = await axios.post(`${baseUrl}/patient/${patientId}/health-condition`, { ...form, diagnosed_on: new Date().toISOString().split('T')[0], source_id: practionerId });
       const createdHealthCondition = response.data as HealthCondition;
       if (onAdd) {
         onAdd(createdHealthCondition);
       }
       onClose();
     } catch (err) {
-      setError("Failed to add health condition.");
+      if (axios.isAxiosError(err)) {
+        setError("Failed to add health condition.");
+      } else {
+        setError("Unknown error.");
+      }
     } finally {
       setSubmitting(false);
     }

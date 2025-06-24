@@ -1,7 +1,7 @@
-import { LoaderFunction } from "react-router";
-import {  Outlet } from "react-router";
+import { LoaderFunction, Outlet } from "react-router";
+
+import { Tab, TabNav } from "../../components/common/TabNav";
 import { User } from "./complete-profile";
-import { TabNav, Tab } from "../../components/common/TabNav";
 
 export const API_BASE_URL = "http://localhost:8090";
 
@@ -15,7 +15,7 @@ export type Encounter = {
     reason: string;
     start: string;
     end?: string | null;
-    type?: EncounterType; 
+    type?: EncounterType;
     status: string;
     notes?: string | null;
     createdAt: string;
@@ -24,7 +24,7 @@ export type Encounter = {
 }
 
 
-export const  loader: LoaderFunction = async ({ params }) => {
+export const loader: LoaderFunction = async () => {
     // const { encounterId } = params; 
     // try {
     //     const response = await axios.get(`${API_BASE_URL}/encounter/${encounterId}`);
@@ -47,17 +47,17 @@ export default function EncountersPage() {
 
     // Define all tabs
     const tabs: Tab[] = [
-      { to: "chat", label: "Chat" },
-      { to: "qa", label: "Q&A" },
-      { to: "health-condition", label: "Health Conditions" },
-      { to: "procedure", label: "Procedures" },
-      { to: "medication", label: "Medications" },
-      { to: "allergy", label: "Allergies" },
-      { to: "immunization", label: "Immunizations" },
-      { to: "family-health-condition", label: "Family Health" },
-      { to: "personal-health-condition", label: "Personal Health" },
-      { to: "vital", label: "Vitals" },
-      { to: "result", label: "Results" },
+        { to: "chat", label: "Chat" },
+        { to: "qa", label: "Q&A" },
+        { to: "health-condition", label: "Health Conditions" },
+        { to: "procedure", label: "Procedures" },
+        { to: "medication", label: "Medications" },
+        { to: "allergy", label: "Allergies" },
+        { to: "immunization", label: "Immunizations" },
+        { to: "family-health-condition", label: "Family Health" },
+        { to: "personal-health-condition", label: "Personal Health" },
+        { to: "vital", label: "Vitals" },
+        { to: "result", label: "Results" },
     ];
 
     return (

@@ -1,20 +1,24 @@
-import crypto from 'crypto'
-import path from 'path'
-import { fileURLToPath } from 'url'
+/*
+  eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/ban-ts-comment
+*/
+
 import { createRequestHandler, type RequestHandler } from '@react-router/express';
+import { ip as ipAddress } from 'address';
+import chalk from 'chalk';
+import closeWithGrace from 'close-with-grace';
+import compression from 'compression';
+import crypto from 'crypto';
+import express from 'express';
+import 'express-async-errors';
+import getPort, { portNumbers } from 'get-port';
+import helmet from 'helmet';
+import morgan from 'morgan';
+import onFinished from 'on-finished';
+import path from 'path';
 import { type ServerBuild } from 'react-router';
-import { ip as ipAddress } from 'address'
-import chalk from 'chalk'
-import closeWithGrace from 'close-with-grace'
-import compression from 'compression'
-import express from 'express'
-import 'express-async-errors'
-import getPort, { portNumbers } from 'get-port'
-import helmet from 'helmet'
-import morgan from 'morgan'
-import onFinished from 'on-finished'
-import serverTiming from 'server-timing'
-import sourceMapSupport from 'source-map-support'
+import serverTiming from 'server-timing';
+import sourceMapSupport from 'source-map-support';
+import { fileURLToPath } from 'url';
 
 sourceMapSupport.install()
 
@@ -22,10 +26,10 @@ const viteDevServer =
 	process.env.NODE_ENV === 'production'
 		? undefined
 		: await import('vite').then((vite) =>
-				vite.createServer({
-					server: { middlewareMode: true },
-				}),
-			)
+			vite.createServer({
+				server: { middlewareMode: true },
+			}),
+		)
 
 const getBuild = async (): Promise<ServerBuild> => {
 	if (viteDevServer) {
@@ -44,7 +48,7 @@ const MODE = process.env.NODE_ENV
 
 if (MODE === 'production' && process.env.SENTRY_DSN) {
 	// todo add monitoring
-    // void import('./utils/monitoring.js').then(({ init }) => init())
+	// void import('./utils/monitoring.js').then(({ init }) => init())
 }
 
 const app = express()
@@ -304,32 +308,11 @@ ${chalk.bold('Press Ctrl+C to stop')}
 	)
 })
 
-// let wss: WebSocketServer | undefined
-// if (process.env.NODE_ENV === 'development') {
-// 	try {
-// 		const { contentWatcher } = await import('./content-watcher.js')
-// 		wss = contentWatcher(server)
-// 	} catch (error: unknown) {
-// 		console.error('unable to start content watcher', error)
-// 	}
-// }
 
 closeWithGrace(() => {
 	return Promise.all([
 		new Promise((resolve, reject) => {
 			server.close((e) => (e ? reject(e) : resolve('ok')))
 		}),
-		// new Promise((resolve, reject) => {
-		// 	wss?.close((e) => (e ? reject(e) : resolve('ok')))
-		// }),
 	])
 })
-
-/*
-eslint
-  @typescript-eslint/ban-ts-comment: "off",
-  @typescript-eslint/prefer-ts-expect-error: "off",
-  @typescript-eslint/no-shadow: "off",
-  import/namespace: "off",
-  no-inner-declarations: "off",
-*/

@@ -1,11 +1,11 @@
-import { LoaderFunction } from "react-router";
-import { useLoaderData, useParams } from "react-router";
-import ErrorPage from "~/components/common/ErrorPage";
+import { LoaderFunction, useLoaderData, useParams } from "react-router";
+
 import { useState } from "react";
+import { immunizationLoader } from "~/common-actions/immunization";
+import ErrorPage from "~/components/common/ErrorPage";
+import AddImmunizationModal from "../../components/common/immunization/AddImmunizationModal";
 import { ImmunizationTable } from "../../components/common/immunization/ImmunizationTable";
 import { Immunization } from "../../components/common/immunization/types";
-import AddImmunizationModal from "../../components/common/immunization/AddImmunizationModal";
-import { immunizationLoader } from "~/common-actions/immunization";
 
 export const loader: LoaderFunction = immunizationLoader;
 

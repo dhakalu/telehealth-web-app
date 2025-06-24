@@ -1,8 +1,8 @@
-import React, { useState } from "react";
-import { Allergy } from "./types";
 import axios from "axios";
+import React, { useState } from "react";
 import { Input } from "~/components/common/Input";
 import { Select } from "~/components/common/Select";
+import { Allergy } from "./types";
 
 export type AddAllergyModalProps = {
   open: boolean;
@@ -44,7 +44,11 @@ const AddAllergyModal: React.FC<AddAllergyModalProps> = ({ open, onClose, onAdd,
       }
       onClose();
     } catch (err) {
-      setError("Failed to add allergy.");
+      if (axios.isAxiosError(err)) {
+        setError("Cannot add allergy.");
+      } else {
+        setError("Unknown error.");
+      }
     } finally {
       setSubmitting(false);
     }

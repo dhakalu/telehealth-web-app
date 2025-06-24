@@ -1,12 +1,12 @@
-import { LoaderFunctionArgs } from "react-router";
-import { useLoaderData, useNavigate } from "react-router";
+import { LoaderFunctionArgs, useLoaderData, useNavigate } from "react-router";
+
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import Confetti from "react-confetti";
 import { API_BASE_URL } from "~/api";
 
 export const loader = async ({ params }: LoaderFunctionArgs) => {
-  
+
   const { providerId, questionnaireId } = params;
 
   const payload = {
@@ -35,7 +35,7 @@ export default function EstimatePage() {
   const { cost, error, providerId } = useLoaderData<typeof loader>();
   const navigate = useNavigate();
   const [showConfetti, setShowConfetti] = useState(false);
-  const [confettiOrigin, setConfettiOrigin] = useState<{x: number, y: number} | null>(null);
+  const [confettiOrigin, setConfettiOrigin] = useState<{ x: number, y: number } | null>(null);
   const confettiTimeout = useRef<NodeJS.Timeout | null>(null);
   const acceptBtnRef = useRef<HTMLButtonElement>(null);
 
@@ -66,19 +66,19 @@ export default function EstimatePage() {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50">
-      {showConfetti && <Confetti 
-        width={window.innerWidth} 
-        height={window.innerHeight} 
+      {showConfetti && <Confetti
+        width={window.innerWidth}
+        height={window.innerHeight}
         numberOfPieces={200}
-          recycle={false}
-          initialVelocityY={15}
-          initialVelocityX={10}
-          confettiSource={{
-            x: confettiOrigin?.x || 0,
-            y: confettiOrigin?.y || 0,
-            w: 0,
-            h: 0,
-          }}
+        recycle={false}
+        initialVelocityY={15}
+        initialVelocityX={10}
+        confettiSource={{
+          x: confettiOrigin?.x || 0,
+          y: confettiOrigin?.y || 0,
+          w: 0,
+          h: 0,
+        }}
       />}
       <div className="bg-white p-8 rounded shadow-md w-full max-w-xl text-center">
         {error && <div className="text-red-500">{error}</div>}

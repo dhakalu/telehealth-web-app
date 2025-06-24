@@ -1,12 +1,12 @@
-import { LoaderFunction } from "react-router";
-import { useLoaderData, useParams } from "react-router";
-import ErrorPage from "~/components/common/ErrorPage";
+import { LoaderFunction, useLoaderData, useParams } from "react-router";
+
 import { useState } from "react";
+import { healthConditionLoader } from "~/common-actions/health-condition";
+import ErrorPage from "~/components/common/ErrorPage";
+import AddHealthConditionModal from "../../components/common/health-condition/AddHealthConditionModal";
 import { HealthConditionTable } from "../../components/common/health-condition/HealthConditionTable";
 import { HealthCondition } from "../../components/common/health-condition/types";
-import AddHealthConditionModal from "../../components/common/health-condition/AddHealthConditionModal";
 import { User } from "../provider/complete-profile";
-import { healthConditionLoader } from "~/common-actions/health-condition";
 
 export const loader: LoaderFunction = healthConditionLoader;
 

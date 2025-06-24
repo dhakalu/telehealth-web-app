@@ -1,11 +1,11 @@
-import { LoaderFunction } from "react-router";
-import { useLoaderData, useParams } from "react-router";
-import ErrorPage from "~/components/common/ErrorPage";
+import { LoaderFunction, useLoaderData, useParams } from "react-router";
+
 import { useState } from "react";
+import { loadAllergies } from "~/common-actions/allergy";
+import ErrorPage from "~/components/common/ErrorPage";
+import AddAllergyModal from "../../components/common/allergy/AddAllergyModal";
 import { AllergyTable } from "../../components/common/allergy/AllergyTable";
 import { Allergy } from "../../components/common/allergy/types";
-import AddAllergyModal from "../../components/common/allergy/AddAllergyModal";
-import { loadAllergies } from "~/common-actions/allergy";
 
 export const loader: LoaderFunction = loadAllergies();
 

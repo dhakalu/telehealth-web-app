@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { Form } from "react-router";
-import { ActionFunctionArgs, redirect } from "react-router";
+import { ActionFunctionArgs, Form, redirect } from "react-router";
+
 import axios from "axios";
-import { requireAuthCookie } from "~/auth";
 import { API_BASE_URL } from "~/api";
+import { requireAuthCookie } from "~/auth";
 
 type Question = {
   question: string;
@@ -95,7 +95,7 @@ export const action = async ({ request, params }: ActionFunctionArgs) => {
     const answerKey = `question-${idx}`;
     const answerValue = formData.getAll(answerKey);
     if (answerValue.length > 0) {
-      answers[q.question] =  String(answerValue);
+      answers[q.question] = String(answerValue);
     }
   });
 
@@ -110,15 +110,15 @@ export const action = async ({ request, params }: ActionFunctionArgs) => {
   } catch (error) {
     if (axios.isAxiosError(error)) {
       return Response.json(
-      { error: error.response?.data?.message || error.message || "An error occurred" },
-      { status: error.response?.status || 500 }
+        { error: error.response?.data?.message || error.message || "An error occurred" },
+        { status: error.response?.status || 500 }
       );
     }
     return Response.json(
       { error: error instanceof Error ? error.message : "An unknown error occurred" },
       { status: 500 }
     );
-  } 
+  }
 }
 
 export default function ScreeningQuestionAnswers() {

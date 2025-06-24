@@ -1,8 +1,8 @@
-import { useState } from "react";
-import { Medication } from "./types";
 import axios from "axios";
+import { useState } from "react";
 import { Input } from "~/components/common/Input";
 import { Select } from "~/components/common/Select";
+import { Medication } from "./types";
 
 type AddMedicationModalProps = {
   open: boolean;
@@ -47,7 +47,7 @@ export default function AddMedicationModal({ baseUrl, open, onClose, onAdd, pati
         onAdd({ ...form, id: createdMedication.id || Math.random().toString() });
       }
       onClose();
-    } catch (err) {
+    } catch {
       setError("Failed to add medication.");
     } finally {
       setSubmitting(false);

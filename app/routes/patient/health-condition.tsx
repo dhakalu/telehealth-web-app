@@ -1,9 +1,9 @@
-import { useLoaderData, useParams } from "react-router";
+import { useLoaderData } from "react-router";
+import { healthConditionLoader } from "~/common-actions/health-condition";
 import ErrorPage from "~/components/common/ErrorPage";
 import { HealthConditionTable } from "../../components/common/health-condition/HealthConditionTable";
 import { HealthCondition } from "../../components/common/health-condition/types";
 import { User } from "../provider/complete-profile";
-import { healthConditionLoader } from "~/common-actions/health-condition";
 
 export const loader = healthConditionLoader;
 

@@ -1,9 +1,9 @@
-import { LoaderFunction } from "react-router";
-import { useLoaderData } from "react-router";
-import ErrorPage from "~/components/common/ErrorPage";
-import { Procedure } from "~/components/common/procedures/types";
-import { ProcedureTable } from "~/components/common/procedures/ProcedureTable";
+import { LoaderFunction, useLoaderData } from "react-router";
+
 import { procedureLoader } from "~/common-actions/procedure";
+import ErrorPage from "~/components/common/ErrorPage";
+import { ProcedureTable } from "~/components/common/procedures/ProcedureTable";
+import { Procedure } from "~/components/common/procedures/types";
 
 export const loader: LoaderFunction = procedureLoader;
 
@@ -13,6 +13,6 @@ export default function PatientProcedures() {
     return <ErrorPage error={error} />;
   }
   return (
-      <ProcedureTable procedures={procedures} />
+    <ProcedureTable procedures={procedures} />
   );
 }

@@ -1,11 +1,11 @@
-import { LoaderFunction } from "react-router";
-import { useLoaderData, useParams } from "react-router";
-import ErrorPage from "~/components/common/ErrorPage";
+import { LoaderFunction, useLoaderData, useParams } from "react-router";
+
 import { useState } from "react";
-import { Procedure } from "~/components/common/procedures/types";
+import { procedureLoader } from "~/common-actions/procedure";
+import ErrorPage from "~/components/common/ErrorPage";
 import AddProcedureModal from "~/components/common/procedures/AddProcedureModal";
 import { ProcedureTable } from "~/components/common/procedures/ProcedureTable";
-import { procedureLoader } from "~/common-actions/procedure";
+import { Procedure } from "~/components/common/procedures/types";
 
 export const loader: LoaderFunction = procedureLoader;
 
