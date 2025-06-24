@@ -37,7 +37,7 @@ export default function NotFound() {
 
         {
           label: "My Health",
-          href: "/patient"
+          href: `/patient/${user.sub}`
         },
         {
           label: "My Providers",

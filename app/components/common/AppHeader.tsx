@@ -1,4 +1,5 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { useLocation } from "react-router";
 import { User } from "~/routes/provider/complete-profile";
 
 interface AppHeaderProps {
@@ -9,6 +10,8 @@ interface AppHeaderProps {
 const AppHeader: React.FC<AppHeaderProps> = ({ links, user }) => {
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+
+  const location = useLocation();
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -28,9 +31,24 @@ const AppHeader: React.FC<AppHeaderProps> = ({ links, user }) => {
     <header className="w-full bg-blue-700 text-white py-4 px-6 rounded-t shadow flex items-center justify-between">
       <div className="font-bold text-lg tracking-wide">Telehealth Platform</div>
       <div className="flex items-center gap-4">
-        {(links || []).map((link, idx) => (
-          <a key={link.href} href={link.href} className={"hover:underline" + (idx < (links?.length || 2) - 1 ? " mr-4" : "")}>{link.label}</a>
-        ))}
+        {(links || []).map((link, idx) => {
+          const isActive = location.pathname === link.href || (link.href !== "/" && location.pathname.startsWith(link.href));
+          return (
+            <a
+              key={link.href}
+              href={link.href}
+              className={
+                (isActive
+                  ? "text-blue-200 underline font-bold "
+                  : "hover:underline ") +
+                (idx < (links?.length || 2) - 1 ? "mr-4" : "")
+              }
+              aria-current={isActive ? "page" : undefined}
+            >
+              {link.label}
+            </a>
+          );
+        })}
         {user && (
           <div className="relative" ref={dropdownRef}>
             <button
