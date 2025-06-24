@@ -10,6 +10,11 @@ variable "environment" {
   default     = "dev"
 }
 
+variable "ecr_repo_name" {
+  description = "ECR repo to pull the image from"
+  type = string
+}
+
 variable "image_tag" {
   description = "Docker image tag to use for the ECS task"
   type        = string

@@ -1,6 +1,3 @@
-locals {
-  repo_name   = "telehealth-ui"
-}
 
 data "aws_caller_identity" "current" {}
 
@@ -23,7 +20,7 @@ resource "aws_ecs_task_definition" "telehealth" {
   container_definitions = jsonencode([
     {
       name      = "app"
-      image     = "${data.aws_caller_identity.current.account_id}.dkr.ecr.${var.aws_region}.amazonaws.com/${local.repo_name}:${var.image_tag}"
+      image     = "${data.aws_caller_identity.current.account_id}.dkr.ecr.${var.aws_region}.amazonaws.com/${var.ecr_repo_name}:${var.image_tag}"
       essential = true
       portMappings = [
         {

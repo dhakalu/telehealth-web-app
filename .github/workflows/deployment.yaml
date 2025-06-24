@@ -1,0 +1,100 @@
+name: Deploy on main merge
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  id-token: write # This is required for requesting the JWT
+  contents: read  # This is required for actions/checkout
+
+env:
+  AWS_REGION: us-east-1  # Change as needed
+  IMAGE_TAG: ${{ github.sha }} # Use the commit SHA as the image tag
+  ECR_REPOSITORY: telehealth-common-ecr-repo
+  ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest    
+    steps:
+      - name: ⬇️ Checkout code
+        uses: actions/checkout@v4
+
+      - name: 🔑 Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::${{ env.ACCOUNT_ID }}:role/github-actions
+          role-session-name: actionsrole
+          mask-aws-account-id: true
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: 🐳 Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: 🐋 Docker build & push
+        run: |
+          imgTag="${{ env.ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}"
+          echo "Image tag: $imgTag"
+          docker build -t $imgTag .
+          docker push $imgTag
+  terraform-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: ⬇️ Checkout code
+        uses: actions/checkout@v4
+
+      - name: 🛠️ Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.12.2
+
+      - name: 🔑 Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/github-actions
+          role-session-name: actionsrole
+          mask-aws-account-id: true
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: 🛠️ Terraform Init
+        run: terraform init
+        working-directory: deploy/tf
+
+      - name: 🔍 Terraform Validate
+        run: terraform validate
+        working-directory: deploy/tf
+
+      - name: 📜 Terraform Format Check
+        run: terraform fmt -check
+        working-directory: deploy/tf
+  deploy:
+    runs-on: ubuntu-latest
+    needs: 
+      - build
+      - terraform-lint
+    steps:
+      - name: ⬇️ Checkout code
+        uses: actions/checkout@v4
+      
+      - name: 🔑 Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/github-actions
+          role-session-name: actionsrole
+          mask-aws-account-id: true
+          aws-region: ${{ env.AWS_REGION }}
+      - name: 🛠️ Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.12.2
+
+      - name: 🛠️ Terraform Init
+        run: terraform init
+        working-directory: deploy/tf
+
+      - name: 🚀 Terraform Apply
+        run: terraform apply -auto-approve -var image_tag=${{ env.IMAGE_TAG }} -var ecr_repo_name=${{ env.ECR_REPOSITORY }}
+        working-directory: deploy/tf
