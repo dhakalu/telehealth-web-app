@@ -19,6 +19,11 @@ export const signInAction = () => async ({ request }: ActionFunctionArgs) => {
             status,
         });
     }
+    if (user.status === "created") {
+        return Response.json({error: "Account not activated"}, {
+            status: 401,
+        });
+    }
     const appPath = user.account_type == "patient" ? "/patient" : "/provider"
     return redirect(appPath, {
         headers: {

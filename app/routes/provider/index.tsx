@@ -13,7 +13,7 @@ export const loader: LoaderFunction = async ({request}) => {
   try {
     const response = axios.get(`${process.env.API_BASE_URL}/practitioner/${user.sub}`);
     user.status = (await response).data.status;
-    if (user.status === "incomplete") {
+    if (user.status === "email-verified") {
       return redirect("/provider/complete-profile");
     }
   } catch (error) {
