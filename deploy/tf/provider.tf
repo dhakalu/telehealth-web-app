@@ -7,14 +7,14 @@ terraform {
   }
   required_version = ">= 1.0.0"
 
-    backend "s3" {
-        bucket         = "common-tfstate-us-east-1"
-        key            = "ui/terraform.tfstate"
-        region         = "us-east-1"
-        encrypt        = true
-    }
+  backend "s3" {
+    bucket  = "common-tfstate-us-east-1"
+    key     = "ui/terraform.tfstate"
+    region  = "us-east-1"
+    encrypt = true
+  }
 }
 
 provider "aws" {
-    region = "us-east-1"
+  region = "us-east-1"
 }

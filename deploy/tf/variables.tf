@@ -12,7 +12,7 @@ variable "environment" {
 
 variable "ecr_repo_name" {
   description = "ECR repo to pull the image from"
-  type = string
+  type        = string
 }
 
 variable "image_tag" {

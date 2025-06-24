@@ -16,7 +16,7 @@ resource "aws_ecs_task_definition" "telehealth" {
   requires_compatibilities = ["FARGATE"]
   cpu                      = "256"
   memory                   = "512"
-  execution_role_arn = data.aws_iam_role.ecs_execution_role.arn
+  execution_role_arn       = data.aws_iam_role.ecs_execution_role.arn
   container_definitions = jsonencode([
     {
       name      = "app"
@@ -30,7 +30,7 @@ resource "aws_ecs_task_definition" "telehealth" {
       ]
       environment = [
         {
-          name = "API_BASE_URL"
+          name  = "API_BASE_URL"
           value = "https://${var.environment}.amruta.online/api"
         },
         # {

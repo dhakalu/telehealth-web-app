@@ -17,8 +17,8 @@ data "aws_ssm_parameter" "private_subnets" {
 
 # Convert comma-separated subnet IDs to list
 locals {
-  host_in = "public"
-  subnet_ids = local.host_in == "public" ? split(",", data.aws_ssm_parameter.public_subnets.value) : split(",", data.aws_ssm_parameter.private_subnets.value)
+  host_in     = "public"
+  subnet_ids  = local.host_in == "public" ? split(",", data.aws_ssm_parameter.public_subnets.value) : split(",", data.aws_ssm_parameter.private_subnets.value)
   name_prefix = "ui-${var.environment}"
 
   port = 8090
@@ -62,7 +62,7 @@ resource "aws_lb_listener_rule" "api_forward" {
 }
 
 resource "aws_ecs_service" "telehealth" {
-  depends_on = [aws_lb_listener_rule.api_forward]
+  depends_on      = [aws_lb_listener_rule.api_forward]
   name            = "${local.name_prefix}-service"
   cluster         = data.aws_ssm_parameter.cluster_name.value
   task_definition = aws_ecs_task_definition.telehealth.arn
