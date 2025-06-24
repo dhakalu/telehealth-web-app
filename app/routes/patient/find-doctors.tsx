@@ -4,6 +4,7 @@ import { PractitionerList } from "../../components/PractitionerList";
 import { User } from "../provider/complete-profile";
 
 import { API_BASE_URL } from "~/api";
+import PageHeader from "~/components/common/PageHeader";
 
 
 export const loader: LoaderFunction = async ({ request }) => {
@@ -17,7 +18,11 @@ export const loader: LoaderFunction = async ({ request }) => {
 export default function PractitionerListPage() {
   const { user, baseUrl } = useLoaderData<{ user: User, baseUrl: string }>();
   return (
-    <div className="min-h-screen bg-gray-50 p-8">
+    <div className="min-h-screen bg-gray-50 px-10">
+      <PageHeader
+        title="Find Doctors"
+        description="Use the search below to find doctors who can help"
+      />
       <PractitionerList patientId={user.sub} baseURL={baseUrl} />
     </div>
   );

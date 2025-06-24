@@ -3,6 +3,7 @@ import { User } from "../provider/complete-profile";
 
 import { requireAuthCookie } from "~/auth";
 import ErrorPage from "~/components/common/ErrorPage";
+import PageHeader from "~/components/common/PageHeader";
 import { Tab, TabNav } from "~/components/common/TabNav";
 export { ErrorBoundary } from "~/root";
 
@@ -19,7 +20,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 
 
 export default function PatientHome() {
-  const { error } = useLoaderData<{ user: User, error: string }>();
+  const { user, error } = useLoaderData<{ user: User, error: string }>();
 
   if (error) {
     return (
@@ -39,11 +40,15 @@ export default function PatientHome() {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col">
+    <div className="min-h-screen bg-gray-50 flex flex-col px-10">
+      <PageHeader
+        title="My Health"
+        description="Below is your comprehensive medical history"
+      />
       <div className="flex border-b bg-white overflow-x-auto no-scrollbar">
         <TabNav tabs={tabs} />
       </div>
-      <div className="w3-container city">
+      <div>
         <Outlet />
       </div>
     </div>

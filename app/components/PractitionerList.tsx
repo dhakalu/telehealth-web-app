@@ -1,7 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { StarRating } from "./RatingStar";
-import { ReviewModal } from "./ReviewModal";
 
 
 export interface PractitionerSearchItem {
@@ -22,7 +21,6 @@ export const PractitionerList: React.FC<{
   baseURL?: string
 }> = ({ patientId, baseURL }) => {
   const [practitioners, setPractitioners] = useState<PractitionerSearchItem[]>([]);
-  const [reviewModalDoctorId, setReviewModalDoctorId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -66,8 +64,7 @@ export const PractitionerList: React.FC<{
   if (error) return <div className="text-red-500">Error: {error}</div>;
 
   return (
-    <div className="p-4">
-      <h2 className="text-xl font-bold mb-4">Practitioner List</h2>
+    <div>
       {
         !practitioners.length ? <div className="text-gray-600">No practitioners available at this time</div> : <ul className="space-y-2">
           {practitioners.map((p, idx) => {
@@ -100,30 +97,6 @@ export const PractitionerList: React.FC<{
                       <path strokeLinecap="round" strokeLinejoin="round" d="M8.625 15.75a6.75 6.75 0 01-2.458-.45l-2.507.627a.75.75 0 01-.91-.91l.627-2.508A6.75 6.75 0 1120.25 12c0 3.728-3.022 6.75-6.75 6.75a6.716 6.716 0 01-4.875-2.025z" />
                     </svg>
                   </button>
-                  <button
-                    className="ml-2 p-2 rounded-full hover:bg-green-100 text-green-600"
-                    title="Add review"
-                    onClick={() => setReviewModalDoctorId(doctorId)}
-                  >
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-                    </svg>
-                  </button>
-                  {reviewModalDoctorId === doctorId && (
-                    <ReviewModal
-                      doctorName={p.name}
-                      onClose={() => setReviewModalDoctorId(null)}
-                      onSubmit={async (rating, comment) => {
-                        await axios.post(`${baseURL}/review`, {
-                          rating,
-                          comment,
-                          reviewerId: patientId,
-                          encounterId: "badfb50c-89d3-4297-9c6f-3f7c4a38f28f",
-                          revieweeId: reviewModalDoctorId,
-                        });
-                        setReviewModalDoctorId(null);
-                      }} />
-                  )}
                 </div>
 
               </li>
