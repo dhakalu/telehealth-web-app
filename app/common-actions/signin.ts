@@ -1,4 +1,4 @@
-import { ActionFunctionArgs, redirect } from "@remix-run/node";
+import { ActionFunctionArgs, redirect } from "react-router";
 import axios, { AxiosError } from "axios";
 import { API_BASE_URL } from "~/api";
 import { authCookie } from "~/auth";
@@ -17,6 +17,11 @@ export const signInAction = () => async ({ request }: ActionFunctionArgs) => {
     if (!user || !user.sub) {
         return Response.json({error: "Invalid username or passwrod"}, {
             status,
+        });
+    }
+    if (user.status === "created") {
+        return Response.json({error: "Account not activated"}, {
+            status: 401,
         });
     }
     const appPath = user.account_type == "patient" ? "/patient" : "/provider"

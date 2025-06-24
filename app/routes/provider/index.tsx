@@ -1,0 +1,52 @@
+import { LoaderFunction, redirect, useLoaderData } from "react-router";
+
+import axios from "axios";
+import { requireAuthCookie } from "~/auth";
+
+export const loader: LoaderFunction = async ({ request }) => {
+  const user = await requireAuthCookie(request);
+
+  if (user.account_type === "patient") {
+    return redirect("/patient/find-doctors");
+  }
+
+  try {
+    const response = axios.get(`${process.env.API_BASE_URL}/practitioner/${user.sub}`);
+    user.status = (await response).data.status;
+    if (user.status === "email-verified") {
+      return redirect("/provider/complete-profile");
+    }
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response) {
+      if (error.response.status === 404) {
+        return redirect("/provider/complete-profile");
+      }
+      return Response.json(
+        { error: error.response.data.error || "Failed to fetch user data" },
+        { status: error.response.status }
+      );
+    } else {
+      console.error("Error fetching user data:", error);
+      return Response.json(
+        { error: "Internal server error" },
+        { status: 500 }
+      );
+    }
+  }
+  return redirect("/provider/patients")
+}
+
+export default function NotFound() {
+
+  const { error } = useLoaderData<{ error: string }>();
+
+  if (error) {
+    return (
+      <div className="max-w-xl mx-auto p-8 bg-red-100 text-red-800 rounded shadow mt-10">
+        <h2 className="text-2xl font-bold mb-4">Error</h2>
+        <p>{error}</p>
+      </div>
+    );
+  }
+  return null;
+}

@@ -1,14 +1,18 @@
 import {
+  isRouteErrorResponse,
   Links,
   Meta,
   Outlet,
   Scripts,
   ScrollRestoration,
-} from "@remix-run/react";
-import type { LinksFunction } from "@remix-run/node";
+  useRouteError,
+} from "react-router";
+import type { LinksFunction } from "react-router";
 import React from "react";
 
 import "./tailwind.css";
+import ErrorPage from "./components/common/ErrorPage";
+import NotFoundPage from "./NotFoundPage";
 
 export const links: LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -22,6 +26,40 @@ export const links: LinksFunction = () => [
     href: "https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap",
   },
 ];
+
+export function ErrorBoundary() {
+  const error = useRouteError();
+
+  if (isRouteErrorResponse(error)) {
+
+    if (error.status === 404) {
+      return (<NotFoundPage />)
+    }
+
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50 p-8">
+        <div className="bg-red-100 text-red-800 p-4 rounded shadow-md">
+          <h1 className="font-semibold">Error {error.status}</h1>
+          <p>{error.statusText || "An unexpected error occurred."}</p>
+          <p>Try refreshing the page. If the issue persists contact an Administrator.</p>
+        </div>
+      </div>
+    );
+  } else if (error instanceof Error) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50 p-8">
+        <div className="bg-red-100 text-red-800 p-4 rounded shadow-md">
+          <h1 className="font-semibold">Error</h1>
+          <p>{error.message}</p>
+          <p>The stack trace is:</p>
+          <pre className="mt-2 bg-white p-2 rounded">{error.stack}</pre>
+        </div>
+      </div>
+    );
+  } else {
+    return <ErrorPage error="An unknown error occurred." />;
+  }
+}
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (

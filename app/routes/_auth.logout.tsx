@@ -1,5 +1,5 @@
-import { LoaderFunction } from "@remix-run/node";
-import { redirect } from "@remix-run/react";
+import { LoaderFunction, redirect } from "react-router";
+
 import { authCookie } from "~/auth";
 
 

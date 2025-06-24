@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { User } from "~/routes/provider.complete-profile/route";
+import { User } from "~/routes/provider/complete-profile";
 
 interface ChatComponentProps {
   wsUrl: string;
@@ -40,9 +40,9 @@ export const ChatComponent: React.FC<ChatComponentProps> = ({
   const [connected, setConnected] = useState(false);
   const bottomRef = useRef<HTMLDivElement>(null);
 
-  const {chatId, patient, provider} = chat;
+  const { chatId, patient, provider } = chat;
 
-  const receiver = patient.sub == receiverId ? patient: provider;
+  const receiver = patient.sub == receiverId ? patient : provider;
   const receiverName = `${receiver.given_name} ${receiver.family_name}`
 
   useEffect(() => {
@@ -56,9 +56,9 @@ export const ChatComponent: React.FC<ChatComponentProps> = ({
       } catch {
         setMessages((prev) => [
           ...prev,
-          { 
+          {
             chatId,
-            senderId, 
+            senderId,
             receiverId,
             text: "Invalid message format received"
           }
@@ -68,7 +68,7 @@ export const ChatComponent: React.FC<ChatComponentProps> = ({
     return () => {
       ws.current?.close();
     };
-  }, [wsUrl, chatId, senderId]);
+  }, [wsUrl, chatId, senderId, receiverId]);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -78,10 +78,10 @@ export const ChatComponent: React.FC<ChatComponentProps> = ({
     e.preventDefault();
     if (!input.trim() || !ws.current || ws.current.readyState !== 1) return;
     const msg = {
-       chatId,
-       senderId,
-       receiverId,
-       text: input 
+      chatId,
+      senderId,
+      receiverId,
+      text: input
     };
     console.log('sending message', msg)
     ws.current.send(JSON.stringify(msg));
@@ -104,9 +104,8 @@ export const ChatComponent: React.FC<ChatComponentProps> = ({
               className={`mb-2 flex ${isMine ? "justify-end" : "justify-start"}`}
             >
               <div
-                className={`px-3 py-2 rounded-lg max-w-xs ${
-                  isMine ? "bg-blue-500 text-white" : "bg-gray-200 text-gray-800"
-                }`}
+                className={`px-3 py-2 rounded-lg max-w-xs ${isMine ? "bg-blue-500 text-white" : "bg-gray-200 text-gray-800"
+                  }`}
               >
                 <span>{msg.text}</span>
               </div>

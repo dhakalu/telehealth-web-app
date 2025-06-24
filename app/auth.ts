@@ -1,5 +1,5 @@
-import { createCookie, redirect } from "@remix-run/node";
-import { User } from "./routes/provider.complete-profile/route";
+import { createCookie, redirect } from "react-router";
+import { User } from "./routes/provider/complete-profile";
 
 const secret = process.env.COOKIE_SECRET || "default";
 if (secret === "default") {

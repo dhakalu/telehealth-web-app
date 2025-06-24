@@ -1,16 +1,16 @@
-import { ActionFunctionArgs, redirect } from "@remix-run/node";
+import { ActionFunctionArgs, redirect } from "react-router";
 import axios, { AxiosError } from "axios";
 import { ApiError } from "~/routes/_auth.provider.signup";
+import { API_BASE_URL } from "~/api";
 
-export const signupAction = (accountType: "patient" | "practitioner") => {
+export const signupAction = () => {
     return async ({ request }: ActionFunctionArgs) => {
   const formData = await request.formData();
   const data = Object.fromEntries(formData);
-  data["account_type"] = accountType;
   data["status"] = "incomplete";
   
   try {
-    const response = await axios.post("http://localhost:8090/user", data);
+    const response = await axios.post(`${API_BASE_URL}/user`, data);
     const user = response.data;
     const status = response.status;
 

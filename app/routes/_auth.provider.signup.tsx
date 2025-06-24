@@ -1,7 +1,7 @@
+import { LoaderFunction, redirect, useActionData } from "react-router";
 import { UserSignUp } from "../components/UserSignUp";
-import { redirect, useActionData } from "@remix-run/react";
-import { LoaderFunction } from "@remix-run/node";
-import { authCookie, getAppPath } from "~/auth";
+
+import { authCookie } from "~/auth";
 import { signupAction } from "~/common-actions/signup";
 
 export type ApiError = {
@@ -9,21 +9,20 @@ export type ApiError = {
 }
 
 export const loader: LoaderFunction = async ({ request }) => {
-  const cookie =  await authCookie.parse(request.headers.get("Cookie"));
+  const cookie = await authCookie.parse(request.headers.get("Cookie"));
   if (cookie) {
-    const appPath = getAppPath(request);
-    return redirect(appPath);
+    return redirect("/login?account_type=practitioner", {});
   }
   return null;
 }
 
-export const action = signupAction("practitioner");
+export const action = signupAction();
 
 export default function UserSignUpPage() {
-  const { error } = useActionData<{error?: string}>() || {};
+  const { error } = useActionData<{ error?: string }>() || {};
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 p-8">
-      <UserSignUp type={"practitioner"} error={error!} />
+      <UserSignUp error={error!} />
     </div>
   );
 }

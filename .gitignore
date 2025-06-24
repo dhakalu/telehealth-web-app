@@ -2,4 +2,9 @@ node_modules
 
 /.cache
 /build
+/server-build
 .env
+.react-router/
+**/.terraform
+**/.tfstate
+**/.terraform.lock.hcl
