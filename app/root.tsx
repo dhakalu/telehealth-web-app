@@ -1,18 +1,17 @@
+import React from "react";
+import type { LinksFunction } from "react-router";
 import {
   isRouteErrorResponse,
   Links,
-  Meta,
   Outlet,
   Scripts,
   ScrollRestoration,
-  useRouteError,
+  useRouteError
 } from "react-router";
-import type { LinksFunction } from "react-router";
-import React from "react";
 
-import "./tailwind.css";
 import ErrorPage from "./components/common/ErrorPage";
 import NotFoundPage from "./NotFoundPage";
+import "./tailwind.css";
 
 export const links: LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -67,7 +66,10 @@ export function Layout({ children }: { children: React.ReactNode }) {
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <Meta />
+        <meta
+          name="MedToc"
+          content="Find doctors 24/7"
+        />
         <Links />
       </head>
       <body>

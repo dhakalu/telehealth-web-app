@@ -29,7 +29,10 @@ const AppHeader: React.FC<AppHeaderProps> = ({ links, user }) => {
 
   return (
     <header className="w-full bg-blue-700 text-white py-4 px-6 rounded-t shadow flex items-center justify-between">
-      <div className="font-bold text-lg tracking-wide">MedToc</div>
+      <a href="/login" className="font-bold text-lg tracking-wide">
+        <img src="/logo.png" alt="MedToc Logo" className="inline-block w-8 h-8 rounded-full mr-2 align-middle" />
+        MedToc
+      </a>
       <div className="flex items-center gap-4">
         {(links || []).map((link, idx) => {
           const isActive = location.pathname === link.href || (link.href !== "/" && location.pathname.startsWith(link.href));
