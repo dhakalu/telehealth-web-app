@@ -1,6 +1,7 @@
 import jsxA11y from "eslint-plugin-jsx-a11y";
 import react from "eslint-plugin-react";
 import eslintPluginReactHooks from "eslint-plugin-react-hooks";
+import unusedImports from "eslint-plugin-unused-imports";
 import { defineConfig } from "eslint/config";
 import tseslint from 'typescript-eslint';
 
@@ -9,7 +10,12 @@ import eslint from '@eslint/js';
 
 export default defineConfig([
     {
-        ignores: ["**/*.config.js", "build/", "server-build/", ".react-router/"],
+        ignores: ["**/*.config.js", "**/*.config.ts", "build/", "server-build/", ".react-router/"],
+    },
+    {
+        plugins: {
+            "unused-imports": unusedImports,
+        }
     },
     eslint.configs.recommended,
     {

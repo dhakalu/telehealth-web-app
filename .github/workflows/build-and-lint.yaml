@@ -7,6 +7,36 @@ on:
     branches: [ main, master ]
 
 jobs:
+  terraform-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: ⬇️ Checkout code
+        uses: actions/checkout@v4
+
+      - name: 🛠️ Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.12.2
+
+      - name: 🔑 Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/github-actions
+          role-session-name: actionsrole
+          mask-aws-account-id: true
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: 🛠️ Terraform Init
+        run: terraform init
+        working-directory: deploy/tf
+
+      - name: 🔍 Terraform Validate
+        run: terraform validate
+        working-directory: deploy/tf
+
+      - name: 📜 Terraform Format Check
+        run: terraform fmt -check
+        working-directory: deploy/tf
   build-and-lint:
     runs-on: ubuntu-latest
     steps:
