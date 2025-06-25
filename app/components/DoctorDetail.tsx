@@ -86,7 +86,7 @@ export const DoctorDetail: React.FC<DoctorDetailProps> = ({ doctor }) => {
     const bio = data.extension?.bio
 
     return (
-        <div className="bg-white rounded shadow p-6 max-w-lg mx-auto mt-8">
+        <div className=" rounded shadow p-6 max-w-lg mx-auto mt-8">
             <div className="flex items-center gap-6 mb-4">
                 {photoUrl ? (
                     <img src={photoUrl} alt="Profile" className="w-20 h-20 rounded-full object-cover border" />

@@ -1,6 +1,6 @@
-import React, { useRef, useState, useEffect } from "react";
-import { Link, useLocation } from "react-router";
+import React, { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
+import { Link, useLocation } from "react-router";
 
 export type Tab = { to: string; label: string };
 
@@ -8,8 +8,26 @@ interface TabNavProps {
   tabs: Tab[];
 }
 
-export const TabNav: React.FC<TabNavProps> = ({ tabs }) => {
+const TabLink = ({ onClick, tab }: { onClick?: React.MouseEventHandler<HTMLAnchorElement>, tab: Tab }) => {
   const location = useLocation();
+
+  return (
+    <Link
+      key={tab.to}
+      to={tab.to}
+      className={`tab ${location.pathname.includes(`/${tab.to}`)
+        ? "tab-active"
+        : "opacity-60 hover:bg-base-100"
+        }`}
+      onClick={onClick}
+    >
+      {tab.label}
+    </Link>
+  )
+}
+
+
+export const TabNav: React.FC<TabNavProps> = ({ tabs }) => {
   const tabListRef = useRef<HTMLDivElement>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const moreBtnRef = useRef<HTMLButtonElement>(null);
@@ -95,25 +113,15 @@ export const TabNav: React.FC<TabNavProps> = ({ tabs }) => {
   }, [showDropdown]);
 
   return (
-    <div className="flex flex-row flex-nowrap w-full" ref={tabListRef}>
+    <div className="tabs tabs-border w-full" ref={tabListRef}>
       {tabs.filter((tab) => visibleTabs.includes(tab.to)).map((tab) => (
-        <Link
-          key={tab.to}
-          to={tab.to}
-          className={`px-6 py-3 -mb-px border-b-2 font-medium text-sm transition-colors duration-200 ${
-            location.pathname.includes(`/${tab.to}`)
-              ? "border-blue-600 text-blue-600"
-              : "border-transparent text-gray-500 hover:text-blue-600 hover:border-blue-300"
-          }`}
-        >
-          {tab.label}
-        </Link>
+        <TabLink tab={tab} />
       ))}
       {overflowTabs.length > 0 && (
         <div className="relative">
           <button
             ref={moreBtnRef}
-            className="px-4 py-3 font-medium text-sm border-b-2 border-transparent text-gray-500 hover:text-blue-600 hover:border-blue-300 flex items-center"
+            className="px-4 py-3 font-medium text-sm btn flex items-center"
             onClick={() => setShowDropdown((v) => !v)}
             aria-haspopup="true"
             aria-expanded={showDropdown}
@@ -126,7 +134,7 @@ export const TabNav: React.FC<TabNavProps> = ({ tabs }) => {
             createPortal(
               <div
                 ref={dropdownRef}
-                className="absolute w-48 bg-white border rounded shadow-lg z-50"
+                className="menu dropdown-content bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm"
                 style={{
                   top: dropdownPos.top,
                   left: dropdownPos.left,
@@ -135,18 +143,10 @@ export const TabNav: React.FC<TabNavProps> = ({ tabs }) => {
                 }}
               >
                 {tabs.filter((tab) => overflowTabs.includes(tab.to)).map((tab) => (
-                  <Link
-                    key={tab.to}
-                    to={tab.to}
-                    className={`block px-4 py-2 text-sm ${
-                      location.pathname.includes(`/${tab.to}`)
-                        ? "text-blue-600 font-semibold"
-                        : "text-gray-700 hover:bg-gray-100"
-                    }`}
+                  <TabLink
+                    tab={tab}
                     onClick={() => setShowDropdown(false)}
-                  >
-                    {tab.label}
-                  </Link>
+                  />
                 ))}
               </div>,
               document.body

@@ -1,8 +1,9 @@
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { LoaderFunction, useLoaderData, useNavigate } from "react-router";
 import { API_BASE_URL } from "~/api";
 import { requireAuthCookie } from "~/auth";
+import Button from "~/components/common/Button";
 import ErrorPage from "~/components/common/ErrorPage";
 import PageHeader from "~/components/common/PageHeader";
 import { ReviewModal } from "~/components/ReviewModal";
@@ -69,6 +70,12 @@ export default function Providers() {
         setReviewModalDoctor(p);
     }
 
+    useEffect(() => {
+        if (reviewModalDoctor?.id) {
+            (document.getElementById('review_modal') as HTMLDialogElement)?.showModal()
+        }
+    }, [reviewModalDoctor?.id])
+
     if (error) {
         return (
             <ErrorPage error={error} />
@@ -81,19 +88,19 @@ export default function Providers() {
                 title="My Doctors"
                 description="List of doctors that you have interacted with in the past."
             />
-            <ul style={{ listStyle: "none", padding: 0 }}>
+            <ul className="list bg-base-100 rounded-box shadow-md">
                 {practitioners.map((practitioner) => (
                     <li
                         onClick={() => handleSelect(practitioner)}
                         key={practitioner.id}
-                        className="border cursor-pointer p-3 bg-white shadow flex items-center justify-between"
+                        className="list-row cursor-pointer flex items-center justify-between"
                     >
                         <div className="flex flex-1 gap-2">
                             <div className="font-bold">{practitioner.first_name} {practitioner.last_name}</div>
-                            <div className="text-gray-400">{practitioner.email}</div>
+                            <div className="opacity-60">{practitioner.email}</div>
                         </div>
-                        <button
-                            className="flex ml-2 p-2 rounded-full hover:bg-green-100 text-green-600"
+                        <Button
+                            buttonType="accentReversed"
                             title="Add review"
                             onClick={(e) => handleAddReview(e, practitioner)}
                         >
@@ -101,25 +108,24 @@ export default function Providers() {
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                             </svg>
                             Add Review
-                        </button>
+                        </Button>
                     </li>
                 ))}
             </ul>
-            {reviewModalDoctor && (
-                <ReviewModal
-                    doctorName={`${reviewModalDoctor.first_name} ${reviewModalDoctor.last_name}`}
-                    onClose={() => setReviewModalDoctor(null)}
-                    onSubmit={async (rating, comment) => {
-                        await axios.post(`${baseUrl}/review`, {
-                            rating,
-                            comment,
-                            reviewerId: user.sub,
-                            encounterId: "badfb50c-89d3-4297-9c6f-3f7c4a38f28f",
-                            revieweeId: reviewModalDoctor.id,
-                        });
-                        setReviewModalDoctor(null);
-                    }} />
-            )}
+            {reviewModalDoctor && <ReviewModal
+                doctorName={`${reviewModalDoctor.first_name} ${reviewModalDoctor.last_name}`}
+                onClose={() => setReviewModalDoctor(null)}
+                onSubmit={async (rating, comment) => {
+                    await axios.post(`${baseUrl}/review`, {
+                        rating,
+                        comment,
+                        reviewerId: user.sub,
+                        encounterId: "badfb50c-89d3-4297-9c6f-3f7c4a38f28f",
+                        revieweeId: reviewModalDoctor.id,
+                    });
+                    setReviewModalDoctor(null);
+                }} />
+            }
         </div>
     );
 }

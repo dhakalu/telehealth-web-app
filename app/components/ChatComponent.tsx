@@ -1,5 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { User } from "~/routes/provider/complete-profile";
+import Button from "./common/Button";
+import { Input } from "./common/Input";
 
 interface ChatComponentProps {
   wsUrl: string;
@@ -91,45 +93,51 @@ export const ChatComponent: React.FC<ChatComponentProps> = ({
 
 
   return (
-    <div className="w-full p-6 bg-white rounded shadow mt-10 flex flex-col h-full">
-      <h2 className="text-xl font-bold mb-4">
-        Chat with {receiverName}
-      </h2>
-      <div className="flex-1 overflow-y-auto border rounded p-4 bg-gray-50 mb-4">
-        {messages.map((msg, idx) => {
-          const isMine = msg.senderId === senderId;
-          return (
-            <div
-              key={idx}
-              className={`mb-2 flex ${isMine ? "justify-end" : "justify-start"}`}
-            >
+    <div className="w-full p-6 bg-base-100 justify-between rounded shadow mt-10 flex flex-col h-full">
+      <div>
+        <h2 className="text-xl font-bold mb-4">
+          Chat with {receiverName}
+        </h2>
+        <div className="flex-1 overflow-y-auto  rounded p-4  mb-4">
+          {messages.map((msg, idx) => {
+            const isMine = msg.senderId === senderId;
+            return (
               <div
-                className={`px-3 py-2 rounded-lg max-w-xs ${isMine ? "bg-blue-500 text-white" : "bg-gray-200 text-gray-800"
-                  }`}
+                key={idx}
+                className={`mb-2 flex ${isMine ? "justify-end" : "justify-start"}`}
               >
-                <span>{msg.text}</span>
+                <div
+                  className={`px-3 py-2 rounded-lg max-w-xs ${isMine ? "bg-blue-500 text-white" : "bg-gray-200 text-gray-800"
+                    }`}
+                >
+                  <span>{msg.text}</span>
+                </div>
               </div>
-            </div>
-          );
-        })}
-        <div ref={bottomRef} />
+            );
+          })}
+          <div ref={bottomRef} />
+        </div>
       </div>
-      <form onSubmit={sendMessage} className="flex gap-2">
-        <input
-          className="flex-1 border rounded px-3 py-2"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          placeholder={connected ? "Type your message..." : "Connecting..."}
-          disabled={!connected}
-        />
-        <button
-          type="submit"
-          className="btn btn-primary"
-          disabled={!connected || !input.trim()}
-        >
-          Send
-        </button>
-      </form>
+      <div>
+        <form onSubmit={sendMessage} className="flex w-full gap-2">
+          <Input
+            label=""
+            id="chat-input"
+            wrapperClass="flex-1"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            placeholder={connected ? "Type your message..." : "Connecting..."}
+            disabled={!connected}
+          />
+          <Button
+            buttonType="primary"
+            type="submit"
+            disabled={!connected || !input.trim()}
+          >
+            Send
+          </Button>
+        </form>
+      </div>
     </div>
   );
 };

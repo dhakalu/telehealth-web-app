@@ -15,7 +15,7 @@ export default remixRoutesOptionAdapter((defineRoutes) => {
       route("qa/:providerId", "./routes/patient/qa.tsx");
       route("providers", "./routes/patient/providers.tsx")
       route(":patientId", "./routes/patient/by-id.tsx", () => {
-
+        route("", "./routes/patient/by-id-index.tsx", { index: true })
         route("allergy", "./routes/patient/allergy.tsx");
         route("medication", "./routes/patient/medication.tsx");
         route("immunization", "./routes/patient/immunization.tsx");

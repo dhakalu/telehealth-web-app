@@ -3,6 +3,7 @@ import { authCookie } from "~/auth";
 import { UserLogin } from "../components/UserLogin";
 
 import { signInAction } from "~/common-actions/signin";
+import Card from "~/components/common/Card";
 import { User } from "./provider/complete-profile";
 
 export const loader: LoaderFunction = async ({ request }) => {
@@ -23,8 +24,10 @@ export default function UserLoginPage() {
   const isSubmitting = navigation.state === "submitting";
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 p-8">
-      <UserLogin signupUrl="/signup" error={error} isLoading={isSubmitting} />
+    <div className="min-h-screen flex items-center justify-center p-8">
+      <Card>
+        <UserLogin signupUrl="/signup" error={error} isLoading={isSubmitting} />
+      </Card>
     </div>
   );
 }

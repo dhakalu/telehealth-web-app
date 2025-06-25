@@ -2,7 +2,8 @@ import { LoaderFunctionArgs, useLoaderData } from "react-router";
 
 import axios from "axios";
 import { API_BASE_URL } from "~/api";
-import { DoctorDetail } from "../../components/DoctorDetail";
+import ErrorPage from "~/components/common/ErrorPage";
+import { DoctorDetail, FHIRPractitioner } from "../../components/DoctorDetail";
 
 export const loader = async ({ params }: LoaderFunctionArgs) => {
   const { doctorId } = params;
@@ -27,12 +28,10 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
 };
 
 export default function DoctorDetailRoute() {
-  const { data, error } = useLoaderData<typeof loader>();
+  const { data, error } = useLoaderData<{ data: FHIRPractitioner, error: string }>();
   if (error) {
     return (
-      <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "60vh" }}>
-        <div style={{ color: "red", fontSize: "1.2rem" }}>{error}</div>
-      </div>
+      <ErrorPage error={error} />
     );
   }
   return <DoctorDetail doctor={data} />;

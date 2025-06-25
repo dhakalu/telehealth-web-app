@@ -18,7 +18,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 export default function PractitionerListPage() {
   const { user, baseUrl } = useLoaderData<{ user: User, baseUrl: string }>();
   return (
-    <div className="min-h-screen bg-gray-50 px-10">
+    <div className="min-h-screen  px-10">
       <PageHeader
         title="Find Doctors"
         description="Use the search below to find doctors who can help"

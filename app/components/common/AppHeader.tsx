@@ -28,30 +28,50 @@ const AppHeader: React.FC<AppHeaderProps> = ({ links, user }) => {
   }, [open]);
 
   return (
-    <header className="w-full bg-blue-700 text-white py-4 px-6 rounded-t shadow flex items-center justify-between">
-      <a href="/login" className="font-bold text-lg tracking-wide">
-        <img src="/logo.png" alt="MedToc Logo" className="inline-block w-8 h-8 rounded-full mr-2 align-middle" />
-        MedToc
-      </a>
-      <div className="flex items-center gap-4">
-        {(links || []).map((link, idx) => {
-          const isActive = location.pathname === link.href || (link.href !== "/" && location.pathname.startsWith(link.href));
-          return (
-            <a
-              key={link.href}
-              href={link.href}
-              className={
-                (isActive
-                  ? "text-blue-200 underline font-bold "
-                  : "hover:underline ") +
-                (idx < (links?.length || 2) - 1 ? "mr-4" : "")
-              }
-              aria-current={isActive ? "page" : undefined}
-            >
-              {link.label}
-            </a>
-          );
-        })}
+    <header className="navbar bg-base-100 shadow-sm">
+      <div className="nav-start">
+        <div className="dropdown">
+          <button className="btn btn-ghost lg:hidden">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h8m-8 6h16" /> </svg>
+          </button>
+          <ul
+            className="menu menu-md dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 shadow">
+            {(links || []).map((link) => (
+              <li className="p-1">
+                <a
+                  key={link.href}
+                  href={link.href}
+                >
+                  {link.label}
+                </a>
+              </li>))}
+          </ul>
+        </div>
+        <a href="/login" className="font-bold text-lg tracking-wide">
+          <img src="/logo.png" alt="MedToc Logo" className="inline-block w-8 h-8 rounded-full mr-2 align-middle" />
+          MedToc
+        </a>
+      </div>
+
+      <div className="nav-center hidden lg:flex">
+        <ul className="menu menu-horizontal px-1">
+          {(links || []).map((link) => {
+            const isActive = location.pathname === link.href || (link.href !== "/" && location.pathname.startsWith(link.href));
+            return (
+              <li>
+                <a
+                  key={link.href}
+                  href={link.href}
+                  aria-current={isActive ? "page" : undefined}
+                >
+                  {link.label}
+                </a>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+      <div className="nav-end">
         {user && (
           <div className="relative" ref={dropdownRef}>
             <button
@@ -66,17 +86,16 @@ const AppHeader: React.FC<AppHeaderProps> = ({ links, user }) => {
               </svg>
             </button>
             {open && (
-              <div className="absolute right-0 mt-2 w-56 bg-white text-gray-900 rounded shadow-lg z-50 p-4 min-w-[180px]">
-                <div className="mb-2 font-semibold">{user.name || user.email}</div>
-                {user.email && <div className="mb-2 text-sm text-gray-600">{user.email}</div>}
-                <hr className="my-2" />
+              <div className="absolute right-0 mt-2 w-56  bg-base-100 rounded shadow-lg z-50 p-4 min-w-[180px]">
+                <div className="mb-2 font-semibold">{user.given_name} {user.family_name}</div>
+                {user.email && <div className="mb-2 text-sm opacity-60">{user.email}</div>}
                 <a href={`/logout?appPath=${user.account_type}`} className="block text-blue-600 hover:underline text-sm mt-2">Logout</a>
               </div>
             )}
           </div>
         )}
       </div>
-    </header>
+    </header >
   );
 };
 
