@@ -39,6 +39,7 @@ const AddImmunizationModal: React.FC<AddImmunizationModalProps> = ({ onClose, on
         onAdd(createdImmunization);
       }
       onClose();
+      setForm(initialForm);
     } catch (err) {
       if (axios.isAxiosError(err)) {
         setError(err.response?.data?.message || "Failed to add immunization.");
@@ -94,7 +95,7 @@ const AddImmunizationModal: React.FC<AddImmunizationModalProps> = ({ onClose, on
         <Button
           type="submit"
           className="px-4 py-2 bg-blue-600 text-white rounded"
-          disabled={submitting}
+          isLoading={submitting}
         >
           {submitting ? "Adding..." : "Add"}
         </Button>

@@ -129,13 +129,15 @@ export const ChatComponent: React.FC<ChatComponentProps> = ({
             placeholder={connected ? "Type your message..." : "Connecting..."}
             disabled={!connected}
           />
-          <Button
-            buttonType="primary"
-            type="submit"
-            disabled={!connected || !input.trim()}
-          >
-            Send
-          </Button>
+          <div className="mt-1">
+            <Button
+              buttonType="primary"
+              type="submit"
+              disabled={!connected || !input.trim()}
+            >
+              Send
+            </Button>
+          </div>
         </form>
       </div>
     </div>

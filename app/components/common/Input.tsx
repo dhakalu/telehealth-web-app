@@ -13,22 +13,22 @@ export const Input: React.FC<InputProps> = ({ label, error, textarea, id, classN
   return (
     <div className={`mb-2 text-base-content ${wrapperClass || ""}`}>
       <label htmlFor={inputId} className="block mb-1 font-medium">
-        {label}
+        {label} {props.required && <span className="text-error">*</span>}
       </label>
       {textarea ? (
         <textarea
           id={inputId}
-          className={`input w-full border px-4 py-2 rounded ${error ? "border-red-500" : ""} ${className}`}
+          className={`input validator w-full border px-4 py-2 rounded ${error ? "border-red-500" : ""} ${className}`}
           {...(props as React.TextareaHTMLAttributes<HTMLTextAreaElement>)}
         />
       ) : (
         <input
           id={inputId}
-          className={`input w-full border px-4 py-2 rounded ${error ? "border-red-500" : ""} ${className}`}
+          className={`input validator w-full border px-4 py-2 rounded ${error ? "border-red-500" : ""} ${className}`}
           {...props}
         />
       )}
-      {error && <div className="text-red-500 text-xs mt-1">{error}</div>}
+      {error && <div className="text-error">{error}</div>}
     </div>
   );
 };

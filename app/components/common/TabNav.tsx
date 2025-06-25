@@ -17,7 +17,7 @@ const TabLink = ({ onClick, tab }: { onClick?: React.MouseEventHandler<HTMLAncho
       to={tab.to}
       className={`tab ${location.pathname.includes(`/${tab.to}`)
         ? "tab-active"
-        : "opacity-60 hover:bg-base-100"
+        : "hover:bg-base-100 text-base-content"
         }`}
       onClick={onClick}
     >
@@ -113,7 +113,7 @@ export const TabNav: React.FC<TabNavProps> = ({ tabs }) => {
   }, [showDropdown]);
 
   return (
-    <div className="tabs tabs-border w-full" ref={tabListRef}>
+    <div className="tabs tabs-md tabs-border w-full" ref={tabListRef}>
       {tabs.filter((tab) => visibleTabs.includes(tab.to)).map((tab) => (
         <TabLink tab={tab} />
       ))}
@@ -121,7 +121,7 @@ export const TabNav: React.FC<TabNavProps> = ({ tabs }) => {
         <div className="relative">
           <button
             ref={moreBtnRef}
-            className="px-4 py-3 font-medium text-sm btn flex items-center"
+            className="tab"
             onClick={() => setShowDropdown((v) => !v)}
             aria-haspopup="true"
             aria-expanded={showDropdown}
@@ -134,7 +134,7 @@ export const TabNav: React.FC<TabNavProps> = ({ tabs }) => {
             createPortal(
               <div
                 ref={dropdownRef}
-                className="menu dropdown-content bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm"
+                className="menu menu-lg dropdown-content rounded-box z-1 w-52 p-2 shadow-lg"
                 style={{
                   top: dropdownPos.top,
                   left: dropdownPos.left,
@@ -143,10 +143,7 @@ export const TabNav: React.FC<TabNavProps> = ({ tabs }) => {
                 }}
               >
                 {tabs.filter((tab) => overflowTabs.includes(tab.to)).map((tab) => (
-                  <TabLink
-                    tab={tab}
-                    onClick={() => setShowDropdown(false)}
-                  />
+                  <TabLink tab={tab} />
                 ))}
               </div>,
               document.body

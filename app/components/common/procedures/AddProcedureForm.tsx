@@ -41,6 +41,7 @@ const AddProcedureForm: React.FC<AddProcedureFormProps> = ({ onClose, onAdd, pat
         onAdd(createdProcedure);
       }
       onClose?.();
+      setForm(initialForm);
     } catch (err) {
 
       if (axios.isAxiosError(err) && err.response?.data?.message) {
@@ -148,7 +149,7 @@ const AddProcedureForm: React.FC<AddProcedureFormProps> = ({ onClose, onAdd, pat
         <Button
           buttonType="primary"
           type="submit"
-          disabled={submitting}
+          isLoading={submitting}
         >
           {submitting ? "Adding..." : "Add"}
         </Button>

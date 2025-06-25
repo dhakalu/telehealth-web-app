@@ -41,6 +41,7 @@ const AddAllergyForm: React.FC<AddAllergyFormProps> = ({ onClose, onAdd, patient
       if (onAdd) {
         onAdd(createdAllergy);
       }
+      setForm(initialForm);
       onClose();
     } catch (err) {
       if (axios.isAxiosError(err)) {
@@ -123,7 +124,7 @@ const AddAllergyForm: React.FC<AddAllergyFormProps> = ({ onClose, onAdd, patient
           buttonType="primary"
           type="submit"
           className="px-4 py-2 bg-blue-600 text-white rounded"
-          disabled={submitting}
+          isLoading={submitting}
         >
           {submitting ? "Adding..." : "Add"}
         </Button>

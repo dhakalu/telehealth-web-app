@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useState } from "react";
 import { Input } from "~/components/common/Input";
 import { Select } from "~/components/common/Select";
+import Button from "../Button";
 import { HealthCondition } from "./types";
 
 export type AddHealthConditionModalProps = {
@@ -40,6 +41,7 @@ const AddHealthConditionForm: React.FC<AddHealthConditionModalProps> = ({ onAdd,
       if (onAdd) {
         onAdd(createdHealthCondition);
       }
+      setForm(initialForm);
     } catch (err) {
       if (axios.isAxiosError(err)) {
         setError("Failed to add health condition.");
@@ -90,13 +92,12 @@ const AddHealthConditionForm: React.FC<AddHealthConditionModalProps> = ({ onAdd,
         {error && <div className="text-red-500 mb-2">{error}</div>}
 
         <div className="flex justify-end gap-2 mt-4">
-          <button
+          <Button
             type="submit"
-            className="px-4 py-2 bg-blue-600 text-white rounded"
-            disabled={submitting}
+            isLoading={submitting}
           >
             {submitting ? "Adding..." : "Add"}
-          </button>
+          </Button>
         </div>
       </form>
     </div>

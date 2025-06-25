@@ -12,18 +12,19 @@ type AddMedicationFormProps = {
   patientId: string;
 };
 
+const instialForm = {
+  name: "",
+  direction: "",
+  prescribed_by: "",
+  dosage: "",
+  frequency: "",
+  status: "",
+  notes: "",
+  // start_date: null,
+  // end_date: null
+};
 export default function AddMedicationForm({ baseUrl, onClose, onAdd, patientId }: AddMedicationFormProps) {
-  const [form, setForm] = useState<Omit<Medication, "id">>({
-    name: "",
-    direction: "",
-    prescribed_by: "",
-    dosage: "",
-    frequency: "",
-    status: "",
-    notes: "",
-    // start_date: null,
-    // end_date: null
-  });
+  const [form, setForm] = useState<Omit<Medication, "id">>(instialForm);
 
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -46,6 +47,7 @@ export default function AddMedicationForm({ baseUrl, onClose, onAdd, patientId }
         onAdd({ ...form, id: createdMedication.id || Math.random().toString() });
       }
       onClose();
+      setForm(instialForm);
     } catch {
       setError("Failed to add medication.");
     } finally {
@@ -148,7 +150,7 @@ export default function AddMedicationForm({ baseUrl, onClose, onAdd, patientId }
         <Button
           buttonType="primary"
           type="submit"
-          disabled={submitting}
+          isLoading={submitting}
         >
           {submitting ? "Adding..." : "Add"}
         </Button>
