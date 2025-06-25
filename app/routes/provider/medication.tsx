@@ -2,8 +2,10 @@ import { LoaderFunction, useLoaderData, useParams } from "react-router";
 
 import { useState } from "react";
 import { medicationLoader } from "~/common-actions/medication";
+import Button from "~/components/common/Button";
 import ErrorPage from "~/components/common/ErrorPage";
-import AddMedicationModal from "../../components/common/medication/AddMedicationModal";
+import { Modal } from "~/components/common/Modal";
+import AddMedicationForm from "../../components/common/medication/AddMedicationForm";
 import { MedicationTable } from "../../components/common/medication/MedicationTable";
 import { Medication } from "../../components/common/medication/types";
 
@@ -14,17 +16,24 @@ export default function PatientMedication() {
   const { medications, error, baseUrl } = useLoaderData<{ medications: Medication[], error: string, baseUrl: string }>();
   const [addModalOpen, setModalOpen] = useState(false);
   const { patientId } = useParams<{ patientId: string }>();
+
+  const handleClose = () => setModalOpen(false)
+
   if (error) {
     return <ErrorPage error={error} />;
   }
+
+
   return (
     <>
       <div className="flex justify-end mb-4">
-        <button onClick={() => setModalOpen(true)} className="px-4 py-2 bg-blue-600 text-white rounded">
+        <Button onClick={() => setModalOpen(true)} >
           Add Medication
-        </button>
+        </Button>
       </div>
-      <AddMedicationModal patientId={patientId || ""} baseUrl={baseUrl} open={addModalOpen} onClose={() => setModalOpen(false)} />
+      <Modal title="Add Medication" isOpen={addModalOpen} onClose={handleClose}>
+        <AddMedicationForm patientId={patientId || ""} baseUrl={baseUrl} onClose={handleClose} />
+      </Modal>
       <MedicationTable medications={medications} />
     </>
   );

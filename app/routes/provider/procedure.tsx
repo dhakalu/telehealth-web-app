@@ -2,8 +2,10 @@ import { LoaderFunction, useLoaderData, useParams } from "react-router";
 
 import { useState } from "react";
 import { procedureLoader } from "~/common-actions/procedure";
+import Button from "~/components/common/Button";
 import ErrorPage from "~/components/common/ErrorPage";
-import AddProcedureModal from "~/components/common/procedures/AddProcedureModal";
+import { Modal } from "~/components/common/Modal";
+import AddProcedureForm from "~/components/common/procedures/AddProcedureForm";
 import { ProcedureTable } from "~/components/common/procedures/ProcedureTable";
 import { Procedure } from "~/components/common/procedures/types";
 
@@ -16,14 +18,19 @@ export default function PatientProcedures() {
   if (error) {
     return <ErrorPage error={error} />;
   }
+
+  const handleModalClose = () => setModalOpen(false);
+
   return (
     <>
       <div className="flex justify-end mb-4">
-        <button onClick={() => setModalOpen(true)} className="px-4 py-2 bg-blue-600 text-white rounded">
+        <Button onClick={() => setModalOpen(true)}>
           Add Procedure
-        </button>
+        </Button>
       </div>
-      <AddProcedureModal patientId={patientId || ""} baseUrl={baseUrl} open={addModalOpen} onClose={() => setModalOpen(false)} />
+      <Modal title="Add procedure" isOpen={addModalOpen} onClose={handleModalClose}>
+        <AddProcedureForm patientId={patientId || ""} baseUrl={baseUrl} onClose={handleModalClose} />
+      </Modal>
       <ProcedureTable procedures={procedures} />
     </>
   );

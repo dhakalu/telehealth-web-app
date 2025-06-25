@@ -2,8 +2,10 @@ import { LoaderFunction, useLoaderData, useParams } from "react-router";
 
 import { useState } from "react";
 import { healthConditionLoader } from "~/common-actions/health-condition";
+import Button from "~/components/common/Button";
 import ErrorPage from "~/components/common/ErrorPage";
-import AddHealthConditionModal from "../../components/common/health-condition/AddHealthConditionModal";
+import { Modal } from "~/components/common/Modal";
+import AddHealthConditionForm from "~/components/common/health-condition/AddHealthConditionForm";
 import { HealthConditionTable } from "../../components/common/health-condition/HealthConditionTable";
 import { HealthCondition } from "../../components/common/health-condition/types";
 import { User } from "../provider/complete-profile";
@@ -20,11 +22,13 @@ export default function PatientHealthCondition() {
   return (
     <>
       <div className="flex justify-end mb-4">
-        <button onClick={() => setModalOpen(true)} className="px-4 py-2 bg-blue-600 text-white rounded">
+        <Button onClick={() => setModalOpen(true)}>
           Add Health Condition
-        </button>
+        </Button>
       </div>
-      <AddHealthConditionModal patientId={patientId || ""} baseUrl={baseUrl} open={addModalOpen} onClose={() => setModalOpen(false)} practionerId={user.sub} />
+      <Modal title="Add Health Condition" isOpen={addModalOpen} onClose={() => setModalOpen(false)}>
+        <AddHealthConditionForm patientId={patientId || ""} baseUrl={baseUrl} practionerId={user.sub} onAdd={() => setModalOpen(false)} />
+      </Modal>
       <HealthConditionTable healthConditions={healthConditions} />
     </>
   );
