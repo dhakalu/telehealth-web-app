@@ -68,7 +68,7 @@ export default function PatientChat() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-gray-50">
+    <div className="min-h-screen flex flex-col ">
       <ChatComponent
         wsUrl={wsUrl}
         chat={chat}

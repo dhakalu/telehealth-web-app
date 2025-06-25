@@ -4,10 +4,14 @@ import { ActionFunctionArgs, Form, redirect } from "react-router";
 import axios from "axios";
 import { API_BASE_URL } from "~/api";
 import { requireAuthCookie } from "~/auth";
+import Button from "~/components/common/Button";
+import { Input } from "~/components/common/Input";
+import PageHeader from "~/components/common/PageHeader";
 
 type Question = {
   question: string;
   type: "text" | "checkbox" | "radio";
+  isMultiLine?: boolean;
   options?: string[];
   isRequired: boolean;
 }
@@ -16,6 +20,7 @@ const screeningQuestions: Question[] = [
   {
     question: "What is the reason for your visit today?",
     type: "text",
+    isMultiLine: true,
     isRequired: true,
   },
   {
@@ -159,22 +164,18 @@ export default function ScreeningQuestionAnswers() {
   };
 
   return (
-    <Form method="post" className="max-w-2xl mx-auto p-6 bg-white rounded shadow space-y-6" onSubmit={handleSubmit}>
-      <h2 className="text-2xl font-bold mb-2">Screening Questions</h2>
-      <p className="text-gray-600 mb-4">Almost there, before we connect with a doctor, please answer the following questions.</p>
+    <Form method="post" className="max-w-2xl mx-auto p-6  rounded shadow space-y-6" onSubmit={handleSubmit}>
+      <PageHeader title="Screening Questions" description="Almost there, before we connect with a doctor, please answer the following questions." />
       <div className="space-y-2">
-        <label className="block font-medium">
-          {q.question}
-          {q.isRequired && <span className="text-red-500 ml-1">*</span>}
-        </label>
         {q.type === "text" && (
-          <input
+          <Input
+            label={q.question}
             type="text"
-            className="w-full border rounded px-3 py-2"
             name={`question-${current}`}
             required={q.isRequired}
             value={typeof answers[q.question] === 'string' ? answers[q.question] as string : ''}
             onChange={handleChange}
+            textarea={q.isMultiLine}
           />
         )}
         {q.type === "checkbox" && q.options && (
@@ -183,6 +184,7 @@ export default function ScreeningQuestionAnswers() {
               <label key={oidx} className="flex items-center gap-2">
                 <input
                   type="checkbox"
+                  className="checkbox"
                   name={`question-${current}`}
                   value={opt}
                   checked={Array.isArray(answers[q.question]) && (answers[q.question] as string[]).includes(opt)}
@@ -199,6 +201,7 @@ export default function ScreeningQuestionAnswers() {
               <label key={oidx} className="flex items-center gap-2">
                 <input
                   type="radio"
+                  className="radio"
                   name={`question-${current}`}
                   value={opt}
                   checked={answers[q.question] === opt}
@@ -212,9 +215,9 @@ export default function ScreeningQuestionAnswers() {
         )}
       </div>
       <div className="flex gap-4 mt-6">
-        <button type="button" className="px-4 py-2 rounded bg-gray-200" onClick={handlePrev} disabled={current === 0}>Previous</button>
+        <Button type="button" buttonType={"secondaryReversed"} onClick={handlePrev} disabled={current === 0}>Previous</Button>
         {current < screeningQuestions.length - 1 ? (
-          <button type="button" className="px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700" onClick={handleNext}>Next</button>
+          <Button type="button" buttonType={"parimaryReversed"} onClick={handleNext}>Next</Button>
         ) : (
           <button type="submit" className="px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700" disabled={submitting}>Submit</button>
         )}

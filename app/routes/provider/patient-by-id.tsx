@@ -61,11 +61,11 @@ export default function EncountersPage() {
     ];
 
     return (
-        <div className="min-h-screen bg-gray-50 flex flex-col">
-            <div className="flex border-b bg-white overflow-x-auto no-scrollbar">
+        <div className="min-h-screen  flex flex-col">
+            <div className="flex overflow-x-auto no-scrollbar">
                 <TabNav tabs={tabs} />
             </div>
-            <div className="w3-container city">
+            <div className="bg-base-100 border-base-300">
                 <Outlet />
             </div>
         </div>

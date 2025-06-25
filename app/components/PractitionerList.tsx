@@ -66,12 +66,12 @@ export const PractitionerList: React.FC<{
   return (
     <div>
       {
-        !practitioners.length ? <div className="text-gray-600">No practitioners available at this time</div> : <ul className="space-y-2">
+        !practitioners.length ? <div className="opacity-60">No practitioners available at this time</div> : <ul className="space-y-2">
           {practitioners.map((p, idx) => {
             // Use the first identifier value as doctorId if available
             const doctorId = p.id;
             return (
-              <li key={idx} className="border rounded p-3 bg-white shadow flex items-center justify-between">
+              <li key={idx} className="bg-base-100 rounded p-3 shadow flex items-center justify-between">
                 <div>
                   <a
                     href={`/patient/profile/${p.id}`}
@@ -81,11 +81,11 @@ export const PractitionerList: React.FC<{
                   </a>
                   <div className="flex items-center gap-2 mb-1">
                     <StarRating rating={p.rating} />
-                    {typeof p.rating === 'number' && <span className="text-xs text-gray-500">{p.rating.toFixed(1)}</span>}
+                    {typeof p.rating === 'number' && <span className="text-xs opacity-60">{p.rating.toFixed(1)}</span>}
                   </div>
-                  <div className="text-sm text-gray-600">Gender: {p.gender || "Unknown"}</div>
-                  <div className="text-sm text-gray-600">Qualification: {p.qualification}</div>
-                  <div className="text-sm text-gray-600">Specialty: {p.specialty}</div>
+                  <div className="text-sm opacity-60">Gender: {p.gender || "Unknown"}</div>
+                  <div className="text-sm opacity-60">Qualification: {p.qualification}</div>
+                  <div className="text-sm opacity-60">Specialty: {p.specialty}</div>
                 </div>
                 <div>
                   <button

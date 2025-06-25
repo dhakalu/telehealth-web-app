@@ -4,6 +4,7 @@ import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import Confetti from "react-confetti";
 import { API_BASE_URL } from "~/api";
+import Button from "~/components/common/Button";
 
 export const loader = async ({ params }: LoaderFunctionArgs) => {
 
@@ -65,7 +66,7 @@ export default function EstimatePage() {
   }, []);
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50">
+    <div className="flex flex-col items-center justify-center min-h-screen ">
       {showConfetti && <Confetti
         width={window.innerWidth}
         height={window.innerHeight}
@@ -80,30 +81,30 @@ export default function EstimatePage() {
           h: 0,
         }}
       />}
-      <div className="bg-white p-8 rounded shadow-md w-full max-w-xl text-center">
+      <div className=" p-8 rounded shadow-md w-full max-w-xl text-center">
         {error && <div className="text-red-500">{error}</div>}
         {cost !== undefined && !error && (
           <>
-            <div className="text-2xl font-bold text-blue-700 mb-8">
+            <div className="text-2xl font-bold mb-8">
               Based on your questions and the doctor you selected, your cost of estimate is ${cost}.<br />
-              <span className="text-base font-normal text-gray-600">The actual cost could change based on the actual visit.</span>
+              <span className="text-base font-normal opacity-60">The actual cost could change based on the actual visit.</span>
             </div>
             <div className="flex justify-center gap-6 mt-6">
-              <button
-                className="btn btn-success bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700"
+              <Button
+                buttonType="primary"
                 onClick={handleAccept}
                 ref={acceptBtnRef}
                 disabled={showConfetti}
               >
                 Accept
-              </button>
-              <button
-                className="btn btn-danger bg-red-600 text-white px-6 py-2 rounded hover:bg-red-700"
+              </Button>
+              <Button
+                buttonType="danger"
                 onClick={handleReject}
                 disabled={showConfetti}
               >
                 Reject
-              </button>
+              </Button>
             </div>
           </>
         )}

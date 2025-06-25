@@ -36,8 +36,8 @@ export function ErrorBoundary() {
     }
 
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50 p-8">
-        <div className="bg-red-100 text-red-800 p-4 rounded shadow-md">
+      <div className="min-h-screen flex items-center justify-center  p-8">
+        <div className=" text-destructive p-4 rounded shadow-md">
           <h1 className="font-semibold">Error {error.status}</h1>
           <p>{error.statusText || "An unexpected error occurred."}</p>
           <p>Try refreshing the page. If the issue persists contact an Administrator.</p>
@@ -46,12 +46,12 @@ export function ErrorBoundary() {
     );
   } else if (error instanceof Error) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50 p-8">
-        <div className="bg-red-100 text-red-800 p-4 rounded shadow-md">
+      <div className="min-h-screen flex items-center justify-center  p-8">
+        <div className="text-destructive p-4 rounded shadow-md">
           <h1 className="font-semibold">Error</h1>
           <p>{error.message}</p>
           <p>The stack trace is:</p>
-          <pre className="mt-2 bg-white p-2 rounded">{error.stack}</pre>
+          <pre className="mt-2  p-2 rounded">{error.stack}</pre>
         </div>
       </div>
     );
@@ -72,7 +72,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         />
         <Links />
       </head>
-      <body>
+      <body className="bg-base-200 text-base-content">
         {children}
         <ScrollRestoration />
         <Scripts />

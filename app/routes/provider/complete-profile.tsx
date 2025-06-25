@@ -105,8 +105,8 @@ export default function CompleteProfilePage() {
 
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-50 p-8">
-            <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-md">
+        <div className="min-h-screen flex items-center justify-center  p-8">
+            <div className=" p-6 rounded-lg shadow-md w-full max-w-md">
                 <h1 className="text-2xl font-bold mb-4">Complete Your Profile</h1>
                 <p className="text-gray-600 mb-6">Please fill out the following information to complete your profile.</p>
                 <Form method="post" className="space-y-4">

@@ -73,9 +73,9 @@ export default function EstablishmentsPage() {
     }
 
     return (
-        <div className="min-h-screen bg-gray-50 flex flex-col">
+        <div className="min-h-screen  flex flex-col">
             <div className="flex-1 flex items-stretch justify-stretch">
-                <div className="bg-white p-6 rounded-none shadow-md w-full flex h-full">
+                <div className=" p-6 rounded-none shadow-md w-full flex h-full">
                     {/* Left column: Chat list */}
                     <div className="w-1/4 border-r pr-4 overflow-y-auto">
                         <h2 className="text-lg font-bold mb-4">Current Patients</h2>

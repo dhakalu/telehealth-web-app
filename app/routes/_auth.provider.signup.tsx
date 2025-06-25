@@ -21,7 +21,7 @@ export const action = signupAction();
 export default function UserSignUpPage() {
   const { error } = useActionData<{ error?: string }>() || {};
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 p-8">
+    <div className="min-h-screen flex items-center justify-center  p-8">
       <UserSignUp error={error!} />
     </div>
   );

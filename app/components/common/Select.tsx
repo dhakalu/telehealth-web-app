@@ -20,7 +20,7 @@ export const Select: React.FC<SelectProps> = ({ label, options, error, id, class
       </label>
       <select
         id={selectId}
-        className={`w-full border px-2 py-1 rounded ${error ? "border-red-500" : ""} ${className}`}
+        className={'select'}
         {...props}
       >
         <option value="">Select...</option>
@@ -30,7 +30,7 @@ export const Select: React.FC<SelectProps> = ({ label, options, error, id, class
           </option>
         ))}
       </select>
-      {error && <div className="text-red-500 text-xs mt-1">{error}</div>}
+      {error && <div className="text-error-content text-xs mt-1">{error}</div>}
     </div>
   );
 };

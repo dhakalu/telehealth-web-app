@@ -1,4 +1,5 @@
 import type { MetaFunction } from "react-router";
+import Card from "~/components/common/Card";
 
 export const meta: MetaFunction = () => {
   return [
@@ -17,40 +18,42 @@ export default function Index() {
             alt="MedTok Logo"
             className="h-24 w-24 rounded-full shadow-lg"
           />
-          <h1 className="leading text-2xl font-bold text-gray-800 dark:text-gray-100">
+          <h1 className="leading text-2xl font-bold">
             Welcome to MedTok
           </h1>
 
         </header>
-        <nav className="flex flex-col items-center justify-center gap-4 rounded-3xl border border-gray-200 p-6 dark:border-gray-700">
-          <p className="leading-6 text-gray-700 dark:text-gray-200">
-            Are you a practitioner or a patient?
-          </p>
-          <ul>
-            <li>
-              <a
-                className="group flex items-center gap-3 self-stretch p-3 leading-normal text-blue-700 hover:underline dark:text-blue-500"
-                href="/provider"
-              >
-                <span role="img" aria-label="doctor">
-                  🩺
-                </span>{" "}
-                Practitioner
-              </a>
-            </li>
-            <li>
-              <a
-                className="group flex items-center gap-3 self-stretch p-3 leading-normal text-blue-700 hover:underline dark:text-blue-500"
-                href="/patient"
-              >
-                <span role="img" aria-label="user">
-                  👤
-                </span>{" "}
-                Patient
-              </a>
-            </li>
+        <nav>
+          <Card>
+            <p className="leading-6">
+              Are you a practitioner or a patient?
+            </p>
+            <ul>
+              <li>
+                <a
+                  className="group flex items-center gap-3 self-stretch p-3 leading-normal text-link hover:underline"
+                  href="/provider"
+                >
+                  <span role="img" aria-label="doctor">
+                    🩺
+                  </span>{" "}
+                  Practitioner
+                </a>
+              </li>
+              <li>
+                <a
+                  className="group flex items-center gap-3 self-stretch p-3 leading-normal text-link hover:underline"
+                  href="/patient"
+                >
+                  <span role="img" aria-label="user">
+                    👤
+                  </span>{" "}
+                  Patient
+                </a>
+              </li>
 
-          </ul>
+            </ul>
+          </Card>
         </nav>
       </div>
     </div>
