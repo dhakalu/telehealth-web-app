@@ -215,9 +215,9 @@ export default function ScreeningQuestionAnswers() {
         )}
       </div>
       <div className="flex gap-4 mt-6">
-        <Button type="button" buttonType={"secondaryReversed"} onClick={handlePrev} disabled={current === 0}>Previous</Button>
+        <Button type="button" buttonType={"primary"} soft onClick={handlePrev} disabled={current === 0}>Previous</Button>
         {current < screeningQuestions.length - 1 ? (
-          <Button type="button" buttonType={"parimaryReversed"} onClick={handleNext}>Next</Button>
+          <Button type="button" buttonType={"primary"} soft onClick={handleNext}>Next</Button>
         ) : (
           <button type="submit" className="px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700" disabled={submitting}>Submit</button>
         )}

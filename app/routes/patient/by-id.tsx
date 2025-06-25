@@ -5,9 +5,6 @@ import { requireAuthCookie } from "~/auth";
 import ErrorPage from "~/components/common/ErrorPage";
 import PageHeader from "~/components/common/PageHeader";
 import { Tab, TabNav } from "~/components/common/TabNav";
-export { ErrorBoundary } from "~/root";
-
-
 
 export const loader: LoaderFunction = async ({ request }) => {
   const user = await requireAuthCookie(request);
@@ -17,6 +14,8 @@ export const loader: LoaderFunction = async ({ request }) => {
   }
   return { user };
 }
+
+// export const ErrorBoundary = ErrorBoundary
 
 
 export default function PatientHome() {

@@ -1,16 +1,18 @@
 import React from "react";
 import { Form } from "react-router";
+import Button from "./common/Button";
 
 type UserSignUpProps = {
   error: string | null;
+  isSubmitting: boolean;
 };
 
-export const UserSignUp: React.FC<UserSignUpProps> = ({ error }) => {
+export const UserSignUp: React.FC<UserSignUpProps> = ({ error, isSubmitting }) => {
 
   return (
     <Form className="max-w-xl mx-auto p-6  rounded shadow space-y-4" method="post">
       <h2 className="text-2xl font-bold mb-4">Sign Up</h2>
-      <div className="text-sm text-gray-500 mb-2">* indicates required fields</div>
+      <div className="text-sm mb-2 opacity-80">* indicates required fields</div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {/* Required: User Type */}
         <div className="flex flex-col">
@@ -54,17 +56,20 @@ export const UserSignUp: React.FC<UserSignUpProps> = ({ error }) => {
           <input name="password" placeholder="Password" className="input" type="password" required />
         </div>
       </div>
+      {error && <div className="text-red-500">{error}</div>}
+
       <div className="flex center mt-4">
-        <button type="submit" className="btn btn-primary px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700">
-          Sign Up
-        </button>
+        {
+          isSubmitting ? (<div>Loading...</div>) : (<Button type="submit" className="btn btn-primary px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700">
+            Sign Up
+          </Button>)
+        }
       </div>
       <div>
         <a href="/login" className="text-blue-600 hover:underline">
           Already have an account? Login
         </a>
       </div>
-      {error && <div className="text-red-500">{error}</div>}
-    </Form>
+    </Form >
   );
 };

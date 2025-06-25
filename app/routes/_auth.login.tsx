@@ -26,6 +26,16 @@ export default function UserLoginPage() {
   return (
     <div className="min-h-screen flex items-center justify-center p-8">
       <Card>
+        <header className="flex flex-col items-center gap-9">
+          <img
+            src="/logo.png"
+            alt="MedTok Logo"
+            className="h-24 w-24 rounded-full shadow-lg"
+          />
+          <h1 className="leading text-2xl font-bold">
+            Login to MedTok
+          </h1>
+        </header>
         <UserLogin signupUrl="/signup" error={error} isLoading={isSubmitting} />
       </Card>
     </div>

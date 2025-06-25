@@ -1,4 +1,4 @@
-import type { MetaFunction } from "react-router";
+import { redirect, type MetaFunction } from "react-router";
 import Card from "~/components/common/Card";
 
 export const meta: MetaFunction = () => {
@@ -7,6 +7,8 @@ export const meta: MetaFunction = () => {
     { name: "description", content: "Welcome medtok" },
   ];
 };
+
+export const loader = () => redirect("/login")
 
 export default function Index() {
   return (
@@ -21,7 +23,7 @@ export default function Index() {
           <h1 className="leading text-2xl font-bold">
             Welcome to MedTok
           </h1>
-
+          <p>Sign in below to continue</p>
         </header>
         <nav>
           <Card>
