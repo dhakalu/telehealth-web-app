@@ -4,9 +4,13 @@ import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import Confetti from "react-confetti";
 import { API_BASE_URL } from "~/api";
+import { requireAuthCookie } from "~/auth";
 import Button from "~/components/common/Button";
+import { User } from "../provider/complete-profile";
 
-export const loader = async ({ params }: LoaderFunctionArgs) => {
+export const loader = async ({ request, params }: LoaderFunctionArgs) => {
+
+  const user = await requireAuthCookie(request);
 
   const { providerId, questionnaireId } = params;
 
@@ -20,7 +24,7 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
       `${API_BASE_URL}/cost-estimation`,
       payload
     );
-    return Response.json({ cost: res.data.estimated_cost, providerId });
+    return Response.json({ user, cost: res.data.estimated_cost, providerId, baseUrl: API_BASE_URL });
   } catch (error) {
     let message = "Failed to fetch estimate.";
     let status = 500
@@ -33,7 +37,13 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
 };
 
 export default function EstimatePage() {
-  const { cost, error, providerId } = useLoaderData<typeof loader>();
+  const { user, cost, error, providerId, baseUrl } = useLoaderData<{
+    cost: string;
+    user: User,
+    error: string;
+    providerId: string;
+    baseUrl: string;
+  }>();
   const navigate = useNavigate();
   const [showConfetti, setShowConfetti] = useState(false);
   const [confettiOrigin, setConfettiOrigin] = useState<{ x: number, y: number } | null>(null);
@@ -41,7 +51,7 @@ export default function EstimatePage() {
   const acceptBtnRef = useRef<HTMLButtonElement>(null);
 
 
-  const handleAccept = () => {
+  const handleAccept = async () => {
     if (acceptBtnRef.current) {
       const rect = acceptBtnRef.current.getBoundingClientRect();
       setConfettiOrigin({
@@ -49,11 +59,21 @@ export default function EstimatePage() {
         y: rect.top + rect.height / 2,
       });
     }
+
     setShowConfetti(true);
-    confettiTimeout.current = setTimeout(() => {
+    try {
+      await axios.put(`${baseUrl}/establishment`, {
+        patientId: user.sub,
+        practitionerId: providerId,
+        status: "pending"
+      });
+      confettiTimeout.current = setTimeout(() => {
+        setShowConfetti(false);
+        navigate(`/patient/chat/${providerId}`);
+      }, 1800);
+    } catch {
       setShowConfetti(false);
-      navigate(`/patient/chat/${providerId}`);
-    }, 1800);
+    }
   };
   const handleReject = () => {
     navigate(`/patient/find-doctors`);
@@ -99,7 +119,7 @@ export default function EstimatePage() {
                 Accept
               </Button>
               <Button
-                buttonType="danger"
+                buttonType="error"
                 onClick={handleReject}
                 disabled={showConfetti}
               >

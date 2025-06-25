@@ -17,7 +17,6 @@ export const loader: LoaderFunction = async ({ request, params }) => {
 
   try {
     const chatUrl = `${API_BASE_URL}/chat/by-patient-and-provider?patientId=${patientId}&practitionerId=${providerId}`
-    console.log('chat url', chatUrl)
     const chatResponse = await axios.get(chatUrl);
     const chat = chatResponse.data as Chat;
     const messages = await axios.get(`${API_BASE_URL}/chat/${chat.chatId}/messages`)
@@ -52,6 +51,7 @@ export default function PractitionerChat() {
   }
   return (
     <ChatComponent
+      key={chat.patientId}
       wsUrl={wsUrl}
       chat={chat}
       receiverId={chat.patientId}

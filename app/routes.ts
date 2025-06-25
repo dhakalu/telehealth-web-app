@@ -31,6 +31,7 @@ export default remixRoutesOptionAdapter((defineRoutes) => {
       route("", "./routes/provider/index.tsx", { index: true });
       route("complete-profile", "./routes/provider/complete-profile.tsx");
       route("patients", "./routes/provider/patients.tsx", () => {
+        route("", "./routes/provider/patients_index.tsx", { index: true })
         route(":patientId", "./routes/provider/patient-by-id.tsx", () => {
           route("chat", "./routes/provider/chat.tsx");
           route("allergy", "./routes/provider/allergy.tsx");

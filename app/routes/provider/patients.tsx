@@ -5,6 +5,7 @@ import { useState } from "react";
 import { API_BASE_URL } from "~/api";
 import { requireAuthCookie } from "~/auth";
 import ErrorPage from "~/components/common/ErrorPage";
+import EstablishmentList, { Establishment } from "~/components/provider/EstablishmentList";
 import { User } from "./complete-profile";
 
 type EncounterType = "in-person" | "telehealth"
@@ -24,13 +25,7 @@ export type Encounter = {
     provider: User
 }
 
-type Establishment = {
-    id: string;
-    providerId: string;
-    patientId: string;
-    patient: User,
-    provider: User,
-}
+
 
 
 export const loader: LoaderFunction = async ({ request }) => {
@@ -51,6 +46,8 @@ export const loader: LoaderFunction = async ({ request }) => {
         }
     }
 }
+
+
 
 export default function EstablishmentsPage() {
 
@@ -75,29 +72,13 @@ export default function EstablishmentsPage() {
     return (
         <div className="min-h-screen flex flex-col">
             <div className="flex-1 flex items-stretch justify-stretch">
-                <div className="p-6 rounded-none shadow-md w-full flex h-full">
+                <div className="w-full flex">
                     {/* Left column: Chat list */}
-                    <div className="w-1/4  pr-4 overflow-y-auto">
-                        <h2 className="text-lg font-bold mb-4">Current Patients</h2>
-                        {establishments && establishments.length > 0 ? (
-                            <ul className="list">
-                                {establishments.map((establishment) => (
-                                    <li
-                                        key={establishment.id}
-                                        className={`list-row cursor-pointer ${selectedEstablishmentId === establishment.id ? "bg-base-100" : "hover:bg-base-100"}`}
-                                        onClick={() => handleSelectEestablishment(establishment)}
-                                    >
-                                        <div className="font-medium">Patient: {establishment.patient?.given_name} {establishment.patient?.family_name}</div>
-                                        <div className="text-xs">Patient Id: {establishment.patientId}</div>
-                                    </li>
-                                ))}
-                            </ul>
-                        ) : (
-                            <div className="mt-8 text-center opacity-60">No active patients</div>
-                        )}
+                    <div className="w-1/4 overflow-y-auto shadow-lg hidden lg:block">
+                        <EstablishmentList establishments={establishments} onSelect={handleSelectEestablishment} selectedEstablishmentId={selectedEstablishmentId} />
                     </div>
                     {/* Right column: Selected chat */}
-                    <div className="w-3/4 pl-4 flex flex-col h-full">
+                    <div className="lg:w-3/4 w-full pl-1 flex-col">
                         <Outlet />
                     </div>
                 </div>
