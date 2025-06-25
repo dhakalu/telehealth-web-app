@@ -2,7 +2,7 @@ import { ReactNode, Ref } from "react";
 
 export type ButtonType = "primary" | "secondary" | "danger" | "secondaryReversed" | "parimaryReversed" | "accent" | "accentReversed";
 
-interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     children: ReactNode;
     buttonType?: ButtonType;
     ref?: Ref<HTMLButtonElement>

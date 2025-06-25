@@ -77,14 +77,14 @@ export default function EstablishmentsPage() {
             <div className="flex-1 flex items-stretch justify-stretch">
                 <div className="p-6 rounded-none shadow-md w-full flex h-full">
                     {/* Left column: Chat list */}
-                    <div className="w-1/4 border-r pr-4 overflow-y-auto">
+                    <div className="w-1/4  pr-4 overflow-y-auto">
                         <h2 className="text-lg font-bold mb-4">Current Patients</h2>
                         {establishments && establishments.length > 0 ? (
-                            <ul className="list bg-base-100 rounded-box shadow-md">
+                            <ul className="list">
                                 {establishments.map((establishment) => (
                                     <li
                                         key={establishment.id}
-                                        className={`mb-2 p-2 rounded cursor-pointer ${selectedEstablishmentId === establishment.id ? "bg-base-100" : "hover:bg-base-100"}`}
+                                        className={`list-row cursor-pointer ${selectedEstablishmentId === establishment.id ? "bg-base-100" : "hover:bg-base-100"}`}
                                         onClick={() => handleSelectEestablishment(establishment)}
                                     >
                                         <div className="font-medium">Patient: {establishment.patient?.given_name} {establishment.patient?.family_name}</div>
@@ -93,7 +93,7 @@ export default function EstablishmentsPage() {
                                 ))}
                             </ul>
                         ) : (
-                            <div className="text-gray-500 mt-8 text-center">No active patients</div>
+                            <div className="mt-8 text-center opacity-60">No active patients</div>
                         )}
                     </div>
                     {/* Right column: Selected chat */}
