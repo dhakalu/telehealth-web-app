@@ -73,22 +73,22 @@ export default function EstablishmentsPage() {
     }
 
     return (
-        <div className="min-h-screen  flex flex-col">
+        <div className="min-h-screen flex flex-col">
             <div className="flex-1 flex items-stretch justify-stretch">
-                <div className=" p-6 rounded-none shadow-md w-full flex h-full">
+                <div className="p-6 rounded-none shadow-md w-full flex h-full">
                     {/* Left column: Chat list */}
                     <div className="w-1/4 border-r pr-4 overflow-y-auto">
                         <h2 className="text-lg font-bold mb-4">Current Patients</h2>
                         {establishments && establishments.length > 0 ? (
-                            <ul>
+                            <ul className="list bg-base-100 rounded-box shadow-md">
                                 {establishments.map((establishment) => (
                                     <li
                                         key={establishment.id}
-                                        className={`mb-2 p-2 rounded cursor-pointer ${selectedEstablishmentId === establishment.id ? "bg-blue-100" : "hover:bg-gray-100"}`}
+                                        className={`mb-2 p-2 rounded cursor-pointer ${selectedEstablishmentId === establishment.id ? "bg-base-100" : "hover:bg-base-100"}`}
                                         onClick={() => handleSelectEestablishment(establishment)}
                                     >
                                         <div className="font-medium">Patient: {establishment.patient?.given_name} {establishment.patient?.family_name}</div>
-                                        <div className="text-xs text-gray-500">Patient Id: {establishment.patientId}</div>
+                                        <div className="text-xs">Patient Id: {establishment.patientId}</div>
                                     </li>
                                 ))}
                             </ul>

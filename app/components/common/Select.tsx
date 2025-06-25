@@ -11,7 +11,7 @@ type SelectProps = React.SelectHTMLAttributes<HTMLSelectElement> & {
   error?: string;
 };
 
-export const Select: React.FC<SelectProps> = ({ label, options, error, id, className = "", ...props }) => {
+export const Select: React.FC<SelectProps> = ({ label, options, error, id, ...props }) => {
   const selectId = id || props.name;
   return (
     <div className="mb-2">
