@@ -78,7 +78,7 @@ export default function EstablishmentsPage() {
                         <EstablishmentList establishments={establishments} onSelect={handleSelectEestablishment} selectedEstablishmentId={selectedEstablishmentId} />
                     </div>
                     {/* Right column: Selected chat */}
-                    <div className="lg:w-3/4 w-full pl-1 flex-col">
+                    <div className="lg:w-3/4 w-full pl-1 pt-1 flex-col">
                         <Outlet />
                     </div>
                 </div>
