@@ -17,23 +17,25 @@ export function Table<T extends { id: string }>({ columns, data, emptyMessage = 
     return <div className="mt-4">{emptyMessage}</div>;
   }
   return (
-    <table className={"table table-zebra"}>
-      <thead>
-        <tr>
-          {columns.map((col, idx) => (
-            <th key={idx}>{col.header}</th>
-          ))}
-        </tr>
-      </thead>
-      <tbody>
-        {data.map((row) => (
-          <tr key={row.id} className="hover:bg-hover">
+    <div className="overflow-x-auto">
+      <table className={"table table-zebra"}>
+        <thead>
+          <tr>
             {columns.map((col, idx) => (
-              <td key={idx}>{col.accessor(row)}</td>
+              <th key={idx}>{col.header}</th>
             ))}
           </tr>
-        ))}
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          {data.map((row) => (
+            <tr key={row.id} className="hover:bg-hover">
+              {columns.map((col, idx) => (
+                <td key={idx}>{col.accessor(row)}</td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 }

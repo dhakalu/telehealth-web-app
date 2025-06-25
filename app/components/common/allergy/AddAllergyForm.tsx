@@ -111,7 +111,8 @@ const AddAllergyForm: React.FC<AddAllergyFormProps> = ({ onClose, onAdd, patient
 
       <div className="flex justify-end gap-2 mt-4">
         <Button
-          buttonType="parimaryReversed"
+          buttonType="warning"
+          soft
           type="button"
           onClick={onClose}
           disabled={submitting}
