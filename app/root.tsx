@@ -67,12 +67,12 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta
-          name="MedToc"
+          name="description"
           content="Find doctors 24/7"
         />
         <Links />
       </head>
-      <body className="bg-base-200 text-base-content">
+      <body className="bg-base-200 text-base-content h-full">
         {children}
         <ScrollRestoration />
         <Scripts />

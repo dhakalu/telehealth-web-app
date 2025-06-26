@@ -32,29 +32,33 @@ export const loader: LoaderFunction = async ({ request }) => {
 export default function NotFound() {
   const user = useLoaderData<User>();
   return (
-    <>
-      <AppHeader links={[
+    <div className="flex flex-col h-screen">
+      <div className="h-50">
+        <AppHeader links={[
 
-        {
-          label: "My Health",
-          href: `/patient/${user.sub}`
-        },
-        {
-          label: "My Providers",
-          href: "/patient/providers"
-        },
-        {
-          label: "Find Doctors",
-          href: "/patient/find-doctors"
-        },
-        {
-          label: "Help & Support",
-          href: "/help"
-        }
-      ]}
-        user={user}
-      />
-      <Outlet />
-    </>
+          {
+            label: "My Health",
+            href: `/patient/${user.sub}`
+          },
+          {
+            label: "My Providers",
+            href: "/patient/providers"
+          },
+          {
+            label: "Find Doctors",
+            href: "/patient/find-doctors"
+          },
+          {
+            label: "Help & Support",
+            href: "/help"
+          }
+        ]}
+          user={user}
+        />
+      </div>
+      <div className="flex-1 overflow-y-auto">
+        <Outlet />
+      </div>
+    </div>
   );
 }

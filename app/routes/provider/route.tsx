@@ -10,22 +10,27 @@ export const loader: LoaderFunction = async ({ request }) => {
   return user;
 }
 
-export default function NotFound() {
+
+export default function ProviderAppLayout() {
   const user = useLoaderData<User>();
   return (
-    <div className="flex flex-col min-h-screen">
-      <header className="flex-[1_0_10%]">
+    <div className="flex flex-col h-screen">
+      <header className="h-50">
         <AppHeader
           links={[
             {
+              label: "Calendar",
+              href: "/provider/calendar"
+            },
+            {
               label: "Help & Support",
-              href: "/help"
+              href: "/provider/help"
             }
           ]}
           user={user}
         />
       </header>
-      <div className="flex-auto  overflow-y-auto">
+      <div className="flex-1 overflow-y-auto">
         <Outlet />
       </div>
     </div>

@@ -29,6 +29,7 @@ export default remixRoutesOptionAdapter((defineRoutes) => {
     route("/logout", "./routes/_auth.logout.tsx");
     route("/provider", "./routes/provider/route.tsx", () => {
       route("", "./routes/provider/index.tsx", { index: true });
+      route("calendar", "./routes/provider/calendar.tsx")
       route("complete-profile", "./routes/provider/complete-profile.tsx");
       route("patients", "./routes/provider/patients.tsx", () => {
         route("", "./routes/provider/patients_index.tsx", { index: true })
