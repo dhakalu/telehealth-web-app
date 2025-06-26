@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router";
 import { User } from "~/routes/provider/complete-profile";
 
-interface AppHeaderProps {
+export interface AppHeaderProps {
   links?: { label: string; href: string }[];
   user?: User;
 }

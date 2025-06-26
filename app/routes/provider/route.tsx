@@ -2,7 +2,7 @@ import { LoaderFunction, Outlet, useLoaderData } from "react-router";
 
 // Update the import path below to the correct location of requireAuthCookie
 import { requireAuthCookie } from "~/auth"; // or "./auth" or the actual relative path
-import AppHeader from "~/components/common/AppHeader";
+import { ProviderHeader } from "~/components/provider/ProviderAppHeader";
 import { User } from "./complete-profile";
 
 export const loader: LoaderFunction = async ({ request }) => {
@@ -16,19 +16,7 @@ export default function ProviderAppLayout() {
   return (
     <div className="flex flex-col h-screen">
       <header className="h-50">
-        <AppHeader
-          links={[
-            {
-              label: "Calendar",
-              href: "/provider/calendar"
-            },
-            {
-              label: "Help & Support",
-              href: "/provider/help"
-            }
-          ]}
-          user={user}
-        />
+        <ProviderHeader user={user} />
       </header>
       <div className="flex-1 overflow-y-auto">
         <Outlet />
