@@ -2,9 +2,8 @@ import { useEffect } from "react";
 import { getHourFraction } from "./calendarUtils";
 import { SCROLL_OFFSET } from "./DayView";
 
-export function useAutoScrollToNow(ref: React.RefObject<HTMLDivElement>, date: Date, hourHeight: number, enabled: boolean = true) {
+export function useAutoScrollToNow(ref: React.RefObject<HTMLDivElement>, date: Date, hourHeight: number) {
     useEffect(() => {
-        if (!enabled) return;
         const now = new Date();
         const isToday =
             now.getFullYear() === date.getFullYear() &&
@@ -15,5 +14,5 @@ export function useAutoScrollToNow(ref: React.RefObject<HTMLDivElement>, date: D
             const nowTop = nowHourFraction * hourHeight;
             ref.current.scrollTop = Math.max(0, nowTop - SCROLL_OFFSET);
         }
-    }, [date, hourHeight, enabled, ref]);
+    }, [date, hourHeight, ref]);
 }

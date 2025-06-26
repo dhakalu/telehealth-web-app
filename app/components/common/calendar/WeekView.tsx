@@ -1,13 +1,13 @@
-import React, { useEffect, useRef } from "react";
-import { Appointment, DEFAULT_HOUR_HEIGHT, DEFAULT_MAX_HEIGHT, getHourFraction, SCROLL_OFFSET } from "./DayView";
+import React, { useEffect } from "react";
+import { Appointment, DEFAULT_HOUR_HEIGHT, getHourFraction, SCROLL_OFFSET } from "./DayView";
 import { HourGrid } from "./HourGrid";
 
 export type WeekViewProps = {
     weekStartDate: Date;
     appointments: Appointment[];
     workingHours?: { start: number; end: number };
-    maxHeight?: number;
     hourHeight?: number;
+    scrollRef: React.MutableRefObject<null | HTMLDivElement>
 };
 
 const HOURS_IN_DAY = 24;
@@ -32,11 +32,10 @@ const WeekView: React.FC<WeekViewProps> = ({
     weekStartDate,
     appointments,
     workingHours = { start: 8, end: 17 },
-    maxHeight = DEFAULT_MAX_HEIGHT,
     hourHeight = DEFAULT_HOUR_HEIGHT,
+    scrollRef
 }) => {
     const weekDates = getWeekDates(weekStartDate);
-    const scrollRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         const now = new Date();
@@ -45,14 +44,14 @@ const WeekView: React.FC<WeekViewProps> = ({
         if (scrollRef.current) {
             scrollRef.current.scrollTop = Math.max(0, nowTop - SCROLL_OFFSET);
         }
-    }, [hourHeight, weekStartDate]);
+    }, [hourHeight, scrollRef, weekStartDate]);
 
     const hours = Array.from({ length: HOURS_IN_DAY }, (_, i) => i);
 
 
 
     return (
-        <div className="flex w-full border border-base-200 rounded-lg overflow-hidden shadow-sm" style={{ height: maxHeight }}>
+        <div className="flex w-full border border-base-200 rounded-lg shadow-sm">
             {/* Hour grid column */}
             <div className="flex flex-col w-20 bg-base-100 border-r border-base-300 select-none">
                 <div className="h-12" />
@@ -60,9 +59,7 @@ const WeekView: React.FC<WeekViewProps> = ({
             </div>
             {/* Scrollable week grid */}
             <div
-                ref={scrollRef}
-                className="flex-1 flex overflow-x-auto overflow-y-auto relative"
-                style={{ height: maxHeight }}
+                className="flex-1 flex relative"
             >
                 {weekDates.map((date) => {
                     const dayAppointments = filterAppointmentsForDay(appointments, date);
@@ -90,7 +87,10 @@ const WeekView: React.FC<WeekViewProps> = ({
                         ...dayAppointments.map(app => ({ ...app, type: "appointment" })),
                     ];
                     return (
-                        <div key={date.toISOString()} className="flex-1 min-w-[220px] border-r border-base-300 last:border-r-0 relative">
+                        <div key={date.toISOString()}
+                            className="flex-1 min-w-0 sm:min-w-[160px] border-r border-base-300 last:border-r-0 relative"
+                            style={{ flexBasis: 0, flexShrink: 1 }}
+                        >
                             {/* Day header */}
                             <div className="h-12 flex items-center justify-center bg-base-200 border-b border-base-300 text-sm font-semibold">
                                 {date.toLocaleDateString(undefined, { weekday: "short", month: "short", day: "numeric" })}

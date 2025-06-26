@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import DayView from "~/components/common/calendar/DayView";
 import WeekView from "~/components/common/calendar/WeekView";
 
@@ -31,7 +31,7 @@ const sampleAppts = [
 export default function Calendar() {
 
     const [view, setView] = useState<"daily" | "weekly">("daily")
-
+    const scrollAbleAreaRef = useRef<HTMLDivElement>(null);
 
 
     return <div className="h-full flex-col flex">
@@ -60,15 +60,17 @@ export default function Calendar() {
                 </ul>
             </div>
         </div>
-        <div className="overflow-hidden">
+        <div ref={scrollAbleAreaRef} className="overflow-y-auto">
             {view === "daily" ? (
                 <DayView
                     date={new Date()}
                     appointments={sampleAppts}
+                    disableScroll
+                    externalScrollRef={scrollAbleAreaRef}
                 />
             ) : (
                 <div>
-                    <WeekView weekStartDate={getSundayOfCurrentWeek()} appointments={sampleAppts} />
+                    <WeekView scrollRef={scrollAbleAreaRef} weekStartDate={getSundayOfCurrentWeek()} appointments={sampleAppts} />
                 </div>
             )}
         </div>

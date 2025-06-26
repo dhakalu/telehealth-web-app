@@ -14,15 +14,14 @@ type DayViewProps = {
     date: Date;
     appointments: Appointment[];
     workingHours?: { start: number; end: number }; // 24h format
-    maxHeight?: number;      // px, for responsive container height
     hourHeight?: number;     // px, for responsive hour block height
     disableScroll?: boolean;
+    externalScrollRef?: React.MutableRefObject<null | HTMLDivElement>
 };
 
 export const HOURS_IN_DAY = 24;
 export const SCROLL_OFFSET = 200; // px, offset for auto-scroll to current time
 export const DEFAULT_HOUR_HEIGHT = 72;
-export const DEFAULT_MAX_HEIGHT = 700;
 
 export function getHourFraction(date: Date) {
     return date.getHours() + date.getMinutes() / 60;
@@ -32,13 +31,14 @@ const DayView: React.FC<DayViewProps> = ({
     date,
     appointments,
     workingHours = { start: 8, end: 17 },
-    maxHeight = DEFAULT_MAX_HEIGHT,
     hourHeight = DEFAULT_HOUR_HEIGHT,
-    disableScroll,
+    externalScrollRef
 }) => {
+    const localScrollRef = useRef<HTMLDivElement>(null);
 
-    const scrollRef = useRef<HTMLDivElement>(null);
-    useAutoScrollToNow(scrollRef, date, hourHeight, !disableScroll);
+
+    const scrollRef = externalScrollRef ?? localScrollRef;
+    useAutoScrollToNow(scrollRef, date, hourHeight);
 
     const now = new Date();
     const isToday =
@@ -52,18 +52,9 @@ const DayView: React.FC<DayViewProps> = ({
 
     const allEvents: CalendarEvent[] = getAllEvents(date, appointments, workingHours);
 
-    const scrollProps = disableScroll
-        ? {}
-        : {
-            ref: scrollRef,
-            style: {
-                maxHeight,
-                overflowY: "auto" as React.CSSProperties["overflowY"],
-            },
-        };
 
     return (
-        <div className="max-h-full border border-base-200 rounded-lg overflow-hidden shadow-sm">
+        <div className="max-h-full border border-base-200 rounded-lg shadow-sm">
             <div className="p-4 bg-base-200 border-b border-base-300">
                 <strong>
                     {date.toLocaleDateString(undefined, {
@@ -74,7 +65,7 @@ const DayView: React.FC<DayViewProps> = ({
                     })}
                 </strong>
             </div>
-            <div className="relative" {...scrollProps}>
+            <div className="relative">
                 <HourGrid />
                 {/* curent time overlay */}
                 {isToday && (

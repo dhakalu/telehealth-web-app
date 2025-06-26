@@ -34,7 +34,7 @@ const AppHeader: React.FC<AppHeaderProps> = ({ links, user }) => {
         <header className="navbar flex bg-base-300 shadow-sm w-full lg:pl-10 pr-4">
           <div className="flex-none nav-start lg:hidden">
             <label aria-label="open sidebar" htmlFor="my-drawer-3" className="btn btn-ghost">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h8m-8 6h16" /> </svg>
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"> <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h8m-8 6h16" /> </svg>
             </label>
           </div>
           <div>
@@ -48,7 +48,7 @@ const AppHeader: React.FC<AppHeaderProps> = ({ links, user }) => {
               {(links || []).map((link) => {
                 const isActive = location.pathname === link.href || (link.href !== "/" && location.pathname.startsWith(link.href));
                 return (
-                  <li>
+                  <li key={link.href}>
                     <a
                       key={link.href}
                       href={link.href}
@@ -104,7 +104,7 @@ const AppHeader: React.FC<AppHeaderProps> = ({ links, user }) => {
           <div className="divider" />
           <ul>
             {(links || []).map((link) => (
-              <li className="p-1">
+              <li className="p-1" key={link.href}>
                 <a
                   key={link.href}
                   href={link.href}
