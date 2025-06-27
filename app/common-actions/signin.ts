@@ -1,5 +1,5 @@
-import { ActionFunctionArgs, redirect } from "react-router";
 import axios, { AxiosError } from "axios";
+import { ActionFunctionArgs, redirect } from "react-router";
 import { API_BASE_URL } from "~/api";
 import { authCookie } from "~/auth";
 import { ApiError } from "~/routes/_auth.provider.signup";
@@ -9,31 +9,31 @@ export const signInAction = () => async ({ request }: ActionFunctionArgs) => {
   const email = formData.get("email");
   try {
     const response = await axios.post(`${API_BASE_URL}/login`, {
-        email,
+      email,
     });
     console.log("Login response:", response.data);
     const user = response.data;
     const status = response.status;
     if (!user || !user.sub) {
-        return Response.json({error: "Invalid username or passwrod"}, {
-            status,
-        });
+      return Response.json({ error: "Invalid username or passwrod" }, {
+        status,
+      });
     }
     if (user.status === "created") {
-        return Response.json({error: "Account not activated"}, {
-            status: 401,
-        });
+      return Response.json({ error: "Account not activated" }, {
+        status: 401,
+      });
     }
     const appPath = user.account_type == "patient" ? "/patient" : "/provider"
     return redirect(appPath, {
-        headers: {
-            "Set-Cookie": await authCookie.serialize(JSON.stringify(user))
-        }
+      headers: {
+        "Set-Cookie": await authCookie.serialize(JSON.stringify(user))
+      }
     });
   } catch (error) {
     console.error("Login error:", error);
-    return  Response.json({error: ((error as AxiosError).response?.data as ApiError)?.error || ""}, {
-      status: (error  as AxiosError).response?.status || 500,
+    return Response.json({ error: ((error as AxiosError).response?.data as ApiError)?.error || "Unexpected error occurred. Please try again later." }, {
+      status: (error as AxiosError).response?.status || 500,
     });
   }
 }
