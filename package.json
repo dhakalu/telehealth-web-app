@@ -24,6 +24,8 @@
     "clsx": "^2.1.1",
     "compression": "^1.8.0",
     "daisyui": "^5.0.43",
+    "date-fns": "^4.1.0",
+    "date-fns-tz": "^3.2.0",
     "esbuild": "^0.25.5",
     "express": "^4.21.2",
     "express-async-errors": "^3.1.1",
