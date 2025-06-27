@@ -1,5 +1,6 @@
 import axios from 'axios';
 import React, { useState } from 'react';
+import { useToast } from '../../hooks/useToast';
 import { formatDateForApi, formatDateToLongDay, formatTimeToAmPm, getDatePlus30Minutes } from '../../utils/dateUtils';
 import Button from '../common/Button';
 import { ProviderAvailability } from './ProviderAvailability';
@@ -17,20 +18,18 @@ export function BookAppointment({ providerId, patientId, onAppointmentBooked, ba
     const [description, setDescription] = useState<string>('');
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
-    const [successMessage, setSuccessMessage] = useState<string | null>(null);
+    const toast = useToast();
 
     const handleTimeSlotSelect = (dateTime: Date) => {
         setSelectedDate(dateTime);
-        setError(null);
-        setSuccessMessage(null);
+        setError(null); // Clear any existing errors when a date is selected
     };
 
     const clearSelectedDate = () => {
         setSelectedDate(null);
         setTitle('');
         setDescription('');
-        setError(null);
-        setSuccessMessage(null);
+        setError(null); // Clear any existing errors
     }
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -45,6 +44,9 @@ export function BookAppointment({ providerId, patientId, onAppointmentBooked, ba
             setError('Please provide a reason for your appointment');
             return;
         }
+
+        // Clear any existing errors when proceeding with submission
+        setError(null);
 
         try {
             setLoading(true);
@@ -65,7 +67,7 @@ export function BookAppointment({ providerId, patientId, onAppointmentBooked, ba
                 appointmentData
             );
 
-            setSuccessMessage('Appointment scheduled successfully!');
+            toast.success('Appointment scheduled successfully!');
 
             if (onAppointmentBooked && response.data && response.data.id) {
                 onAppointmentBooked(response.data.id);
@@ -133,14 +135,8 @@ export function BookAppointment({ providerId, patientId, onAppointmentBooked, ba
                     </div>
 
                     {error && (
-                        <div className="border border-error/30 text-error rounded-md p-3">
+                        <div className="bg-error text-error-content p-3">
                             {error}
-                        </div>
-                    )}
-
-                    {successMessage && (
-                        <div className="border border-success/30 text-success rounded-md p-3">
-                            {successMessage}
                         </div>
                     )}
 

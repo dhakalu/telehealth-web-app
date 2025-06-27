@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useState } from "react";
 import { Input } from "~/components/common/Input";
 import { Select } from "~/components/common/Select";
+import { useToast } from "~/hooks/useToast";
 import Button from "../Button";
 import { Allergy } from "./types";
 
@@ -24,6 +25,7 @@ const AddAllergyForm: React.FC<AddAllergyFormProps> = ({ onClose, onAdd, patient
   const [form, setForm] = useState(initialForm);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const toast = useToast();
 
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -41,6 +43,7 @@ const AddAllergyForm: React.FC<AddAllergyFormProps> = ({ onClose, onAdd, patient
       if (onAdd) {
         onAdd(createdAllergy);
       }
+      toast.success("Allergy added successfully.")
       setForm(initialForm);
       onClose();
     } catch (err) {

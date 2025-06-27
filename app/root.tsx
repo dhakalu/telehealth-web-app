@@ -10,6 +10,8 @@ import {
 } from "react-router";
 
 import ErrorPage from "./components/common/ErrorPage";
+import { NotificationsContainer } from "./components/common/Notifications";
+import { NotificationProvider } from "./context/NotificationContext";
 import NotFoundPage from "./NotFoundPage";
 import "./tailwind.css";
 
@@ -73,7 +75,10 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body className="bg-base-200 text-base-content h-full">
-        {children}
+        <NotificationProvider>
+          {children}
+          <NotificationsContainer />
+        </NotificationProvider>
         <ScrollRestoration />
         <Scripts />
       </body>

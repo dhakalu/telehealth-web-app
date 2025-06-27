@@ -2,6 +2,7 @@ import axios from "axios";
 import { useState } from "react";
 import { Input } from "~/components/common/Input";
 import { Select } from "~/components/common/Select";
+import { useToast } from "~/hooks/useToast";
 import Button from "../Button";
 import { Medication } from "./types";
 
@@ -28,6 +29,7 @@ export default function AddMedicationForm({ baseUrl, onClose, onAdd, patientId }
 
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const toast = useToast();
 
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -46,10 +48,18 @@ export default function AddMedicationForm({ baseUrl, onClose, onAdd, patientId }
       if (onAdd) {
         onAdd({ ...form, id: createdMedication.id || Math.random().toString() });
       }
+
+      toast.success(`Medication "${form.name}" added successfully!`);
+
       onClose();
       setForm(instialForm);
-    } catch {
-      setError("Failed to add medication.");
+    } catch (err) {
+      console.error('Error adding medication:', err);
+      if (axios.isAxiosError(err) && err.response?.data?.message) {
+        setError(err.response.data.message);
+      } else {
+        setError("Failed to add medication. Please try again.");
+      }
     } finally {
       setSubmitting(false);
     }

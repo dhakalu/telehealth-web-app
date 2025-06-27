@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { Input } from "~/components/common/Input";
+import { useToast } from "~/hooks/useToast";
 import Button from "../Button";
 import { Immunization } from "./types";
 
@@ -21,6 +22,7 @@ const AddImmunizationModal: React.FC<AddImmunizationModalProps> = ({ onClose, on
   const [form, setForm] = useState(initialForm);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const toast = useToast();
 
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -38,6 +40,10 @@ const AddImmunizationModal: React.FC<AddImmunizationModalProps> = ({ onClose, on
       if (onAdd) {
         onAdd(createdImmunization);
       }
+
+      // Show success toast message
+      toast.success(`Immunization "${form.vaccine}" added successfully!`);
+
       onClose();
       setForm(initialForm);
     } catch (err) {

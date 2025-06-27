@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { useState } from "react";
+import { useToast } from "../../../hooks/useToast";
 import Button from "../Button";
 import { Procedure } from "./types";
 
@@ -24,6 +25,7 @@ const AddProcedureForm: React.FC<AddProcedureFormProps> = ({ onClose, onAdd, pat
   const [form, setForm] = useState(initialForm);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const toast = useToast();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -40,10 +42,12 @@ const AddProcedureForm: React.FC<AddProcedureFormProps> = ({ onClose, onAdd, pat
       if (onAdd) {
         onAdd(createdProcedure);
       }
+
+      toast.success(`Procedure "${form.name}" added successfully!`);
+
       onClose?.();
       setForm(initialForm);
     } catch (err) {
-
       if (axios.isAxiosError(err) && err.response?.data?.message) {
         setError(err.response.data.message);
       } else {

@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import { ReactNode, Ref } from "react";
 
-export type ButtonType = "accent" | "neutral" | "primary" | "secondary" | "info" | "success" | "warning" | "error";
+export type ButtonType = "default" | "accent" | "neutral" | "primary" | "secondary" | "info" | "success" | "warning" | "error";
 
 export type Size = "xs" | "sm" | "md" | "lg" | "xl"
 export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {

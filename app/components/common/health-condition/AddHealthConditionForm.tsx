@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useState } from "react";
 import { Input } from "~/components/common/Input";
 import { Select } from "~/components/common/Select";
+import { useToast } from "~/hooks/useToast";
 import Button from "../Button";
 import { HealthCondition } from "./types";
 
@@ -23,6 +24,7 @@ const AddHealthConditionForm: React.FC<AddHealthConditionModalProps> = ({ onAdd,
   const [form, setForm] = useState(initialForm);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const toast = useToast();
 
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -41,10 +43,15 @@ const AddHealthConditionForm: React.FC<AddHealthConditionModalProps> = ({ onAdd,
       if (onAdd) {
         onAdd(createdHealthCondition);
       }
+
+      // Show success toast message
+      toast.success(`Health condition "${form.name}" added successfully!`);
+
+      // Reset the form
       setForm(initialForm);
     } catch (err) {
       if (axios.isAxiosError(err)) {
-        setError("Failed to add health condition.");
+        setError(err.response?.data?.message || "Failed to add health condition.");
       } else {
         setError("Unknown error.");
       }
