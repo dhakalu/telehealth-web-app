@@ -25,6 +25,14 @@ export function BookAppointment({ providerId, patientId, onAppointmentBooked, ba
         setSuccessMessage(null);
     };
 
+    const clearSelectedDate = () => {
+        setSelectedDate(null);
+        setTitle('');
+        setDescription('');
+        setError(null);
+        setSuccessMessage(null);
+    }
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
@@ -40,10 +48,6 @@ export function BookAppointment({ providerId, patientId, onAppointmentBooked, ba
 
         try {
             setLoading(true);
-
-
-
-
             // Create end date (30 minutes later)
             const endDate = getDatePlus30Minutes(selectedDate);
 
@@ -67,9 +71,7 @@ export function BookAppointment({ providerId, patientId, onAppointmentBooked, ba
                 onAppointmentBooked(response.data.id);
             }
 
-            // Reset form
-            setTitle('');
-            setDescription('');
+            clearSelectedDate();
 
         } catch (err) {
             console.error('Error booking appointment:', err);
@@ -98,17 +100,7 @@ export function BookAppointment({ providerId, patientId, onAppointmentBooked, ba
                         <h3 className="text-lg font-medium">
                             Book appointment for: {formatDateToLongDay(selectedDate as Date)} at {formatTimeToAmPm(selectedDate as Date)}
                         </h3>
-                        <button
-                            type="button"
-                            onClick={() => {
-                                setSelectedDate(null);
-                                setError(null);
-                                setSuccessMessage(null);
-                            }}
-                            className="text-sm text-base-content/70 hover:text-base-content underline"
-                        >
-                            Change time
-                        </button>
+
                     </div>
 
                     <div>
@@ -157,13 +149,9 @@ export function BookAppointment({ providerId, patientId, onAppointmentBooked, ba
                             buttonType='secondary'
                             soft
                             type="button"
-                            onClick={() => {
-                                setSelectedDate(null);
-                                setError(null);
-                                setSuccessMessage(null);
-                            }}
+                            onClick={clearSelectedDate}
                         >
-                            Back
+                            Pick Another Time
                         </Button>
                         <Button
                             type="submit"

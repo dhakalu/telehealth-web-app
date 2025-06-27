@@ -34,11 +34,7 @@ export default function PractitionerListPage() {
   };
 
   const handleAppointmentBooked = () => {
-    // Show success message or perform additional actions
-    // Close modal after successful booking
-    setTimeout(() => {
-      setIsModalOpen(false);
-    }, 2000); // Keep modal open for 2 seconds to show the success message
+    setIsModalOpen(false);
   };
 
   return (
