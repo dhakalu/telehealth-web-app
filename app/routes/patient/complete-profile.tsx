@@ -6,6 +6,7 @@ import { requireAuthCookie } from "~/auth";
 import Button from "~/components/common/Button";
 import { Input } from "~/components/common/Input";
 import { Select } from "~/components/common/Select";
+import { usePageTitle } from "~/hooks";
 
 
 
@@ -58,7 +59,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 }
 
 export default function CompleteProfilePage() {
-
+    usePageTitle("Complete Profile");
 
     return (
         <div className="min-h-screen flex items-center justify-center  p-8">

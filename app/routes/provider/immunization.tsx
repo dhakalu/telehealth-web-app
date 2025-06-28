@@ -5,6 +5,7 @@ import { immunizationLoader } from "~/common-actions/immunization";
 import Button from "~/components/common/Button";
 import ErrorPage from "~/components/common/ErrorPage";
 import { Modal } from "~/components/common/Modal";
+import { usePageTitle } from "~/hooks";
 import AddImmunizationModal from "../../components/common/immunization/AddImmunizationForm";
 import { ImmunizationTable } from "../../components/common/immunization/ImmunizationTable";
 import { Immunization } from "../../components/common/immunization/types";
@@ -12,6 +13,7 @@ import { Immunization } from "../../components/common/immunization/types";
 export const loader: LoaderFunction = immunizationLoader;
 
 export default function PatientImmunization() {
+  usePageTitle("Patient Immunizations - Provider - MedTok");
   const { immunizations, error, baseUrl } = useLoaderData<{ immunizations: Immunization[]; error: string; baseUrl: string }>();
   const [addModalOpen, setModalOpen] = useState(false);
   const { patientId } = useParams<{ patientId: string }>();

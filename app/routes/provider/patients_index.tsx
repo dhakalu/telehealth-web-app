@@ -2,10 +2,14 @@ import { useState } from 'react';
 import { useLoaderData, useNavigate } from 'react-router';
 import ErrorPage from '~/components/common/ErrorPage';
 import EstablishmentList, { Establishment } from '~/components/provider/EstablishmentList';
+import { usePageTitle } from '~/hooks';
 
 export { loader } from './patients';
 
 export default function PatientList() {
+
+    usePageTitle("Patients - Provider - MedTok");
+
     const { establishments, error } = useLoaderData<{ establishments: Establishment[], error: string }>() || [];
     const navigate = useNavigate();
 

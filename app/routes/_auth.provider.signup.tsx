@@ -4,6 +4,7 @@ import { UserSignUp } from "../components/UserSignUp";
 import { authCookie } from "~/auth";
 import { signupAction } from "~/common-actions/signup";
 import Card from "~/components/common/Card";
+import { usePageTitle } from "~/hooks";
 
 export type ApiError = {
   error: string;
@@ -20,6 +21,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 export const action = signupAction();
 
 export default function UserSignUpPage() {
+  usePageTitle("Sign Up as Provider - MedTok");
   const { error } = useActionData<{ error?: string }>() || {};
 
   const navigation = useNavigation()

@@ -2,6 +2,7 @@ import { LoaderFunction, redirect, useLoaderData } from "react-router";
 
 import axios from "axios";
 import { requireAuthCookie } from "~/auth";
+import { usePageTitle } from "~/hooks";
 
 export const loader: LoaderFunction = async ({ request }) => {
   const user = await requireAuthCookie(request);
@@ -37,6 +38,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 }
 
 export default function NotFound() {
+  usePageTitle("Provider Dashboard - MedTok");
 
   const { error } = useLoaderData<{ error: string }>();
 

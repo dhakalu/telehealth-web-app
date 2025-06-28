@@ -6,6 +6,7 @@ import Confetti from "react-confetti";
 import { API_BASE_URL } from "~/api";
 import { requireAuthCookie } from "~/auth";
 import Button from "~/components/common/Button";
+import { usePageTitle } from "~/hooks";
 import { User } from "../provider/complete-profile";
 
 export const loader = async ({ request, params }: LoaderFunctionArgs) => {
@@ -37,6 +38,7 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
 };
 
 export default function EstimatePage() {
+  usePageTitle("Cost Estimate - Patient - MedTok");
   const { user, cost, error, providerId, baseUrl } = useLoaderData<{
     cost: string;
     user: User,

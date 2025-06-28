@@ -3,6 +3,7 @@ import { ActionFunctionArgs, Form, LoaderFunction, redirect } from "react-router
 import axios, { AxiosError } from "axios";
 import { API_BASE_URL } from "~/api";
 import { requireAuthCookie } from "~/auth";
+import { usePageTitle } from "~/hooks";
 
 
 export type User = {
@@ -101,6 +102,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 }
 
 export default function CompleteProfilePage() {
+    usePageTitle("Complete Profile - Provider - MedTok");
 
 
 

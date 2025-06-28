@@ -6,6 +6,7 @@ import { Input } from "~/components/common/Input";
 import { TextArea } from "~/components/common/TextArea";
 import { PatientAppHeader, PatientAppHeaderProps } from "~/components/patient/PatientAppHeader";
 import { ProviderHeader, ProviderHeaderProps } from "~/components/provider/ProviderAppHeader";
+import { usePageTitle } from "~/hooks";
 import { User } from "./provider/complete-profile";
 
 const faqs = [
@@ -42,6 +43,7 @@ const headerMap: Record<AccountType, React.ComponentType<PatientAppHeaderProps |
 };
 
 export default function HelpPage() {
+    usePageTitle("Help & Support - MedTok");
 
     const { user } = useLoaderData<{ user: User }>();
 

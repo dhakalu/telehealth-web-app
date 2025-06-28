@@ -12,6 +12,8 @@ import {
 import ErrorPage from "./components/common/ErrorPage";
 import { NotificationsContainer } from "./components/common/Notifications";
 import { NotificationProvider } from "./context/NotificationContext";
+import { TitleProvider } from "./context/TitleContext";
+import { useTitle } from "./hooks";
 import NotFoundPage from "./NotFoundPage";
 import "./tailwind.css";
 
@@ -62,27 +64,35 @@ export function ErrorBoundary() {
   }
 }
 
+function DynamicTitle() {
+  const { title } = useTitle();
+  return <title>{title}</title>;
+}
+
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
-      <head>
-        <meta charSet="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta
-          name="description"
-          content="Find doctors 24/7"
-        />
-        <Links />
-      </head>
-      <body className="bg-base-200 text-base-content h-full">
-        <NotificationProvider>
-          {children}
-          <NotificationsContainer />
-        </NotificationProvider>
-        <ScrollRestoration />
-        <Scripts />
-      </body>
-    </html>
+    <TitleProvider>
+      <html lang="en">
+        <head>
+          <meta charSet="utf-8" />
+          <meta name="viewport" content="width=device-width, initial-scale=1" />
+          <DynamicTitle />
+          <meta
+            name="description"
+            content="Find doctors 24/7"
+          />
+          <Links />
+        </head>
+        <body className="bg-base-200 text-base-content h-full">
+          <NotificationProvider>
+            {children}
+            <NotificationsContainer />
+          </NotificationProvider>
+          <ScrollRestoration />
+          <Scripts />
+        </body>
+      </html>
+    </TitleProvider>
   );
 }
 

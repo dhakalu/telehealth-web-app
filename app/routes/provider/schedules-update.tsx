@@ -2,6 +2,7 @@ import { LoaderFunction, useLoaderData, useParams } from "react-router";
 import { API_BASE_URL } from "~/api";
 import { requireAuthCookie } from "~/auth";
 import OfficeScheduleModal from "~/components/provider/schedule/CreateUpdateForm";
+import { usePageTitle } from "~/hooks";
 import { User } from "./complete-profile";
 
 // Loader function to get the user
@@ -12,6 +13,8 @@ export const loader: LoaderFunction = async ({ request }) => {
 };
 
 export default function ScheduleManagement() {
+    usePageTitle("Schedule Management - Provider - MedTok");
+
     const { user, baseUrl } = useLoaderData<{ user: User, baseUrl: string }>();
     const { scheduleId } = useParams<{ scheduleId: string }>();
 

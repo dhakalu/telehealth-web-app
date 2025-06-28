@@ -8,10 +8,13 @@ import { Modal } from "~/components/common/Modal";
 import AddProcedureForm from "~/components/common/procedures/AddProcedureForm";
 import { ProcedureTable } from "~/components/common/procedures/ProcedureTable";
 import { Procedure } from "~/components/common/procedures/types";
+import { usePageTitle } from "~/hooks";
 
 export const loader: LoaderFunction = procedureLoader;
 
 export default function PatientProcedures() {
+  usePageTitle("Patient Procedures - Provider - MedTok");
+
   const { procedures, error, baseUrl } = useLoaderData<{ procedures: Procedure[]; error: string; baseUrl: string }>();
   const [addModalOpen, setModalOpen] = useState(false);
   const { patientId } = useParams<{ patientId: string }>();

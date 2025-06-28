@@ -5,6 +5,7 @@ import { API_BASE_URL } from "~/api";
 import { requireAuthCookie } from "~/auth";
 import Button from "~/components/common/Button";
 import { OfficeSchedule } from "~/components/provider/schedule/types";
+import { usePageTitle } from "~/hooks";
 import { useToast } from "~/hooks/useToast";
 import { User } from "../provider/complete-profile";
 
@@ -16,6 +17,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 };
 
 export default function ScheduleManagement() {
+    usePageTitle("Schedules - Provider - MedTok");
     const { user, baseUrl } = useLoaderData<{ user: User, baseUrl: string }>();
     const [schedules, setSchedules] = useState<OfficeSchedule[]>([]);
     const [isLoading, setIsLoading] = useState(true);

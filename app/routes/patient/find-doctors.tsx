@@ -5,6 +5,7 @@ import { requireAuthCookie } from "~/auth";
 import { Modal } from "~/components/common/Modal";
 import PageHeader from "~/components/common/PageHeader";
 import { BookAppointment } from "~/components/provider/BookAppointment";
+import { usePageTitle } from "~/hooks";
 import { PractitionerList } from "../../components/PractitionerList";
 import { User } from "../provider/complete-profile";
 
@@ -18,6 +19,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 }
 
 export default function PractitionerListPage() {
+  usePageTitle("Find Doctors - Patient - MedTok");
   const { user, baseUrl } = useLoaderData<{ user: User, baseUrl: string }>();
   const [selectedProviderId, setSelectedProviderId] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);

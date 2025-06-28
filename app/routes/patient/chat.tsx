@@ -5,6 +5,7 @@ import { Chat, ChatComponent, ChatMessage } from "../../components/ChatComponent
 import axios from "axios";
 import { API_BASE_URL } from "~/api";
 import ErrorPage from "~/components/common/ErrorPage";
+import { usePageTitle } from "~/hooks";
 
 
 export const loader: LoaderFunction = async ({ request, params }) => {
@@ -57,6 +58,7 @@ export const loader: LoaderFunction = async ({ request, params }) => {
 
 
 export default function PatientChat() {
+  usePageTitle("Chat - Patient - MedTok");
   const { chat, messages, error, wsUrl } = useLoaderData<{ chat: Chat, messages: ChatMessage[], error: string, wsUrl: string }>();
 
   if (error) {

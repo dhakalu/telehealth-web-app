@@ -3,6 +3,7 @@ import { LoaderFunctionArgs, data, useLoaderData } from "react-router";
 import { API_BASE_URL } from "~/api";
 import { ButtonType } from "~/components/common/Button";
 import VerificationResult from "~/components/common/VerificationResult";
+import { usePageTitle } from "~/hooks";
 
 // Type definitions for loader responses
 type SuccessResponse = {
@@ -44,6 +45,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
 }
 
 export default function VerifyEmail() {
+    usePageTitle("Email Verification - MedTok");
     const loaderData = useLoaderData<LoaderResponse>();
 
     // Configure actions based on success/error state

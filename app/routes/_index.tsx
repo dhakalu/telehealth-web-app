@@ -1,5 +1,6 @@
 import { redirect, type MetaFunction } from "react-router";
 import Card from "~/components/common/Card";
+import { usePageTitle } from "~/hooks";
 
 export const meta: MetaFunction = () => {
   return [
@@ -11,6 +12,8 @@ export const meta: MetaFunction = () => {
 export const loader = () => redirect("/login")
 
 export default function Index() {
+  usePageTitle("Welcome");
+
   return (
     <div className="flex h-screen items-center justify-center">
       <div className="flex flex-col items-center gap-16">

@@ -9,7 +9,7 @@ import { CheckboxGroup } from "~/components/common/CheckboxGroup";
 import { Input } from "~/components/common/Input";
 import PageHeader from "~/components/common/PageHeader";
 import { RadioGroup } from "~/components/common/RadioGroup";
-import { useToast } from "~/hooks/useToast";
+import { usePageTitle, useToast } from "~/hooks";
 import { User } from "../provider/complete-profile";
 
 type Question = {
@@ -102,6 +102,8 @@ export const loader: LoaderFunction = async ({ request }) => {
 };
 
 export default function ScreeningQuestionAnswers() {
+  usePageTitle("Screening Questions");
+
   const { user, baseUrl } = useLoaderData() as { user: User, baseUrl: string };
   const navigate = useNavigate();
   const params = useParams();

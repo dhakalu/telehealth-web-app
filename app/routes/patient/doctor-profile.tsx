@@ -3,6 +3,7 @@ import { LoaderFunctionArgs, useLoaderData } from "react-router";
 import axios from "axios";
 import { API_BASE_URL } from "~/api";
 import ErrorPage from "~/components/common/ErrorPage";
+import { usePageTitle } from "~/hooks";
 import { DoctorDetail, FHIRPractitioner } from "../../components/DoctorDetail";
 
 export const loader = async ({ params }: LoaderFunctionArgs) => {
@@ -28,6 +29,8 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
 };
 
 export default function DoctorDetailRoute() {
+  usePageTitle("Doctor Profile - Patient - MedTok");
+
   const { data, error } = useLoaderData<{ data: FHIRPractitioner, error: string }>();
   if (error) {
     return (

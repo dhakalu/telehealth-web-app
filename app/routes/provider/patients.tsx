@@ -6,6 +6,7 @@ import { API_BASE_URL } from "~/api";
 import { requireAuthCookie } from "~/auth";
 import ErrorPage from "~/components/common/ErrorPage";
 import EstablishmentList, { Establishment } from "~/components/provider/EstablishmentList";
+import { usePageTitle } from "~/hooks";
 import { User } from "./complete-profile";
 
 type EncounterType = "in-person" | "telehealth"
@@ -50,6 +51,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 
 
 export default function EstablishmentsPage() {
+    usePageTitle("Patients - Provider - MedTok");
 
     const { establishments, error } = useLoaderData<{ establishments: Establishment[], error: string }>() || [];
     const navigate = useNavigate();

@@ -1,5 +1,6 @@
 import { LoaderFunction, Outlet } from "react-router";
 
+import { usePageTitle } from "~/hooks";
 import { Tab, TabNav } from "../../components/common/TabNav";
 import { User } from "./complete-profile";
 
@@ -44,6 +45,8 @@ export const loader: LoaderFunction = async () => {
 }
 
 export default function EncountersPage() {
+
+    usePageTitle("Patient Encounters - Provider - MedTok");
 
     // Define all tabs
     const tabs: Tab[] = [

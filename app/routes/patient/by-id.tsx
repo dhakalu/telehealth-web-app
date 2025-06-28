@@ -5,6 +5,7 @@ import { requireAuthCookie } from "~/auth";
 import ErrorPage from "~/components/common/ErrorPage";
 import PageHeader from "~/components/common/PageHeader";
 import { Tab, TabNav } from "~/components/common/TabNav";
+import { usePageTitle } from "~/hooks";
 
 export const loader: LoaderFunction = async ({ request }) => {
   const user = await requireAuthCookie(request);
@@ -19,6 +20,9 @@ export const loader: LoaderFunction = async ({ request }) => {
 
 
 export default function PatientHome() {
+
+  usePageTitle("My Health - Patient - MedTok");
+
   const { error } = useLoaderData<{ user: User, error: string }>();
 
 

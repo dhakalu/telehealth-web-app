@@ -7,6 +7,7 @@ import Button from "~/components/common/Button";
 import ErrorPage from "~/components/common/ErrorPage";
 import PageHeader from "~/components/common/PageHeader";
 import { ReviewModal } from "~/components/ReviewModal";
+import { usePageTitle } from "~/hooks";
 import { User } from "../provider/complete-profile";
 
 
@@ -49,6 +50,8 @@ type PractitionerSummary = {
 }
 
 export default function Providers() {
+    usePageTitle("My Doctors");
+
     const navigate = useNavigate();
 
     const [reviewModalDoctor, setReviewModalDoctor] = useState<PractitionerSummary | null>(null);

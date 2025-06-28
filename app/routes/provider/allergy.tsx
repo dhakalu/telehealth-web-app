@@ -5,6 +5,7 @@ import { loadAllergies } from "~/common-actions/allergy";
 import Button from "~/components/common/Button";
 import ErrorPage from "~/components/common/ErrorPage";
 import { Modal } from "~/components/common/Modal";
+import { usePageTitle } from "~/hooks";
 import AddAllergyForm from "../../components/common/allergy/AddAllergyForm";
 import { AllergyTable } from "../../components/common/allergy/AllergyTable";
 import { Allergy } from "../../components/common/allergy/types";
@@ -13,6 +14,7 @@ export const loader: LoaderFunction = loadAllergies();
 
 
 export default function PatientAllergy() {
+  usePageTitle("Patient Allergies - Provider - MedTok");
   const { allergies, error, baseUrl } = useLoaderData<{ allergies: Allergy[]; error: string; baseUrl: string }>();
   const [addModalOpen, setModalOpen] = useState(false);
   const { patientId } = useParams<{ patientId: string }>();

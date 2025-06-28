@@ -6,6 +6,7 @@ import { requireAuthCookie } from "~/auth";
 import Button from "~/components/common/Button";
 import DayView from "~/components/common/calendar/DayView";
 import WeekView from "~/components/common/calendar/WeekView";
+import { usePageTitle } from "~/hooks";
 import { User } from "../provider/complete-profile";
 
 // Type definitions for appointments from the API
@@ -65,6 +66,8 @@ function getSundayOfCurrentWeek() {
 // This helper function has been removed as it's not needed anymore
 
 export default function Calendar() {
+    usePageTitle("Calendar - Provider - MedTok");
+
     const { appointments = [] } = useLoaderData<{
         user: User,
         baseUrl: string,
