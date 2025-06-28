@@ -3,6 +3,8 @@ import { ActionFunctionArgs, Form, LoaderFunction, redirect } from "react-router
 import axios, { AxiosError } from "axios";
 import { API_BASE_URL } from "~/api";
 import { requireAuthCookie } from "~/auth";
+import { Input } from "~/components/common/Input";
+import { Select } from "~/components/common/Select";
 import { usePageTitle } from "~/hooks";
 
 
@@ -112,68 +114,89 @@ export default function CompleteProfilePage() {
                 <h1 className="text-2xl font-bold mb-4">Complete Your Profile</h1>
                 <p className="text-gray-600 mb-6">Please fill out the following information to complete your profile.</p>
                 <Form method="post" className="space-y-4">
-                    <div className="flex flex-col">
-                        <label className="mb-1 text-sm font-medium">
-                            Date of Birth <span className="text-red-600">*</span>
-                        </label>
-                        <input name="birthdate" type="date" className="input" required />
-                    </div>
-                    <div className="flex flex-col">
-                        <label className="mb-1 text-sm font-medium">
-                            Gender <span className="text-red-600">*</span>
-                        </label>
-                        <select name="gender" className="input" required>
-                            <option value="male">Male</option>
-                            <option value="female">Female</option>
-                        </select>
-                    </div>
-                    <div className="flex flex-col">
-                        <label className="mb-1 text-sm font-medium">
-                            Phone Number <span className="text-red-600">*</span>
-                        </label>
-                        <input name="phone_number" placeholder="Phone Number" className="input" type="text" required />
-                    </div>
+                    <Input
+                        name="birthdate"
+                        type="date"
+                        label="Date of Birth"
+                        required
+                    />
 
-                    <h3>Qualifications</h3>
-                    <div className="flex flex-col">
-                        <label className="mb-1 text-sm font-medium">Qualification <span className="text-red-600">*</span></label>
-                        <input name="qualification" placeholder="E.g. MD, MBBS" className="input" required />
-                    </div>
-                    <div className="flex flex-col">
-                        <label className="mb-1 text-sm font-medium">Specialty <span className="text-red-600">*</span></label>
-                        <input name="specialty" placeholder="E.g.Dermatology" className="input" required />
-                    </div>
-                    <div className="flex flex-col">
-                        <label className="mb-1 text-sm font-medium">Issued On <span className="text-red-600">*</span></label>
-                        <input name="issued_on" type="date" className="input" required />
-                    </div>
-                    <div className="flex flex-col">
-                        <label className="mb-1 text-sm font-medium">Issued By <span className="text-red-600">*</span></label>
-                        <input name="issued_by" placeholder="Issuing Authority or Organization" className="input" required />
-                    </div>
+                    <Select
+                        name="gender"
+                        label="Gender"
+                        options={[
+                            { value: "male", label: "Male" },
+                            { value: "female", label: "Female" }
+                        ]}
+                        required
+                    />
 
-                    <h3>Address</h3>
+                    <Input
+                        name="phone_number"
+                        placeholder="Phone Number"
+                        label="Phone Number"
+                        type="text"
+                        required
+                    />
 
-                    <div className="flex flex-col">
-                        <label className="mb-1 text-sm font-medium">Street</label>
-                        <input name="street" className="input" />
-                    </div>
-                    <div className="flex flex-col">
-                        <label className="mb-1 text-sm font-medium">City</label>
-                        <input name="city" className="input" />
-                    </div>
-                    <div className="flex flex-col">
-                        <label className="mb-1 text-sm font-medium">State</label>
-                        <input name="state" className="input" />
-                    </div>
-                    <div className="flex flex-col">
-                        <label className="mb-1 text-sm font-medium">Postal Code</label>
-                        <input name="postalCode" className="input" />
-                    </div>
-                    <div className="flex flex-col">
-                        <label className="mb-1 text-sm font-medium">Country</label>
-                        <input name="country" className="input" />
-                    </div>
+                    <h3 className="text-lg font-semibold mt-6 mb-4">Qualifications</h3>
+                    <Input
+                        name="qualification"
+                        placeholder="E.g. MD, MBBS"
+                        label="Qualification"
+                        required
+                    />
+
+                    <Input
+                        name="specialty"
+                        placeholder="E.g. Dermatology"
+                        label="Specialty"
+                        required
+                    />
+
+                    <Input
+                        name="issued_on"
+                        type="date"
+                        label="Issued On"
+                        required
+                    />
+
+                    <Input
+                        name="issued_by"
+                        placeholder="Issuing Authority or Organization"
+                        label="Issued By"
+                        required
+                    />
+                    <Input
+                        name="street"
+                        label="Street"
+                        placeholder="123 Main St, Apt 4B"
+                    />
+
+                    <Input
+                        name="city"
+                        label="City"
+                        placeholder="Anytown"
+                    />
+
+                    <Input
+                        name="state"
+                        label="State"
+                        placeholder="CA"
+                    />
+
+                    <Input
+                        name="postalCode"
+                        label="Postal Code"
+                        placeholder="12345"
+                    />
+
+                    <Input
+                        name="country"
+                        label="Country"
+                        placeholder="United States"
+                    />
+
                     <button type="submit" className="btn btn-primary w-full mt-4">Save Profile</button>
                 </Form>
             </div>
