@@ -88,34 +88,42 @@ export default function Providers() {
                 title="My Doctors"
                 description="List of doctors that you have interacted with in the past."
             />
-            <ul className="p-4 rounded-box shadow-md">
-                {practitioners.map((practitioner) => (
-                    <li
-                        onClick={() => handleSelect(practitioner)}
-                        key={practitioner.id}
-                        className="flex flex-col md:flex-row"
-                    >
-                        <div className="md:flex-1">
-                            <div className="font-bold">{practitioner.first_name} {practitioner.last_name}</div>
-                            <div className="opacity-60">{practitioner.email}</div>
-                        </div>
-                        <div className="divider"></div>
-                        <div>
-                            <Button
-                                buttonType="info"
-                                soft
-                                title="Add review"
-                                onClick={(e) => handleAddReview(e, practitioner)}
-                            >
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-                                </svg>
-                                Add Review
-                            </Button>
-                        </div>
-                    </li>
-                ))}
-            </ul>
+            {practitioners.length === 0 ? (
+                <div className="p-4 rounded-box shadow-md">
+                    <div className="text-base-content opacity-70">
+                        You have not visited any doctors in the past. Please visit a doctor to see them listed here.
+                    </div>
+                </div>
+            ) : (
+                <ul className="p-4 rounded-box shadow-md">
+                    {practitioners.map((practitioner) => (
+                        <li
+                            onClick={() => handleSelect(practitioner)}
+                            key={practitioner.id}
+                            className="flex flex-col md:flex-row"
+                        >
+                            <div className="md:flex-1">
+                                <div className="font-bold">{practitioner.first_name} {practitioner.last_name}</div>
+                                <div className="opacity-60">{practitioner.email}</div>
+                            </div>
+                            <div className="divider"></div>
+                            <div>
+                                <Button
+                                    buttonType="info"
+                                    soft
+                                    title="Add review"
+                                    onClick={(e) => handleAddReview(e, practitioner)}
+                                >
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                                    </svg>
+                                    Add Review
+                                </Button>
+                            </div>
+                        </li>
+                    ))}
+                </ul>
+            )}
             {reviewModalDoctor && <ReviewModal
                 doctorName={`${reviewModalDoctor.first_name} ${reviewModalDoctor.last_name}`}
                 onClose={() => setReviewModalDoctor(null)}

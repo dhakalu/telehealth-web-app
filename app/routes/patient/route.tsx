@@ -10,15 +10,16 @@ export const loader: LoaderFunction = async ({ request }) => {
   if (user.account_type !== "patient") {
     return redirect("/provider");
   }
+  const isCompleteProfilePath = request.url.includes("/patient/complete-profile");
   try {
     const response = axios.get(`${process.env.API_BASE_URL}/patient/${user.sub}`);
     user.status = (await response).data.status;
-    if (user.status === "email-verified") {
+    if (user.status === "email-verified" && !isCompleteProfilePath) {
       return redirect("/patient/complete-profile");
     }
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
-      if (error.response.status === 404) {
+      if (error.response.status === 404 && !isCompleteProfilePath) {
         return redirect("/patient/complete-profile");
       }
       return { error: error.response.data.error || "Failed to fetch user data" };

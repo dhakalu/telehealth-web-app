@@ -3,6 +3,9 @@ import { ActionFunctionArgs, Form, LoaderFunction, redirect } from "react-router
 import axios, { AxiosError } from "axios";
 import { API_BASE_URL } from "~/api";
 import { requireAuthCookie } from "~/auth";
+import Button from "~/components/common/Button";
+import { Input } from "~/components/common/Input";
+import { Select } from "~/components/common/Select";
 
 
 
@@ -63,51 +66,59 @@ export default function CompleteProfilePage() {
                 <h1 className="text-2xl font-bold mb-4">Complete Your Profile</h1>
                 <p className="text-gray-600 mb-6">Please fill out the following information to complete your profile.</p>
                 <Form method="post" className="space-y-4">
-                    <div className="flex flex-col">
-                        <label className="mb-1 text-sm font-medium">
-                            Date of Birth <span className="text-red-600">*</span>
-                        </label>
-                        <input name="birthdate" type="date" className="input" required />
-                    </div>
-                    <div className="flex flex-col">
-                        <label className="mb-1 text-sm font-medium">
-                            Gender <span className="text-red-600">*</span>
-                        </label>
-                        <select name="gender" className="input" required>
-                            <option value="male">Male</option>
-                            <option value="female">Female</option>
-                        </select>
-                    </div>
-                    <div className="flex flex-col">
-                        <label className="mb-1 text-sm font-medium">
-                            Phone Number <span className="text-red-600">*</span>
-                        </label>
-                        <input name="phone_number" placeholder="Phone Number" className="input" type="text" required />
-                    </div>
+                    <Input
+                        label="Date of Birth"
+                        name="birthdate"
+                        type="date"
+                        required
+                    />
+                    <Select
+                        label="Gender"
+                        name="gender"
+                        required
+                        options={[
+                            { value: "male", label: "Male" },
+                            { value: "female", label: "Female" }
+                        ]}
+                    />
+                    <Input
+                        label="Phone Number"
+                        name="phone_number"
+                        placeholder="Phone Number"
+                        type="text"
+                        required
+                    />
 
-                    <h3>Address</h3>
 
-                    <div className="flex flex-col">
-                        <label className="mb-1 text-sm font-medium">Street</label>
-                        <input name="street" className="input" />
-                    </div>
-                    <div className="flex flex-col">
-                        <label className="mb-1 text-sm font-medium">City</label>
-                        <input name="city" className="input" />
-                    </div>
-                    <div className="flex flex-col">
-                        <label className="mb-1 text-sm font-medium">State</label>
-                        <input name="state" className="input" />
-                    </div>
-                    <div className="flex flex-col">
-                        <label className="mb-1 text-sm font-medium">Postal Code</label>
-                        <input name="postalCode" className="input" />
-                    </div>
-                    <div className="flex flex-col">
-                        <label className="mb-1 text-sm font-medium">Country</label>
-                        <input name="country" className="input" />
-                    </div>
-                    <button type="submit" className="btn btn-primary w-full mt-4">Save Profile</button>
+                    <Input
+                        label="Street Address"
+                        name="street"
+                        placeholder="123 Main St, Apt 4B"
+                    />
+
+                    <Input
+                        label="City"
+                        name="city"
+                        placeholder="Anytown"
+                    />
+                    <Input
+                        label="State"
+                        name="state"
+                        placeholder="CA"
+                    />
+                    <Input
+                        label="Postal Code"
+                        name="postalCode"
+                        placeholder="12345"
+                    />
+                    <Input
+                        label="Country"
+                        name="country"
+                        placeholder="United States"
+                    />
+                    <Button type="submit" buttonType="primary" wide>
+                        Save Profile
+                    </Button>
                 </Form>
             </div>
         </div>

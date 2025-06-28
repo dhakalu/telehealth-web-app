@@ -20,7 +20,7 @@ export const Select: React.FC<SelectProps> = ({ label, options, error, id, ...pr
       </label>
       <select
         id={selectId}
-        className={'select'}
+        className={'select w-full'}
         {...props}
       >
         <option value="">Select...</option>
