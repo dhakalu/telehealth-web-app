@@ -17,6 +17,10 @@ export const ProviderHeader = ({ user }: ProviderHeaderProps) => {
                 href: "/provider/calendar"
             },
             {
+                label: "Office Hours",
+                href: "/provider/schedules"
+            },
+            {
                 label: "Help & Support",
                 href: "/help"
             }

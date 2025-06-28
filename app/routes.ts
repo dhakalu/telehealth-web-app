@@ -30,7 +30,10 @@ export default remixRoutesOptionAdapter((defineRoutes) => {
     route("/help", "./routes/help.tsx")
     route("/provider", "./routes/provider/route.tsx", () => {
       route("", "./routes/provider/index.tsx", { index: true });
-      route("calendar", "./routes/provider/calendar.tsx")
+      route("calendar", "./routes/provider/calendar.tsx");
+      route("schedules/create", "./routes/provider/schedules-create.tsx");
+      route("schedules/:scheduleId", "./routes/provider/schedules-update.tsx");
+      route("schedules", "./routes/provider/schedules.tsx");
       route("complete-profile", "./routes/provider/complete-profile.tsx");
       route("patients", "./routes/provider/patients.tsx", () => {
         route("", "./routes/provider/patients_index.tsx", { index: true })
