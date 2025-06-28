@@ -1,12 +1,16 @@
 import React, { useState } from "react";
-import { ActionFunctionArgs, Form, redirect } from "react-router";
+import { LoaderFunction, useLoaderData, useNavigate, useParams } from "react-router";
 
 import axios from "axios";
 import { API_BASE_URL } from "~/api";
 import { requireAuthCookie } from "~/auth";
 import Button from "~/components/common/Button";
+import { CheckboxGroup } from "~/components/common/CheckboxGroup";
 import { Input } from "~/components/common/Input";
 import PageHeader from "~/components/common/PageHeader";
+import { RadioGroup } from "~/components/common/RadioGroup";
+import { useToast } from "~/hooks/useToast";
+import { User } from "../provider/complete-profile";
 
 type Question = {
   question: string;
@@ -91,64 +95,33 @@ const screeningQuestions: Question[] = [
   },
 ];
 
-export const action = async ({ request, params }: ActionFunctionArgs) => {
+// Loader for authentication
+export const loader: LoaderFunction = async ({ request }) => {
   const user = await requireAuthCookie(request);
-  const formData = await request.formData();
-  const answers: Record<string, string | string[]> = {};
-
-  screeningQuestions.forEach((q, idx) => {
-    const answerKey = `question-${idx}`;
-    const answerValue = formData.getAll(answerKey);
-    if (answerValue.length > 0) {
-      answers[q.question] = String(answerValue);
-    }
-  });
-
-  try {
-    const response = await axios.post(`${API_BASE_URL}/qa`, {
-      providerId: params.providerId,
-      patientId: user.sub,
-      answers: answers
-    });
-    const savedQA = response.data;
-    return redirect(`/patient/estimates/${params.providerId}/${savedQA.id}`)
-  } catch (error) {
-    if (axios.isAxiosError(error)) {
-      return Response.json(
-        { error: error.response?.data?.message || error.message || "An error occurred" },
-        { status: error.response?.status || 500 }
-      );
-    }
-    return Response.json(
-      { error: error instanceof Error ? error.message : "An unknown error occurred" },
-      { status: 500 }
-    );
-  }
-}
+  return { user, baseUrl: API_BASE_URL };
+};
 
 export default function ScreeningQuestionAnswers() {
+  const { user, baseUrl } = useLoaderData() as { user: User, baseUrl: string };
+  const navigate = useNavigate();
+  const params = useParams();
 
   const [current, setCurrent] = useState(0);
   const [answers, setAnswers] = useState<Record<string, string | string[]>>({});
   const [submitting, setSubmitting] = useState(false);
+  const toast = useToast();
   const q = screeningQuestions[current];
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    if (q.type === "checkbox") {
-      const prev = Array.isArray(answers[q.question]) ? (answers[q.question] as string[]) : [];
-      if (
-        e.target instanceof HTMLInputElement &&
-        e.target.type === "checkbox"
-      ) {
-        if (e.target.checked) {
-          setAnswers({ ...answers, [q.question]: [...prev, e.target.value] });
-        } else {
-          setAnswers({ ...answers, [q.question]: prev.filter(v => v !== e.target.value) });
-        }
-      }
-    } else {
-      setAnswers({ ...answers, [q.question]: e.target.value });
-    }
+  const handleTextChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setAnswers({ ...answers, [q.question]: e.target.value });
+  };
+
+  const handleCheckboxChange = (value: string[]) => {
+    setAnswers({ ...answers, [q.question]: value });
+  };
+
+  const handleRadioChange = (value: string) => {
+    setAnswers({ ...answers, [q.question]: value });
   };
 
   const handleNext = () => {
@@ -158,13 +131,33 @@ export default function ScreeningQuestionAnswers() {
     if (current > 0) setCurrent(current - 1);
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
     setSubmitting(true);
-    // let the form submit as normal, answers will be picked up by the action
+
+    try {
+      const response = await axios.post(`${baseUrl}/qa`, {
+        providerId: params.providerId,
+        patientId: user.sub,
+        answers: answers
+      });
+      const savedQA = response.data;
+      toast.success("Screening questions submitted successfully!");
+      navigate(`/patient/estimates/${params.providerId}/${savedQA.id}`);
+    } catch (error) {
+      console.error("Error submitting screening questions:", error);
+      if (axios.isAxiosError(error)) {
+        const errorMessage = error.response?.data?.message || error.message || "An error occurred";
+        toast.error(errorMessage);
+      } else {
+        toast.error(error instanceof Error ? error.message : "An unknown error occurred");
+      }
+      setSubmitting(false);
+    }
   };
 
   return (
-    <Form method="post" className="max-w-2xl mx-auto p-6  rounded shadow space-y-6" onSubmit={handleSubmit}>
+    <form className="max-w-2xl mx-auto p-6  rounded shadow space-y-6" onSubmit={handleSubmit}>
       <PageHeader title="Screening Questions" description="Almost there, before we connect with a doctor, please answer the following questions." />
       <div className="space-y-2">
         {q.type === "text" && (
@@ -174,44 +167,29 @@ export default function ScreeningQuestionAnswers() {
             name={`question-${current}`}
             required={q.isRequired}
             value={typeof answers[q.question] === 'string' ? answers[q.question] as string : ''}
-            onChange={handleChange}
+            onChange={handleTextChange}
             textarea={q.isMultiLine}
           />
         )}
         {q.type === "checkbox" && q.options && (
-          <div className="flex flex-wrap gap-4">
-            {q.options.map((opt, oidx) => (
-              <label key={oidx} className="flex items-center gap-2">
-                <input
-                  type="checkbox"
-                  className="checkbox"
-                  name={`question-${current}`}
-                  value={opt}
-                  checked={Array.isArray(answers[q.question]) && (answers[q.question] as string[]).includes(opt)}
-                  onChange={handleChange}
-                />
-                {opt}
-              </label>
-            ))}
-          </div>
+          <CheckboxGroup
+            label={q.question}
+            name={`question-${current}`}
+            options={q.options.map(opt => ({ value: opt, label: opt }))}
+            value={Array.isArray(answers[q.question]) ? (answers[q.question] as string[]) : []}
+            onChange={handleCheckboxChange}
+            required={q.isRequired}
+          />
         )}
         {q.type === "radio" && q.options && (
-          <div className="flex flex-wrap gap-4">
-            {q.options.map((opt, oidx) => (
-              <label key={oidx} className="flex items-center gap-2">
-                <input
-                  type="radio"
-                  className="radio"
-                  name={`question-${current}`}
-                  value={opt}
-                  checked={answers[q.question] === opt}
-                  required={q.isRequired}
-                  onChange={handleChange}
-                />
-                {opt}
-              </label>
-            ))}
-          </div>
+          <RadioGroup
+            label={q.question}
+            name={`question-${current}`}
+            options={q.options.map(opt => ({ value: opt, label: opt }))}
+            value={typeof answers[q.question] === 'string' ? answers[q.question] as string : ''}
+            onChange={handleRadioChange}
+            required={q.isRequired}
+          />
         )}
       </div>
       <div className="flex gap-4 mt-6">
@@ -219,9 +197,16 @@ export default function ScreeningQuestionAnswers() {
         {current < screeningQuestions.length - 1 ? (
           <Button type="button" buttonType={"primary"} soft onClick={handleNext}>Next</Button>
         ) : (
-          <button type="submit" className="px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700" disabled={submitting}>Submit</button>
+          <Button
+            type="submit"
+            buttonType="primary"
+            disabled={submitting}
+            isLoading={submitting}
+          >
+            {submitting ? "Submitting..." : "Submit"}
+          </Button>
         )}
       </div>
-    </Form>
+    </form>
   );
 }
