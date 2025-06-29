@@ -31,6 +31,7 @@ export default remixRoutesOptionAdapter((defineRoutes) => {
     route("/help", "./routes/help.tsx")
     route("/provider", "./routes/provider/route.tsx", () => {
       route("", "./routes/provider/index.tsx", { index: true });
+      route("account-status", "./routes/provider/account-status.tsx");
       route("calendar", "./routes/provider/calendar.tsx");
       route("schedules/create", "./routes/provider/schedules-create.tsx");
       route("schedules/:scheduleId", "./routes/provider/schedules-update.tsx");
@@ -55,6 +56,7 @@ export default remixRoutesOptionAdapter((defineRoutes) => {
       route("", "./routes/support/_index.tsx", { index: true });
       route("complete-profile/:userId", "./routes/support/complete-profile.tsx");
       route("team-management", "./routes/support/team-management.tsx");
+      route("approval/practitioner/:userId", "./routes/support/practitioner-approval.tsx");
     });
   });
 }) satisfies RouteConfig;

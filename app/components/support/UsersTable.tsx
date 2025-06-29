@@ -33,13 +33,12 @@ const getStatusBadge = (status: string, user?: User) => {
                     Complete
                 </span>
             );
-        case 'email-verified': {
+        case 'email-verified':
+        case 'pending-approval': {
             const getCompleteProfilePath = (accountType?: string) => {
                 switch (accountType?.toLowerCase()) {
-                    case 'patient':
-                        return '/patient/complete-profile';
                     case 'practitioner':
-                        return '/provider/complete-profile';
+                        return `/support/approval/practitioner/${user?.sub}`;
                     case 'support':
                         return `/support/complete-profile/${user?.sub}`;
                     default:
@@ -47,13 +46,18 @@ const getStatusBadge = (status: string, user?: User) => {
                 }
             };
 
+            const statusText = status?.toLowerCase() === 'pending-approval' ? 'Pending Approval' : 'Email Verified';
+            const bgColor = status?.toLowerCase() === 'pending-approval' ? 'bg-amber-100' : 'bg-yellow-100';
+            const textColor = status?.toLowerCase() === 'pending-approval' ? 'text-amber-800' : 'text-yellow-800';
+            const hoverColor = status?.toLowerCase() === 'pending-approval' ? 'hover:bg-amber-200' : 'hover:bg-yellow-200';
+
             return (
                 <a
                     href={getCompleteProfilePath(user?.account_type)}
-                    className={`${baseClasses} bg-yellow-100 text-yellow-800 hover:bg-yellow-200 cursor-pointer transition-colors duration-200`}
-                    title="Click to complete profile"
+                    className={`${baseClasses} ${bgColor} ${textColor} ${hoverColor} cursor-pointer transition-colors duration-200`}
+                    title="Click to review/approve"
                 >
-                    Email Verified
+                    {statusText}
                 </a>
             );
         }
@@ -61,6 +65,12 @@ const getStatusBadge = (status: string, user?: User) => {
             return (
                 <span className={`${baseClasses} bg-blue-100 text-blue-800`}>
                     Created
+                </span>
+            );
+        case 'rejected':
+            return (
+                <span className={`${baseClasses} bg-red-100 text-red-800`}>
+                    Rejected
                 </span>
             );
         default:

@@ -92,9 +92,6 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
     try {
         await axios.post(`${API_BASE_URL}/practitioner`, practitionerData)
-        await axios.patch(`${API_BASE_URL}/user/${user.sub}/status`, {
-            status: "complete",
-        });
         return redirect(`/provider`, {})
     } catch (error) {
         console.error("Error saving practitioner data:", error);
@@ -105,8 +102,6 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
 export default function CompleteProfilePage() {
     usePageTitle("Complete Profile - Provider - MedTok");
-
-
 
     return (
         <div className="min-h-screen flex items-center justify-center  p-8">
