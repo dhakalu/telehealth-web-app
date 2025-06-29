@@ -1,4 +1,4 @@
-import { LoaderFunction, useLoaderData, useParams } from "react-router";
+import { LoaderFunction, useLoaderData, useParams, useRevalidator } from "react-router";
 
 import { useState } from "react";
 import { procedureLoader } from "~/common-actions/procedure";
@@ -18,11 +18,19 @@ export default function PatientProcedures() {
   const { procedures, error, baseUrl } = useLoaderData<{ procedures: Procedure[]; error: string; baseUrl: string }>();
   const [addModalOpen, setModalOpen] = useState(false);
   const { patientId } = useParams<{ patientId: string }>();
+  const revalidator = useRevalidator();
+
+
   if (error) {
     return <ErrorPage error={error} />;
   }
 
   const handleModalClose = () => setModalOpen(false);
+
+  const handleAddSuccess = () => {
+    setModalOpen(false);
+    revalidator.revalidate();
+  };
 
   return (
     <>
@@ -32,7 +40,7 @@ export default function PatientProcedures() {
         </Button>
       </div>
       <Modal title="Add procedure" isOpen={addModalOpen} onClose={handleModalClose}>
-        <AddProcedureForm patientId={patientId || ""} baseUrl={baseUrl} onClose={handleModalClose} />
+        <AddProcedureForm patientId={patientId || ""} baseUrl={baseUrl} onAdd={handleAddSuccess} />
       </Modal>
       <ProcedureTable procedures={procedures} />
     </>

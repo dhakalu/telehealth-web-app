@@ -1,4 +1,4 @@
-import { LoaderFunction, useLoaderData, useParams } from "react-router";
+import { LoaderFunction, useLoaderData, useParams, useRevalidator } from "react-router";
 
 import { useState } from "react";
 import { loadAllergies } from "~/common-actions/allergy";
@@ -18,8 +18,12 @@ export default function PatientAllergy() {
   const { allergies, error, baseUrl } = useLoaderData<{ allergies: Allergy[]; error: string; baseUrl: string }>();
   const [addModalOpen, setModalOpen] = useState(false);
   const { patientId } = useParams<{ patientId: string }>();
+  const revalidator = useRevalidator();
 
-  const handleClose = () => setModalOpen(false)
+  const handleClose = () => {
+    revalidator.revalidate();
+    setModalOpen(false);
+  }
 
   if (error) {
     return <ErrorPage error={error} />;
@@ -32,7 +36,7 @@ export default function PatientAllergy() {
         </Button>
       </div>
       <Modal title="Add Allergy" isOpen={addModalOpen} onClose={handleClose}>
-        <AddAllergyForm patientId={patientId || ""} baseUrl={baseUrl} onClose={handleClose} />
+        <AddAllergyForm patientId={patientId || ""} baseUrl={baseUrl} onSubmitSuccess={handleClose} />
       </Modal>
       <AllergyTable allergies={allergies} />
     </>

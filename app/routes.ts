@@ -45,6 +45,9 @@ export default remixRoutesOptionAdapter((defineRoutes) => {
           route("immunization", "./routes/provider/immunization.tsx");
           route("health-condition", "./routes/provider/health-condition.tsx");
           route("procedure", "./routes/provider/procedure.tsx");
+          route("family-health-condition", "./routes/provider/family-health-condition.tsx");
+          route("vital", "./routes/provider/vitals.tsx");
+          route("result", "./routes/provider/results.tsx");
         });
       });
     });

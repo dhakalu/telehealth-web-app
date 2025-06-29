@@ -1,4 +1,4 @@
-import { LoaderFunction, useLoaderData, useParams } from "react-router";
+import { LoaderFunction, useLoaderData, useParams, useRevalidator } from "react-router";
 
 import { useState } from "react";
 import { medicationLoader } from "~/common-actions/medication";
@@ -18,8 +18,14 @@ export default function PatientMedication() {
   const { medications, error, baseUrl } = useLoaderData<{ medications: Medication[], error: string, baseUrl: string }>();
   const [addModalOpen, setModalOpen] = useState(false);
   const { patientId } = useParams<{ patientId: string }>();
+  const revalidator = useRevalidator();
 
   const handleClose = () => setModalOpen(false)
+
+  const handleAddSuccess = () => {
+    setModalOpen(false);
+    revalidator.revalidate();
+  }
 
   if (error) {
     return <ErrorPage error={error} />;
@@ -34,7 +40,7 @@ export default function PatientMedication() {
         </Button>
       </div>
       <Modal title="Add Medication" isOpen={addModalOpen} onClose={handleClose}>
-        <AddMedicationForm patientId={patientId || ""} baseUrl={baseUrl} onClose={handleClose} />
+        <AddMedicationForm patientId={patientId || ""} baseUrl={baseUrl} onAdd={handleAddSuccess} />
       </Modal>
       <MedicationTable medications={medications} />
     </>

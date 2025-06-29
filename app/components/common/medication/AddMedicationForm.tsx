@@ -7,7 +7,6 @@ import Button from "../Button";
 import { Medication } from "./types";
 
 type AddMedicationFormProps = {
-  onClose: () => void;
   onAdd?: (medication: Medication) => void;
   baseUrl: string;
   patientId: string;
@@ -24,7 +23,7 @@ const instialForm = {
   // start_date: null,
   // end_date: null
 };
-export default function AddMedicationForm({ baseUrl, onClose, onAdd, patientId }: AddMedicationFormProps) {
+export default function AddMedicationForm({ baseUrl, onAdd, patientId }: AddMedicationFormProps) {
   const [form, setForm] = useState<Omit<Medication, "id">>(instialForm);
 
   const [submitting, setSubmitting] = useState(false);
@@ -51,7 +50,6 @@ export default function AddMedicationForm({ baseUrl, onClose, onAdd, patientId }
 
       toast.success(`Medication "${form.name}" added successfully!`);
 
-      onClose();
       setForm(instialForm);
     } catch (err) {
       console.error('Error adding medication:', err);
@@ -149,14 +147,6 @@ export default function AddMedicationForm({ baseUrl, onClose, onAdd, patientId }
       {error && <div className="text-red-500 mb-2">{error}</div>}
 
       <div className="flex justify-end gap-2 mt-4">
-        <Button
-          buttonType="warning"
-          soft
-          onClick={onClose}
-          disabled={submitting}
-        >
-          Cancel
-        </Button>
         <Button
           buttonType="primary"
           type="submit"

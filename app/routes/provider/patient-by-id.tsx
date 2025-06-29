@@ -26,21 +26,6 @@ export type Encounter = {
 
 
 export const loader: LoaderFunction = async () => {
-    // const { encounterId } = params; 
-    // try {
-    //     const response = await axios.get(`${API_BASE_URL}/encounter/${encounterId}`);
-    //     return response.data;
-    // } catch (error) {
-    //     if (axios.isAxiosError(error)) {
-    //         if (error.response?.status === 404) {
-    //             return []; // User not found, return the user data to complete profile
-    //         } else {
-    //             return Response.json({ error: "Failed to fetch practitioner data" }, { status: error.response?.status || 500 });
-    //         }
-    //     } else {
-    //         return Response.json({ error: "An unexpected error occurred" }, { status: 500 });
-    //     }
-    // }
     return {};
 }
 
@@ -58,7 +43,6 @@ export default function EncountersPage() {
         { to: "allergy", label: "Allergies" },
         { to: "immunization", label: "Immunizations" },
         { to: "family-health-condition", label: "Family Health" },
-        { to: "personal-health-condition", label: "Personal Health" },
         { to: "vital", label: "Vitals" },
         { to: "result", label: "Results" },
     ];

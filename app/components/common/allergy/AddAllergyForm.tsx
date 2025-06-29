@@ -7,7 +7,7 @@ import Button from "../Button";
 import { Allergy } from "./types";
 
 export type AddAllergyFormProps = {
-  onClose: () => void;
+  onSubmitSuccess: () => void;
   onAdd?: (a: Allergy) => void;
   patientId: string;
   baseUrl: string;
@@ -21,7 +21,7 @@ const initialForm: Omit<Allergy, "id" | "created_at" | "deleted_at"> = {
   notes: "",
 };
 
-const AddAllergyForm: React.FC<AddAllergyFormProps> = ({ onClose, onAdd, patientId, baseUrl }) => {
+const AddAllergyForm: React.FC<AddAllergyFormProps> = ({ onSubmitSuccess: onClose, onAdd, patientId, baseUrl }) => {
   const [form, setForm] = useState(initialForm);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);

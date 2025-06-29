@@ -6,7 +6,6 @@ import Button from "../Button";
 import { Immunization } from "./types";
 
 export type AddImmunizationModalProps = {
-  onClose: () => void;
   onAdd?: (im: Immunization) => void;
   patientId: string;
   baseUrl: string;
@@ -18,7 +17,7 @@ const initialForm: Omit<Immunization, "id" | "created_at" | "deleted_at"> = {
   notes: "",
 };
 
-const AddImmunizationModal: React.FC<AddImmunizationModalProps> = ({ onClose, onAdd, patientId, baseUrl }) => {
+const AddImmunizationModal: React.FC<AddImmunizationModalProps> = ({ onAdd, patientId, baseUrl }) => {
   const [form, setForm] = useState(initialForm);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -44,7 +43,6 @@ const AddImmunizationModal: React.FC<AddImmunizationModalProps> = ({ onClose, on
       // Show success toast message
       toast.success(`Immunization "${form.vaccine}" added successfully!`);
 
-      onClose();
       setForm(initialForm);
     } catch (err) {
       if (axios.isAxiosError(err)) {
@@ -89,15 +87,6 @@ const AddImmunizationModal: React.FC<AddImmunizationModalProps> = ({ onClose, on
       {error && <div className="text-red-500 mb-2">{error}</div>}
 
       <div className="flex justify-end gap-2 mt-4">
-        <Button
-          type="button"
-          buttonType="warning"
-          soft
-          onClick={onClose}
-          disabled={submitting}
-        >
-          Cancel
-        </Button>
         <Button
           type="submit"
           className="px-4 py-2 bg-blue-600 text-white rounded"

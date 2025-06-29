@@ -1,4 +1,4 @@
-import { LoaderFunction, useLoaderData, useParams } from "react-router";
+import { LoaderFunction, useLoaderData, useParams, useRevalidator } from "react-router";
 
 import { useState } from "react";
 import { healthConditionLoader } from "~/common-actions/health-condition";
@@ -19,6 +19,13 @@ export default function PatientHealthCondition() {
   const { healthConditions, error, baseUrl, user } = useLoaderData<{ user: User, healthConditions: HealthCondition[]; error: string; baseUrl: string }>();
   const [addModalOpen, setModalOpen] = useState(false);
   const { patientId } = useParams<{ patientId: string }>();
+  const revalidator = useRevalidator();
+
+  const handleAddSuccess = () => {
+    setModalOpen(false);
+    revalidator.revalidate();
+  };
+
   if (error) {
     return <ErrorPage error={error} />;
   }
@@ -30,7 +37,7 @@ export default function PatientHealthCondition() {
         </Button>
       </div>
       <Modal title="Add Health Condition" isOpen={addModalOpen} onClose={() => setModalOpen(false)}>
-        <AddHealthConditionForm patientId={patientId || ""} baseUrl={baseUrl} practionerId={user.sub} onAdd={() => setModalOpen(false)} />
+        <AddHealthConditionForm patientId={patientId || ""} baseUrl={baseUrl} practionerId={user.sub} onAdd={handleAddSuccess} />
       </Modal>
       <HealthConditionTable healthConditions={healthConditions} />
     </>

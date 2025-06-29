@@ -6,7 +6,6 @@ import { Procedure } from "./types";
 
 export type AddProcedureFormProps = {
   onAdd?: (proc: Procedure) => void;
-  onClose?: () => void;
   patientId: string;
   baseUrl: string;
 };
@@ -21,7 +20,7 @@ const initialForm: Omit<Procedure, "id" | "created_at" | "deleted_at"> = {
   source_id: "",
 };
 
-const AddProcedureForm: React.FC<AddProcedureFormProps> = ({ onClose, onAdd, patientId, baseUrl }) => {
+const AddProcedureForm: React.FC<AddProcedureFormProps> = ({ onAdd, patientId, baseUrl }) => {
   const [form, setForm] = useState(initialForm);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -45,7 +44,6 @@ const AddProcedureForm: React.FC<AddProcedureFormProps> = ({ onClose, onAdd, pat
 
       toast.success(`Procedure "${form.name}" added successfully!`);
 
-      onClose?.();
       setForm(initialForm);
     } catch (err) {
       if (axios.isAxiosError(err) && err.response?.data?.message) {
@@ -141,15 +139,6 @@ const AddProcedureForm: React.FC<AddProcedureFormProps> = ({ onClose, onAdd, pat
       {error && <div className="text-red-500 mb-2">{error}</div>}
 
       <div className="flex justify-end gap-2 mt-4">
-        <Button
-          buttonType="warning"
-          soft
-          type="button"
-          onClick={onClose}
-          disabled={submitting}
-        >
-          Cancel
-        </Button>
         <Button
           buttonType="primary"
           type="submit"
