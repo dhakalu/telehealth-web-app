@@ -17,10 +17,12 @@ export default remixRoutesOptionAdapter((defineRoutes) => {
       route(":patientId", "./routes/patient/by-id.tsx", () => {
         route("", "./routes/patient/by-id-index.tsx", { index: true })
         route("allergy", "./routes/patient/allergy.tsx");
+        route("prescription", "./routes/patient/prescription.tsx");
         route("medication", "./routes/patient/medication.tsx");
         route("immunization", "./routes/patient/immunization.tsx");
         route("health-condition", "./routes/patient/health-condition.tsx");
         route("procedure", "./routes/patient/procedure.tsx");
+
         // // route("vital", "./routes/common/vital/index.tsx");
         // route("result", "./routes/common/result/index.tsx");
       });
@@ -42,6 +44,7 @@ export default remixRoutesOptionAdapter((defineRoutes) => {
         route(":patientId", "./routes/provider/patient-by-id.tsx", () => {
           route("chat", "./routes/provider/chat.tsx");
           route("allergy", "./routes/provider/allergy.tsx");
+          route("prescription", "./routes/provider/prescription.tsx");
           route("medication", "./routes/provider/medication.tsx");
           route("immunization", "./routes/provider/immunization.tsx");
           route("health-condition", "./routes/provider/health-condition.tsx");

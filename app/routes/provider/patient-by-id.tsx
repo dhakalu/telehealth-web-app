@@ -36,7 +36,7 @@ export default function EncountersPage() {
     // Define all tabs
     const tabs: Tab[] = [
         { to: "chat", label: "Chat" },
-        { to: "qa", label: "Q&A" },
+        { to: "prescription", label: "Prescriptions" },
         { to: "health-condition", label: "Health Conditions" },
         { to: "procedure", label: "Procedures" },
         { to: "medication", label: "Medications" },

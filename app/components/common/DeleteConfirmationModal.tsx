@@ -5,7 +5,7 @@ interface DeleteConfirmationModalProps {
     isOpen: boolean;
     onClose: () => void;
     onConfirm: () => void;
-    title: string;
+    title?: string;
     itemName?: string;
     description?: string;
     isDeleting?: boolean;
@@ -66,7 +66,7 @@ export default function DeleteConfirmationModal({
                 </div>
                 <div className="text-center">
                     <h3 className="text-lg font-medium text-gray-900 mb-2">
-                        Are you sure you want to delete this {title.toLowerCase().replace('delete ', '')}?
+                        Are you sure you want to delete this item?
                     </h3>
                     {itemName && (
                         <p className="text-sm text-gray-500 mb-2">

@@ -10,7 +10,7 @@ import { User } from "./complete-profile";
 export const loader: LoaderFunction = async ({ request }) => {
   const user = await requireAuthCookie(request);
 
-  if (user.account_type !== "provider") {
+  if (user.account_type !== "practitioner") {
     return redirect(accountTypePathsMap[user.account_type || ""] || "/");
   }
   const pathname = new URL(request.url).pathname;
