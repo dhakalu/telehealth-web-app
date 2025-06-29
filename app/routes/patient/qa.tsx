@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import { LoaderFunction, useLoaderData, useNavigate, useParams } from "react-router";
+import { LoaderFunction, redirect, useLoaderData, useNavigate, useParams } from "react-router";
 
 import axios from "axios";
 import { API_BASE_URL } from "~/api";
 import { requireAuthCookie } from "~/auth";
 import Button from "~/components/common/Button";
 import { CheckboxGroup } from "~/components/common/CheckboxGroup";
+import ErrorPage from "~/components/common/ErrorPage";
 import { Input } from "~/components/common/Input";
 import PageHeader from "~/components/common/PageHeader";
 import { RadioGroup } from "~/components/common/RadioGroup";
@@ -96,15 +97,35 @@ const screeningQuestions: Question[] = [
 ];
 
 // Loader for authentication
-export const loader: LoaderFunction = async ({ request }) => {
+export const loader: LoaderFunction = async ({ request, params }) => {
   const user = await requireAuthCookie(request);
-  return { user, baseUrl: API_BASE_URL };
+  const { providerId } = params;
+  // make api call to /encounter/search?patientId={user.sub}&status=open
+  try {
+    const { data } = await axios.get(`${API_BASE_URL}/encounter/search`, {
+      params: {
+        patientId: user.sub,
+        providerId,
+        status: "open"
+      }
+    });
+    if (data.length === 0) {
+      // no active encounts found, they have to fill screening questions
+      return { user, baseUrl: API_BASE_URL };
+    } else {
+      return redirect(`/patient/chat/${providerId}`);
+    }
+  } catch (error) {
+    console.error("Error fetching encounters:", error);
+    return { user, baseUrl: API_BASE_URL, error: "Failed to fetch encounters" };
+  }
+
 };
 
 export default function ScreeningQuestionAnswers() {
   usePageTitle("Screening Questions");
 
-  const { user, baseUrl } = useLoaderData() as { user: User, baseUrl: string };
+  const { user, baseUrl, error } = useLoaderData() as { user: User, baseUrl: string, error?: string };
   const navigate = useNavigate();
   const params = useParams();
 
@@ -157,6 +178,11 @@ export default function ScreeningQuestionAnswers() {
       setSubmitting(false);
     }
   };
+
+  if (error) {
+    toast.error(error);
+    return <ErrorPage error={error} />;
+  }
 
   return (
     <form className="max-w-2xl mx-auto p-6  rounded shadow space-y-6" onSubmit={handleSubmit}>

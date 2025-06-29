@@ -1,13 +1,12 @@
-import { LoaderFunction, Outlet, useLoaderData, useNavigate } from "react-router";
+import { LoaderFunction, Outlet, useLoaderData, useNavigate, useRevalidator } from "react-router";
 
 import axios from "axios";
 import { useState } from "react";
 import { API_BASE_URL } from "~/api";
 import { requireAuthCookie } from "~/auth";
 import ErrorPage from "~/components/common/ErrorPage";
-import EstablishmentList, { Establishment } from "~/components/provider/EstablishmentList";
+import EstablishmentList, { EncounterSummary } from "~/components/provider/EncountersList";
 import { usePageTitle } from "~/hooks";
-import { User } from "./complete-profile";
 
 type EncounterType = "in-person" | "telehealth"
 
@@ -22,8 +21,9 @@ export type Encounter = {
     status: string;
     notes?: string | null;
     createdAt: string;
-    patient: User
-    provider: User
+    patientFirstName: string
+    patientLastName: string
+    patientMiddleName?: string | null;
 }
 
 
@@ -32,8 +32,13 @@ export type Encounter = {
 export const loader: LoaderFunction = async ({ request }) => {
     const user = await requireAuthCookie(request);
     try {
-        const response = await axios.get(`${API_BASE_URL}/establishment/by-practitioner/${user.sub}`);
-        return { establishments: response.data };
+        const response = await axios.get(`${API_BASE_URL}/encounter/search`, {
+            params: {
+                providerId: user.sub,
+                status: "open" // Assuming you want to fetch only active encounters
+            }
+        });
+        return { encounterSummaries: response.data, baseUrl: API_BASE_URL, error: null };
     } catch (error) {
         if (axios.isAxiosError(error)) {
             if (error.response?.status === 404) {
@@ -53,17 +58,28 @@ export const loader: LoaderFunction = async ({ request }) => {
 export default function EstablishmentsPage() {
     usePageTitle("Patients - Provider - MedTok");
 
-    const { establishments, error } = useLoaderData<{ establishments: Establishment[], error: string }>() || [];
+    const { encounterSummaries, error, baseUrl } = useLoaderData<{ encounterSummaries: EncounterSummary[], error: string, baseUrl: string }>() || [];
     const navigate = useNavigate();
+    const revalidator = useRevalidator();
 
 
-    const [selectedEstablishmentId, setSelectedEstablishmentId] = useState<string | null>(establishments && establishments.length > 0 ? establishments[0].id : null);
+    const [selectedEncounterId, setSelectedEstablishmentId] = useState<string | null>(encounterSummaries && encounterSummaries.length > 0 ? encounterSummaries[0].id : null);
 
-    const handleSelectEestablishment = (establishment: Establishment) => {
+    const handleSelectEestablishment = (establishment: EncounterSummary) => {
         const establishmentId = establishment.id;
         setSelectedEstablishmentId(establishmentId);
         navigate(`${establishment.patientId}/chat`);
     }
+
+    const handleComplete = (establishmentId: string) => {
+        // Refresh the loader data to get updated establishments list
+        revalidator.revalidate();
+
+        // If the completed establishment was selected, clear the selection
+        if (selectedEncounterId === establishmentId) {
+            setSelectedEstablishmentId(null);
+        }
+    };
 
     if (error) {
         return (
@@ -77,7 +93,13 @@ export default function EstablishmentsPage() {
                 <div className="w-full flex">
                     {/* Left column: Chat list */}
                     <div className="w-1/4 overflow-y-auto shadow-lg hidden lg:block">
-                        <EstablishmentList establishments={establishments} onSelect={handleSelectEestablishment} selectedEstablishmentId={selectedEstablishmentId} />
+                        <EstablishmentList
+                            encounterSummaries={encounterSummaries}
+                            onSelect={handleSelectEestablishment}
+                            selectedEncounterId={selectedEncounterId}
+                            baseUrl={baseUrl}
+                            onComplete={handleComplete}
+                        />
                     </div>
                     {/* Right column: Selected chat */}
                     <div className="lg:w-3/4 w-full pl-1 pt-1 flex-col">
