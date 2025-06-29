@@ -1,8 +1,8 @@
-import { LoaderFunction, redirect, useActionData, useNavigation } from "react-router";
-import { UserSignUp } from "../components/UserSignUp";
+import { LoaderFunction, redirect, useLoaderData } from "react-router";
+import { AccountType, UserSignUp } from "../components/UserSignUp";
 
+import { API_BASE_URL } from "~/api";
 import { authCookie } from "~/auth";
-import { signupAction } from "~/common-actions/signup";
 import Card from "~/components/common/Card";
 import { usePageTitle } from "~/hooks";
 
@@ -15,22 +15,25 @@ export const loader: LoaderFunction = async ({ request }) => {
   if (cookie) {
     return redirect("/login?account_type=practitioner", {});
   }
-  return null;
+  return {
+    baseUrl: API_BASE_URL, allowedAccountTypes: [
+      { value: "practitioner", label: "Practitioner" },
+      { value: "patient", label: "Patient" },
+      { value: "pharmacist", label: "Pharmacist" }
+    ]
+  };
 }
 
-export const action = signupAction();
 
 export default function UserSignUpPage() {
   usePageTitle("Sign Up as Provider - MedTok");
-  const { error } = useActionData<{ error?: string }>() || {};
+  const { baseUrl, allowedAccountTypes } = useLoaderData<{ baseUrl?: string, allowedAccountTypes: AccountType[] }>() || {};
 
-  const navigation = useNavigation()
-  const isSubmitting = navigation.state === "submitting";
 
   return (
-    <div className="min-h-screen flex items-center justify-center  p-8">
+    <div className="min-h-screen flex flex-col items-center justify-center  p-8">
       <Card>
-        <UserSignUp error={error!} isSubmitting={isSubmitting} />
+        <UserSignUp title="Become a new MedTok member" baseUrl={baseUrl} allowedAccountTypes={allowedAccountTypes} />
       </Card>
     </div>
   );

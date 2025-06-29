@@ -2,7 +2,7 @@ import { LoaderFunction, redirect, useActionData, useNavigation } from "react-ro
 import { authCookie } from "~/auth";
 import { UserLogin } from "../components/UserLogin";
 
-import { signInAction } from "~/common-actions/signin";
+import { accountTypePathsMap, signInAction } from "~/common-actions/signin";
 import Card from "~/components/common/Card";
 import { usePageTitle } from "~/hooks";
 import { User } from "./provider/complete-profile";
@@ -11,7 +11,7 @@ export const loader: LoaderFunction = async ({ request }) => {
   const cookie = await authCookie.parse(request.headers.get("Cookie"));
   if (cookie) {
     const user = JSON.parse(cookie) as User;
-    const appPath = user.account_type === "patient" ? "/patient" : "/provider"
+    const appPath = accountTypePathsMap[user?.account_type || ""] || "/404";
     return redirect(appPath)
   }
   return null;

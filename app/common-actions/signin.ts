@@ -4,6 +4,14 @@ import { API_BASE_URL } from "~/api";
 import { authCookie } from "~/auth";
 import { ApiError } from "~/routes/_auth.provider.signup";
 
+export const accountTypePathsMap: Record<string, string> = {
+  patient: "/patient",
+  practitioner: "/provider",
+  support: "/support",
+  pharmacist: "/pharmacist",
+  "facility-admin": "/admin",
+}
+
 export const signInAction = () => async ({ request }: ActionFunctionArgs) => {
   const formData = await request.formData();
   const email = formData.get("email");
@@ -24,8 +32,8 @@ export const signInAction = () => async ({ request }: ActionFunctionArgs) => {
         status: 401,
       });
     }
-    const appPath = user.account_type == "patient" ? "/patient" : "/provider"
-    return redirect(appPath, {
+    const redirectPath = accountTypePathsMap[user.account_type] || "/404";
+    return redirect(redirectPath, {
       headers: {
         "Set-Cookie": await authCookie.serialize(JSON.stringify(user))
       }

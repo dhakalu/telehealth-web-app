@@ -51,5 +51,10 @@ export default remixRoutesOptionAdapter((defineRoutes) => {
         });
       });
     });
+    route("/support", "./routes/support/route.tsx", () => {
+      route("", "./routes/support/_index.tsx", { index: true });
+      route("complete-profile/:userId", "./routes/support/complete-profile.tsx");
+      route("team-management", "./routes/support/team-management.tsx");
+    });
   });
 }) satisfies RouteConfig;
