@@ -34,7 +34,8 @@ export default function PatientHome() {
   const tabs: Tab[] = [
     { to: "health-condition", label: "Health Conditions" },
     { to: "procedure", label: "Procedures" },
-    { to: "medication", label: "Medications" },
+    // { to: "medication", label: "Medications" },
+    { to: "prescription", label: "Prescriptions" },
     { to: "allergy", label: "Allergies" },
     { to: "immunization", label: "Immunizations" },
     { to: "family-health-condition", label: "Family Health" },

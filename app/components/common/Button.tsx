@@ -13,10 +13,11 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
     wide?: boolean;
     size?: Size;
     isLoading?: boolean;
+    leftAlign?: boolean;
     ref?: Ref<HTMLButtonElement>
 }
 
-export default function Button({ children, ghost, wide, soft, link, isLoading, buttonType = "primary", size = "md", ...props }: ButtonProps) {
+export default function Button({ children, ghost, wide, soft, link, leftAlign, isLoading, buttonType = "primary", size = "md", ...props }: ButtonProps) {
 
     const isDiabled = props.disabled || isLoading;
     const buttonClass = clsx({
@@ -38,8 +39,8 @@ export default function Button({ children, ghost, wide, soft, link, isLoading, b
         "btn-lg": size === "lg",
         "btn-xl": size === "xl",
         "btn-wide": wide,
-        "btn-soft": soft
-
+        "btn-soft": soft,
+        "justify-left": leftAlign
     });
 
     return (

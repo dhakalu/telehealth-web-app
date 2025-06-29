@@ -39,6 +39,7 @@
     "react-confetti": "^6.4.0",
     "react-dom": "^18.2.0",
     "react-router": "^7.0.0",
+    "react-select": "^5.10.1",
     "server-timing": "^3.3.3",
     "source-map-support": "^0.5.21"
   },

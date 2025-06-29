@@ -1,94 +1,108 @@
-import React, { useEffect, useRef, useState } from "react";
-import { Input } from "./Input";
+import React, { useCallback } from "react";
+import AsyncSelect from 'react-select/async';
 
 interface TypeAHeadSearchProps {
-    suggestions: string[];
+    url: string;
     placeholder?: string;
     label: string;
+    value?: string; // Current value of the input
     error?: string;
     onSelect?: (value: string) => void;
+    resultKey?: string; // Key to extract from API response (e.g., 'name', 'title')
+    labelKey?: string; // Key to display in the dropdown (e.g., 'name', 'title')
+    minQueryLength?: number; // Minimum characters before making API call
 }
 
 const TypeAHeadSearch: React.FC<TypeAHeadSearchProps> = ({
-    suggestions,
-    placeholder = "Search...",
+    url,
     label,
     error,
     onSelect,
+    value = '',
+    labelKey,
+    resultKey = "name",
+    minQueryLength = 2,
 }) => {
-    const [query, setQuery] = useState("");
-    const [filtered, setFiltered] = useState<string[]>([]);
-    const [showDropdown, setShowDropdown] = useState(false);
-    const [highlighted, setHighlighted] = useState(-1);
-    const inputRef = useRef<HTMLInputElement>(null);
 
-    useEffect(() => {
-        if (query.trim() === "") {
-            setFiltered([]);
-            setShowDropdown(false);
-            return;
+    const [isLoading, setIsLoading] = React.useState(false);
+    // Debounced API call function
+    const fetchSuggestions = useCallback(async (searchQuery: string) => {
+        if (searchQuery.trim().length < minQueryLength) {
+            return [];
         }
-        const filteredSuggestions = suggestions.filter((s) =>
-            s.toLowerCase().includes(query.toLowerCase())
-        );
-        setFiltered(filteredSuggestions);
-        setShowDropdown(filteredSuggestions.length > 0);
-        setHighlighted(-1);
-    }, [query, suggestions]);
+        setIsLoading(true);
 
-    const handleSelect = (value: string) => {
-        setQuery(value);
-        setShowDropdown(false);
-        if (onSelect) onSelect(value);
-    };
+        try {
+            const searchUrl = `${url}?q=${encodeURIComponent(searchQuery)}`;
+            const response = await fetch(searchUrl);
 
-    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-        if (!showDropdown) return;
-        if (e.key === "ArrowDown") {
-            setHighlighted((prev) => Math.min(prev + 1, filtered.length - 1));
-        } else if (e.key === "ArrowUp") {
-            setHighlighted((prev) => Math.max(prev - 1, 0));
-        } else if (e.key === "Enter" && highlighted >= 0) {
-            handleSelect(filtered[highlighted]);
-        } else if (e.key === "Escape") {
-            setShowDropdown(false);
+            if (!response.ok) {
+                return []
+            }
+
+            const data = await response.json();
+
+            // Extract suggestions from response
+            let newSuggestions: {
+                label: string;
+                value: string;
+            }[] = [];
+            if (Array.isArray(data)) {
+                newSuggestions = data.map((item: unknown) =>
+                    typeof item === 'string' ? {
+                        label: item,
+                        value: item
+                    } : {
+                        label: (item as Record<string, unknown>)[labelKey || resultKey] as string || '',
+                        value: (item as Record<string, unknown>)[resultKey] as string || ''
+                    }
+                ).filter(Boolean);
+            } else if (data.results && Array.isArray(data.results)) {
+                newSuggestions = data.results.map((item: unknown) =>
+                    typeof item === 'string' ? {
+                        label: item,
+                        value: item
+                    } : {
+                        label: (item as Record<string, unknown>)[labelKey || resultKey] as string || '',
+                        value: (item as Record<string, unknown>)[resultKey] as string || ''
+                    }
+                ).filter(Boolean);
+            }
+
+            return newSuggestions;
+        } catch (error) {
+            console.error('Error fetching suggestions:', error);
+            return []
+        } finally {
+            setIsLoading(false);
         }
-    };
+    }, [minQueryLength, url, labelKey, resultKey]);
 
-    const handleBlur = () => {
-        setTimeout(() => setShowDropdown(false), 100);
+    const loadOptions = (
+        inputValue: string,
+        callback: (options: { label: string; value: string; }[]) => void
+    ) => {
+        setTimeout(async () => {
+            const suggestions = await fetchSuggestions(inputValue);
+            callback(suggestions || []);
+        }, 1000);
     };
 
     return (
-        <div className="relative w-full max-w-xs">
-            <Input
-                ref={inputRef}
-                type="text"
-                label={label}
-                error={error}
-                placeholder={placeholder}
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                onFocus={() => setShowDropdown(filtered.length > 0)}
-                onKeyDown={handleKeyDown}
-                onBlur={handleBlur}
-                autoComplete="off"
-                wrapperClass="mb-0"
+        <div className="w-full max-w-xs">
+            <label className="block mb-1 font-medium">
+                <span>{label}</span>
+                {error && <span className="label-text-alt text-error">{error}</span>}
+            </label>
+            <AsyncSelect
+                cacheOptions
+                isLoading={isLoading}
+                loadOptions={loadOptions}
+                defaultOptions
+                isClearable
+                onChange={(selectedOption) => onSelect?.(selectedOption?.value || '')}
+                value={value ? { label: value, value } : null}
             />
-            {showDropdown && (
-                <ul className="absolute left-0 right-0 mt-1 z-10 menu menu-compact shadow rounded-box">
-                    {filtered.map((item, idx) => (
-                        <li
-                            key={item}
-                            className={`cursor-pointer ${highlighted === idx ? "outline outline-2 outline-primary" : ""}`}
-                            onMouseDown={() => handleSelect(item)}
-                            onMouseEnter={() => setHighlighted(idx)}
-                        >
-                            {item}
-                        </li>
-                    ))}
-                </ul>
-            )}
         </div>
     );
 };

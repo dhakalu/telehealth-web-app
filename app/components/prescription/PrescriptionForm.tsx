@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Input } from "~/components/common/Input";
 import { Select } from "~/components/common/Select";
+import TypeAHeadSearch from "~/components/common/TypeAHeadSearch";
 import { useToast } from "~/hooks/useToast";
 import {
     CreatePrescriptionRequest,
@@ -104,6 +105,7 @@ export default function PrescriptionForm({
         schedule_class: "",
         indication: "",
         notes: "",
+        pharmacy_id: "",
     });
 
     // Fetch prescription details when prescriptionId is provided
@@ -174,6 +176,14 @@ export default function PrescriptionForm({
         }
     };
 
+    const handlePharmacySelect = (pharmacyId: string) => {
+        alert(`Selected Pharmacy ID: ${pharmacyId}`);
+        setPrescription(prev => ({
+            ...prev,
+            pharmacy_id: pharmacyId,
+        }));
+    };
+
     const savePrescription = async () => {
         try {
             setLoading(true);
@@ -182,6 +192,7 @@ export default function PrescriptionForm({
             if (isEditing && prescriptionId) {
                 // Update existing prescription
                 const updateData: UpdatePrescriptionRequest = {
+                    pharmacy_id: prescription.pharmacy_id,
                     medication_name: prescription.medication_name,
                     generic_name: prescription.generic_name,
                     strength: prescription.strength,
@@ -211,6 +222,7 @@ export default function PrescriptionForm({
                 // Create new prescription
                 const createData: CreatePrescriptionRequest = {
                     patient_id: patientId,
+                    pharmacy_id: prescription.pharmacy_id,
                     medication_name: prescription.medication_name!,
                     generic_name: prescription.generic_name,
                     strength: prescription.strength,
@@ -374,9 +386,22 @@ export default function PrescriptionForm({
 
                 {/* Refills and Status */}
                 <div className="bg-white p-6 rounded-lg border">
-                    <h3 className="text-lg font-semibold mb-4">Refills and Status</h3>
+                    <h3 className="text-lg font-semibold mb-4">Pharmacy and Status</h3>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <TypeAHeadSearch
+                                url={`${baseUrl}/organizations?type=pharmacy`}
+                                label="Pharmacy"
+                                placeholder="Search for pharmacy..."
+                                value={prescription.pharmacy_id || ""}
+                                resultKey="id"
+                                labelKey="name"
+                                minQueryLength={2}
+                                onSelect={handlePharmacySelect}
+                            />
+                        </div>
+
                         <Input
                             label="Refills Authorized"
                             type="number"
@@ -387,8 +412,10 @@ export default function PrescriptionForm({
                             max="5"
                             required
                         />
+                    </div>
 
-                        {isEditing && (
+                    {isEditing && (
+                        <div className="mt-4">
                             <Select
                                 label="Status"
                                 name="status"
@@ -396,8 +423,8 @@ export default function PrescriptionForm({
                                 onChange={handleInputChange}
                                 options={statusOptions}
                             />
-                        )}
-                    </div>
+                        </div>
+                    )}
                 </div>
 
                 {/* Controlled Substance Information */}
