@@ -2,13 +2,14 @@ import { LoaderFunction, Outlet, redirect, useLoaderData } from "react-router";
 
 import axios from "axios";
 import { requireAuthCookie } from "~/auth";
+import { accountTypePathsMap } from "~/common-actions/signin";
 import { PatientAppHeader } from "~/components/patient/PatientAppHeader";
 import { User } from "../provider/complete-profile";
 
 export const loader: LoaderFunction = async ({ request }) => {
   const user = await requireAuthCookie(request);
   if (user.account_type !== "patient") {
-    return redirect("/provider");
+    return redirect(accountTypePathsMap[user.account_type || ""] || "/");
   }
   const isCompleteProfilePath = request.url.includes("/patient/complete-profile");
   try {

@@ -3,14 +3,15 @@ import { LoaderFunction, Outlet, redirect, useLoaderData } from "react-router";
 // Update the import path below to the correct location of requireAuthCookie
 import axios from "axios";
 import { requireAuthCookie } from "~/auth"; // or "./auth" or the actual relative path
+import { accountTypePathsMap } from "~/common-actions/signin";
 import { ProviderHeader } from "~/components/provider/ProviderAppHeader";
 import { User } from "./complete-profile";
 
 export const loader: LoaderFunction = async ({ request }) => {
   const user = await requireAuthCookie(request);
 
-  if (user.account_type === "patient") {
-    return redirect("/patient/find-doctors");
+  if (user.account_type !== "provider") {
+    return redirect(accountTypePathsMap[user.account_type || ""] || "/");
   }
   const pathname = new URL(request.url).pathname;
   const completeProfilePath = "/provider/complete-profile";
