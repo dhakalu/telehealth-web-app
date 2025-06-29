@@ -29,7 +29,16 @@ export default function SupportAppLayout() {
     }
     return (
         <div className="flex flex-col h-screen">
-            <AppHeader user={user} />
+            <AppHeader user={user} links={[{
+                label: "Dashboard",
+                href: "/support"
+            }, {
+                label: "Users",
+                href: "/support/team-management"
+            }, {
+                label: "Organizations",
+                href: "/support/manage-organizations"
+            }]} />
             <div className="flex-1 overflow-y-auto">
                 <Outlet />
             </div>

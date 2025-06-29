@@ -5,6 +5,7 @@ import { API_BASE_URL } from "~/api";
 import { requireAuthCookie } from "~/auth";
 import Button from "~/components/common/Button";
 import ErrorPage from "~/components/common/ErrorPage";
+import SupportPageLayout from "~/components/support/SupportPageLayout";
 import { usePageTitle } from "~/hooks";
 
 interface User {
@@ -231,215 +232,207 @@ export default function PractitionerApproval() {
         user.email?.split('@')[0] ||
         'Unknown User';
 
+    const headerActions = (
+        <Button
+            onClick={() => navigate('/support/team-management')}
+            buttonType="neutral"
+        >
+            <svg className="-ml-1 mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
+            Back to Team Management
+        </Button>
+    );
+
     return (
-        <div className="min-h-screen bg-gray-50">
-            {/* Header */}
-            <header className="shadow">
-                <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                    <div className="flex justify-between items-center">
-                        <h1 className="text-3xl font-bold text-gray-900">Practitioner Approval</h1>
-                        <Button
-                            onClick={() => navigate('/support/team-management')}
-                            buttonType="neutral"
-                        >
-                            <svg className="-ml-1 mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-                            </svg>
-                            Back to Team Management
-                        </Button>
-                    </div>
-                </div>
-            </header>
+        <SupportPageLayout
+            title="Practitioner Approval"
+            headerActions={headerActions}
+        >
+            <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+                {/* User Information */}
+                <div className="lg:col-span-2">
+                    <div className="bg-white shadow rounded-lg">
+                        <div className="px-4 py-5 sm:p-6">
+                            <h3 className="text-lg font-medium text-gray-900 mb-4">User Information</h3>
 
-            {/* Main content */}
-            <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-                <div className="px-4 py-6 sm:px-0">
-                    <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-                        {/* User Information */}
-                        <div className="lg:col-span-2">
-                            <div className="bg-white shadow rounded-lg">
-                                <div className="px-4 py-5 sm:p-6">
-                                    <h3 className="text-lg font-medium text-gray-900 mb-4">User Information</h3>
+                            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700">Name</label>
+                                    <p className="mt-1 text-sm text-gray-900">{displayName}</p>
+                                </div>
 
-                                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                                        <div>
-                                            <label className="block text-sm font-medium text-gray-700">Name</label>
-                                            <p className="mt-1 text-sm text-gray-900">{displayName}</p>
-                                        </div>
-
-                                        {user.middle_name && (
-                                            <div>
-                                                <label className="block text-sm font-medium text-gray-700">Middle Name</label>
-                                                <p className="mt-1 text-sm text-gray-900">{user.middle_name}</p>
-                                            </div>
-                                        )}
-
-                                        <div>
-                                            <label className="block text-sm font-medium text-gray-700">Email</label>
-                                            <p className="mt-1 text-sm text-gray-900">{user.email}</p>
-                                        </div>
-
-                                        <div>
-                                            <label className="block text-sm font-medium text-gray-700">Account Type</label>
-                                            <span className="mt-1 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800">
-                                                {user.account_type}
-                                            </span>
-                                        </div>
-
-                                        <div>
-                                            <label className="block text-sm font-medium text-gray-700">Current Status</label>
-                                            <span className="mt-1 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
-                                                {user.status}
-                                            </span>
-                                        </div>
-
-                                        <div>
-                                            <label className="block text-sm font-medium text-gray-700">User ID</label>
-                                            <p className="mt-1 text-sm text-gray-500 font-mono">{user.sub}</p>
-                                        </div>
+                                {user.middle_name && (
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700">Middle Name</label>
+                                        <p className="mt-1 text-sm text-gray-900">{user.middle_name}</p>
                                     </div>
+                                )}
+
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700">Email</label>
+                                    <p className="mt-1 text-sm text-gray-900">{user.email}</p>
+                                </div>
+
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700">Account Type</label>
+                                    <span className="mt-1 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800">
+                                        {user.account_type}
+                                    </span>
+                                </div>
+
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700">Current Status</label>
+                                    <span className="mt-1 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                                        {user.status}
+                                    </span>
+                                </div>
+
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700">User ID</label>
+                                    <p className="mt-1 text-sm text-gray-500 font-mono">{user.sub}</p>
                                 </div>
                             </div>
+                        </div>
+                    </div>
 
-                            {/* Practitioner Details */}
-                            {practitioner && (
-                                <div className="mt-6 bg-white shadow rounded-lg">
-                                    <div className="px-4 py-5 sm:p-6">
-                                        <h3 className="text-lg font-medium text-gray-900 mb-4">Practitioner Profile</h3>
+                    {/* Practitioner Details */}
+                    {practitioner && (
+                        <div className="mt-6 bg-white shadow rounded-lg">
+                            <div className="px-4 py-5 sm:p-6">
+                                <h3 className="text-lg font-medium text-gray-900 mb-4">Practitioner Profile</h3>
 
-                                        {/* Qualifications */}
-                                        {practitioner.qualification && practitioner.qualification.length > 0 && (
-                                            <div className="mb-6">
-                                                <h4 className="text-md font-medium text-gray-900 mb-2">Qualifications</h4>
-                                                <div className="space-y-3">
-                                                    {practitioner.qualification.map((qual, index) => (
-                                                        <div key={index} className="border rounded-lg p-3">
-                                                            <div className="flex justify-between items-start">
-                                                                <div>
-                                                                    <p className="text-sm font-medium text-gray-900">
-                                                                        {qual.code?.text || qual.code?.coding?.[0]?.display || 'Unknown Qualification'}
-                                                                    </p>
-                                                                    {qual.issuer && (
-                                                                        <p className="text-sm text-gray-500">
-                                                                            Issued by: {qual.issuer.display}
-                                                                        </p>
-                                                                    )}
-                                                                </div>
-                                                                {qual.period && (
-                                                                    <div className="text-sm text-gray-500">
-                                                                        {qual.period.start} - {qual.period.end || 'Present'}
-                                                                    </div>
-                                                                )}
+                                {/* Qualifications */}
+                                {practitioner.qualification && practitioner.qualification.length > 0 && (
+                                    <div className="mb-6">
+                                        <h4 className="text-md font-medium text-gray-900 mb-2">Qualifications</h4>
+                                        <div className="space-y-3">
+                                            {practitioner.qualification.map((qual, index) => (
+                                                <div key={index} className="border rounded-lg p-3">
+                                                    <div className="flex justify-between items-start">
+                                                        <div>
+                                                            <p className="text-sm font-medium text-gray-900">
+                                                                {qual.code?.text || qual.code?.coding?.[0]?.display || 'Unknown Qualification'}
+                                                            </p>
+                                                            {qual.issuer && (
+                                                                <p className="text-sm text-gray-500">
+                                                                    Issued by: {qual.issuer.display}
+                                                                </p>
+                                                            )}
+                                                        </div>
+                                                        {qual.period && (
+                                                            <div className="text-sm text-gray-500">
+                                                                {qual.period.start} - {qual.period.end || 'Present'}
                                                             </div>
-                                                        </div>
-                                                    ))}
-                                                </div>
-                                            </div>
-                                        )}
-
-                                        {/* Contact Information */}
-                                        {practitioner.telecom && practitioner.telecom.length > 0 && (
-                                            <div className="mb-6">
-                                                <h4 className="text-md font-medium text-gray-900 mb-2">Contact Information</h4>
-                                                <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
-                                                    {practitioner.telecom.map((contact, index) => (
-                                                        <div key={index}>
-                                                            <label className="block text-sm font-medium text-gray-700 capitalize">
-                                                                {contact.system} ({contact.use})
-                                                            </label>
-                                                            <p className="mt-1 text-sm text-gray-900">{contact.value}</p>
-                                                        </div>
-                                                    ))}
-                                                </div>
-                                            </div>
-                                        )}
-
-                                        {/* Address */}
-                                        {practitioner.address && practitioner.address.length > 0 && (
-                                            <div>
-                                                <h4 className="text-md font-medium text-gray-900 mb-2">Address</h4>
-                                                {practitioner.address.map((addr, index) => (
-                                                    <div key={index} className="text-sm text-gray-900">
-                                                        <p>{addr.text || addr.line?.join(', ')}</p>
-                                                        <p>{addr.city}, {addr.state} {addr.postalCode}</p>
-                                                        <p>{addr.country}</p>
+                                                        )}
                                                     </div>
-                                                ))}
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                )}
+
+                                {/* Contact Information */}
+                                {practitioner.telecom && practitioner.telecom.length > 0 && (
+                                    <div className="mb-6">
+                                        <h4 className="text-md font-medium text-gray-900 mb-2">Contact Information</h4>
+                                        <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+                                            {practitioner.telecom.map((contact, index) => (
+                                                <div key={index}>
+                                                    <label className="block text-sm font-medium text-gray-700 capitalize">
+                                                        {contact.system} ({contact.use})
+                                                    </label>
+                                                    <p className="mt-1 text-sm text-gray-900">{contact.value}</p>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                )}
+
+                                {/* Address */}
+                                {practitioner.address && practitioner.address.length > 0 && (
+                                    <div>
+                                        <h4 className="text-md font-medium text-gray-900 mb-2">Address</h4>
+                                        {practitioner.address.map((addr, index) => (
+                                            <div key={index} className="text-sm text-gray-900">
+                                                <p>{addr.text || addr.line?.join(', ')}</p>
+                                                <p>{addr.city}, {addr.state} {addr.postalCode}</p>
+                                                <p>{addr.country}</p>
                                             </div>
-                                        )}
+                                        ))}
                                     </div>
-                                </div>
-                            )}
-
-                            {!practitioner && (
-                                <div className="mt-6 bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-                                    <div className="flex">
-                                        <div className="flex-shrink-0">
-                                            <svg className="h-5 w-5 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.99-.833-2.25 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
-                                            </svg>
-                                        </div>
-                                        <div className="ml-3">
-                                            <h3 className="text-sm font-medium text-yellow-800">
-                                                Practitioner Profile Incomplete
-                                            </h3>
-                                            <p className="mt-1 text-sm text-yellow-700">
-                                                This user has not completed their practitioner profile yet.
-                                                You can still approve them based on the user information above.
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                            )}
+                                )}
+                            </div>
                         </div>
+                    )}
 
-                        {/* Actions */}
-                        <div className="lg:col-span-1">
-                            <div className="bg-white shadow rounded-lg">
-                                <div className="px-4 py-5 sm:p-6">
-                                    <h3 className="text-lg font-medium text-gray-900 mb-4">Actions</h3>
+                    {!practitioner && (
+                        <div className="mt-6 bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                            <div className="flex">
+                                <div className="flex-shrink-0">
+                                    <svg className="h-5 w-5 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.99-.833-2.25 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
+                                    </svg>
+                                </div>
+                                <div className="ml-3">
+                                    <h3 className="text-sm font-medium text-yellow-800">
+                                        Practitioner Profile Incomplete
+                                    </h3>
+                                    <p className="mt-1 text-sm text-yellow-700">
+                                        This user has not completed their practitioner profile yet.
+                                        You can still approve them based on the user information above.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+                </div>
 
-                                    <div className="space-y-4">
-                                        <Button
-                                            onClick={handleApprove}
-                                            buttonType="success"
-                                            isLoading={processing}
-                                            disabled={processing || user.status === 'complete'}
-                                            wide
-                                        >
-                                            <svg className="-ml-1 mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
-                                            </svg>
-                                            {user.status === 'complete' ? 'Already Approved' : 'Approve Practitioner'}
-                                        </Button>
+                {/* Actions */}
+                <div className="lg:col-span-1">
+                    <div className="bg-white shadow rounded-lg">
+                        <div className="px-4 py-5 sm:p-6">
+                            <h3 className="text-lg font-medium text-gray-900 mb-4">Actions</h3>
 
-                                        <Button
-                                            onClick={handleReject}
-                                            buttonType="error"
-                                            isLoading={processing}
-                                            disabled={processing || user.status === 'rejected'}
-                                            wide
-                                        >
-                                            <svg className="-ml-1 mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-                                            </svg>
-                                            {user.status === 'rejected' ? 'Already Rejected' : 'Reject Practitioner'}
-                                        </Button>
-                                    </div>
+                            <div className="space-y-4">
+                                <Button
+                                    onClick={handleApprove}
+                                    buttonType="success"
+                                    isLoading={processing}
+                                    disabled={processing || user.status === 'complete'}
+                                    wide
+                                >
+                                    <svg className="-ml-1 mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+                                    </svg>
+                                    {user.status === 'complete' ? 'Already Approved' : 'Approve Practitioner'}
+                                </Button>
 
-                                    <div className="mt-6 pt-6 border-t border-gray-200">
-                                        <h4 className="text-sm font-medium text-gray-900 mb-2">Status Information</h4>
-                                        <div className="text-sm text-gray-600">
-                                            <p><strong>Approve:</strong> Sets status to "complete" and allows the practitioner to use the platform.</p>
-                                            <p className="mt-2"><strong>Reject:</strong> Sets status to "rejected" and prevents platform access.</p>
-                                        </div>
-                                    </div>
+                                <Button
+                                    onClick={handleReject}
+                                    buttonType="error"
+                                    isLoading={processing}
+                                    disabled={processing || user.status === 'rejected'}
+                                    wide
+                                >
+                                    <svg className="-ml-1 mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                                    </svg>
+                                    {user.status === 'rejected' ? 'Already Rejected' : 'Reject Practitioner'}
+                                </Button>
+                            </div>
+
+                            <div className="mt-6 pt-6 border-t border-gray-200">
+                                <h4 className="text-sm font-medium text-gray-900 mb-2">Status Information</h4>
+                                <div className="text-sm text-gray-600">
+                                    <p><strong>Approve:</strong> Sets status to "complete" and allows the practitioner to use the platform.</p>
+                                    <p className="mt-2"><strong>Reject:</strong> Sets status to "rejected" and prevents platform access.</p>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </main>
-        </div>
+            </div>
+        </SupportPageLayout>
     );
 }

@@ -56,6 +56,8 @@ export default remixRoutesOptionAdapter((defineRoutes) => {
       route("", "./routes/support/_index.tsx", { index: true });
       route("complete-profile/:userId", "./routes/support/complete-profile.tsx");
       route("team-management", "./routes/support/team-management.tsx");
+      route("manage-organizations", "./routes/support/manage-organizations.tsx");
+      route("manage-organizations/:organizationId", "./routes/support/create-update-organization.tsx");
       route("approval/practitioner/:userId", "./routes/support/practitioner-approval.tsx");
     });
   });
