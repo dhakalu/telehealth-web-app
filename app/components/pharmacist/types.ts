@@ -177,3 +177,70 @@ export const PHARMACIST_CERTIFICATIONS = [
     "Compounded Sterile Preparation Technician (CSPT)",
     "Other"
 ] as const;
+
+// Organization-Pharmacist relationship types
+export interface OrganizationPharmacist {
+    id: string;
+    organization_id: string;
+    pharmacist_id: string;
+    supervisor_id?: string;
+    role?: string;
+    employment_type: string;
+    start_date?: string;
+    end_date?: string;
+    is_primary: boolean;
+    active: boolean;
+    created_at: string;
+    updated_at: string;
+}
+
+export interface CreateOrganizationPharmacistRequest {
+    organization_id: string;
+    pharmacist_id: string;
+    supervisor_id?: string;
+    role?: string;
+    employment_type?: string;
+    start_date?: string;
+    end_date?: string;
+    is_primary?: boolean;
+}
+
+export interface UpdateOrganizationPharmacistRequest {
+    supervisor_id?: string;
+    role?: string;
+    employment_type?: string;
+    start_date?: string;
+    end_date?: string;
+    is_primary?: boolean;
+    active?: boolean;
+}
+
+// API Response types
+export interface PharmacistSearchResponse {
+    pharmacists: PharmacistWithUser[];
+    total_count: number;
+    limit: number;
+    offset: number;
+}
+
+export const EMPLOYMENT_TYPES = [
+    "Full-time",
+    "Part-time",
+    "Contract",
+    "Per-diem",
+    "Relief",
+    "Consultant",
+    "Other"
+] as const;
+
+export const PHARMACIST_ROLES = [
+    "Staff Pharmacist",
+    "Senior Pharmacist",
+    "Lead Pharmacist",
+    "Pharmacy Manager",
+    "Assistant Manager",
+    "Clinical Coordinator",
+    "Training Coordinator",
+    "Quality Assurance",
+    "Other"
+] as const;

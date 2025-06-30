@@ -1,20 +1,20 @@
 import axios from "axios";
-import { LoaderFunction, Outlet, useLoaderData } from "react-router";
+import { LoaderFunction, Outlet, redirect, useLoaderData } from "react-router";
 import { API_BASE_URL } from "~/api";
 import { requireAuthCookie } from "~/auth";
 import AppHeader from "~/components/common/AppHeader";
 import ErrorPage from "~/components/common/ErrorPage";
-import { User } from "./complete-profile";
+import { User } from "../provider/complete-profile";
 
 export const loader: LoaderFunction = async ({ request }) => {
     const loggedInUser = await requireAuthCookie(request);
     try {
         const response = await axios.get<User>(`${API_BASE_URL}/user/${loggedInUser.sub}`);
         const user = response.data;
-        // const url = new URL(request.url);
-        // if (user?.status !== "complete" && url.pathname !== "/support/complete-profile") {
-        //     return redirect("/support/complete-profile");
-        // }
+        const url = new URL(request.url);
+        if (user?.status !== "complete" && url.pathname !== "/support/complete-profile") {
+            return redirect("/support/complete-profile");
+        }
         return { user };
     } catch (error) {
         console.error("Error fetching user data:", error);
