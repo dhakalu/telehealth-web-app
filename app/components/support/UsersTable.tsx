@@ -39,6 +39,8 @@ const getStatusBadge = (status: string, user?: User) => {
                 switch (accountType?.toLowerCase()) {
                     case 'practitioner':
                         return `/support/approval/practitioner/${user?.sub}`;
+                    case 'pharmacist':
+                        return `/support/approval/pharmacist/${user?.sub}`;
                     case 'support':
                         return `/support/complete-profile/${user?.sub}`;
                     default:

@@ -275,6 +275,9 @@ export default function PharmacistForm({
                             <TypeAHeadSearch
                                 label="Organization(Optional)"
                                 url={`${baseUrl}/organizations`}
+                                // name="organization_id"
+                                labelKey="name"
+                                resultKey="id"
                                 value={formData.organization_id || ""}
                                 onSelect={(orgId) => setFormData(prev => ({ ...prev, organization_id: orgId }))}
                             />
