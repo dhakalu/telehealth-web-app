@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { StarRating } from "./RatingStar";
+import { StarRating } from "./review/RatingStar";
 
 
 export interface PractitionerSearchItem {

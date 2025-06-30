@@ -9,7 +9,7 @@ import ErrorPage from "~/components/common/ErrorPage";
 import { Modal } from "~/components/common/Modal";
 import PageHeader from "~/components/common/PageHeader";
 import { BookAppointment } from "~/components/provider/BookAppointment";
-import { ReviewModal } from "~/components/ReviewModal";
+import { ReviewModal } from "~/components/review/ReviewModal";
 import { usePageTitle, useToast } from "~/hooks";
 import { User } from "../provider/complete-profile";
 

@@ -1,7 +1,7 @@
 import React from "react";
-import Button from "./common/Button";
-import { Input } from "./common/Input";
-import { Select } from "./common/Select";
+import Button from "../common/Button";
+import { Input } from "../common/Input";
+import { Select } from "../common/Select";
 
 interface ReviewModalProps {
   doctorName: string;

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import type { ReviewWithReviewer } from "~/api/review";
 import { reviewApi, reviewUtils } from "~/api/review";
-import Card from "./common/Card";
+import Card from "../common/Card";
 import { StarRating } from "./RatingStar";
 
 export interface ReviewListProps {

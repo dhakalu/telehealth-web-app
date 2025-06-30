@@ -1,7 +1,7 @@
 import React from "react";
 import { Column, Table } from "./common/Table";
-import { StarRating } from "./RatingStar";
-import { ReviewList } from "./ReviewList";
+import { StarRating } from "./review/RatingStar";
+import { ReviewList } from "./review/ReviewList";
 
 
 // FHIR Practitioner resource type (simplified for this context)
