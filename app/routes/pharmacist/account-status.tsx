@@ -1,5 +1,5 @@
-import { LoaderFunction, redirect, useLoaderData } from "react-router";
-import { API_BASE_URL } from "~/api";
+import { LoaderFunction, useLoaderData } from "react-router";
+import { userApi } from "~/api/users";
 import { requireAuthCookie } from "~/auth";
 import AccountStatus from "~/components/common/AccountStatus";
 import ErrorPage from "~/components/common/ErrorPage";
@@ -19,14 +19,7 @@ interface User {
 export const loader: LoaderFunction = async ({ request }) => {
     const loggedInUser = await requireAuthCookie(request);
     try {
-        const response = await fetch(`${API_BASE_URL}/user/${loggedInUser.sub}`);
-        if (!response.ok) {
-            if (response.status === 404) {
-                return redirect("/pharmacist/complete-profile");
-            }
-            throw new Error("Failed to fetch user data");
-        }
-        const userData = await response.json();
+        const userData = await userApi.getUserById(loggedInUser.sub);
         loggedInUser.status = userData.status;
     } catch (error) {
         console.error("Error fetching user data:", error);

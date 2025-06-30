@@ -1,6 +1,7 @@
-import axios, { AxiosError } from "axios";
+import { AxiosError } from "axios";
 import React from "react";
 import { Form, useNavigate } from "react-router";
+import { userApi } from "~/api/users";
 import { useToast } from "~/hooks";
 import { ApiError } from "~/routes/_auth.provider.signup";
 import Button from "./common/Button";
@@ -21,7 +22,7 @@ export type UserSignUpProps = {
   showLoginLink?: boolean; // Optional prop to show login link
 };
 
-export const UserSignUp: React.FC<UserSignUpProps> = ({ allowedAccountTypes, title, showLoginLink = true, baseUrl, buttonLabel, onSuccess }) => {
+export const UserSignUp: React.FC<UserSignUpProps> = ({ allowedAccountTypes, title, showLoginLink = true, buttonLabel, onSuccess }) => {
   const [error, setError] = React.useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = React.useState(false);
   const navigate = useNavigate()
@@ -48,24 +49,15 @@ export const UserSignUp: React.FC<UserSignUpProps> = ({ allowedAccountTypes, tit
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    const data = {
-      ...form,
-      status: "created"
-    };
 
     try {
-      const response = await axios.post(`${baseUrl}/user`, data);
-      const user = response.data;
-      const status = response.status;
+      const user = await userApi.createUser({
+        ...form,
+        status: "created"
+      });
 
-
-
-      if (status !== 201 || !user || !user.sub) {
-        return Response.json(
-          {
-            status,
-          }
-        );
+      if (!user || !user.sub) {
+        throw new Error('User creation failed');
       }
       toast.success("User created successfully! Please login to continue.");
       onSuccess?.();

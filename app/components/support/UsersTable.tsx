@@ -1,17 +1,6 @@
 import React from 'react';
 import { Column, Table } from '~/components/common/Table';
-
-export interface User {
-    sub: string;
-    name?: string;
-    given_name?: string;
-    family_name?: string;
-    middle_name?: string;
-    email?: string;
-    account_type?: string;
-    status?: string;
-    verification_token?: string;
-}
+import type { User } from '~/components/user/types';
 
 // Extend User to include id for Table component compatibility
 interface UserWithId extends User {

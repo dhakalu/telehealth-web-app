@@ -78,7 +78,7 @@ const AppHeader: React.FC<AppHeaderProps> = ({ links, user }) => {
                 {open && (
                   <div className="absolute right-0 mt-2 w-56  bg-base-100 rounded shadow-lg z-50 p-4 min-w-[180px]">
                     <div className="mb-2 font-semibold">{user.given_name} {user.family_name}</div>
-                    {user.email && <div className="mb-2 text-sm opacity-60">{user.email}</div>}
+                    {user.email && <div className="mb-2 text-sm opacity-60 truncate">{user.email}</div>}
                     <a href={`/logout?appPath=${user.account_type}`} className="block text-blue-600 hover:underline text-sm mt-2">Logout</a>
                   </div>
                 )}
@@ -98,7 +98,7 @@ const AppHeader: React.FC<AppHeaderProps> = ({ links, user }) => {
             </div>
             <div className="flex flex-col">
               <div className="font-semibold">{user?.given_name} {user?.family_name}</div>
-              <div className="text-sm opacity-60">{user?.email}</div>
+              <div className="text-sm opacity-60 truncate">{user?.email}</div>
             </div>
           </div>
           <div className="divider" />

@@ -1,7 +1,7 @@
 import { LoaderFunction, Outlet, redirect, useLoaderData } from "react-router";
 
 // Update the import path below to the correct location of requireAuthCookie
-import axios from "axios";
+import { userApi } from "~/api/users";
 import { requireAuthCookie } from "~/auth"; // or "./auth" or the actual relative path
 import { accountTypePathsMap } from "~/common-actions/signin";
 import { ProviderHeader } from "~/components/provider/ProviderAppHeader";
@@ -20,8 +20,8 @@ export const loader: LoaderFunction = async ({ request }) => {
   const isStatusPage = pathname === accountStatusPath;
 
   try {
-    const response = axios.get(`${process.env.API_BASE_URL}/user/${user.sub}`);
-    user.status = (await response).data.status;
+    const userData = await userApi.getUserById(user.sub);
+    user.status = userData.status;
     if (user.status === "email-verified" && !isUserInCompletePath) {
       return redirect(completeProfilePath);
     }
@@ -31,21 +31,14 @@ export const loader: LoaderFunction = async ({ request }) => {
     }
 
   } catch (error) {
-    if (axios.isAxiosError(error) && error.response) {
-      if (error.response.status === 404 && !isUserInCompletePath) {
-        return redirect(completeProfilePath);
-      }
-      return Response.json(
-        { error: error.response.data.error || "Failed to fetch user data" },
-        { status: error.response.status }
-      );
-    } else {
-      console.error("Error fetching user data:", error);
-      return Response.json(
-        { error: "Internal server error" },
-        { status: 500 }
-      );
+    console.error("Error fetching user data:", error);
+    if (!isUserInCompletePath) {
+      return redirect(completeProfilePath);
     }
+    return Response.json(
+      { error: "Failed to fetch user data" },
+      { status: 500 }
+    );
   }
   return user;
 }

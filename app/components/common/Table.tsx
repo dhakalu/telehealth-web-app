@@ -14,8 +14,12 @@ export type TableProps<T> = {
 
 export function Table<T extends { id: string }>({ columns, data, emptyMessage = "No data found." }: TableProps<T>) {
   if (!data || data.length === 0) {
-    return <div className="mt-4">{emptyMessage}</div>;
+    return (<div className="text-center py-8">
+      <p className="opacity-50">{emptyMessage}</p>
+    </div>)
   }
+
+
   return (
     <div className="overflow-x-auto">
       <table className={"table table-zebra"}>

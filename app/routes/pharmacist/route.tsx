@@ -1,8 +1,7 @@
 import { LoaderFunction, Outlet, redirect, useLoaderData } from "react-router";
 
 // Update the import path below to the correct location of requireAuthCookie
-import axios from "axios";
-import { API_BASE_URL } from "~/api";
+import { userApi } from "~/api/users";
 import { requireAuthCookie } from "~/auth"; // or "./auth" or the actual relative path
 import { accountTypePathsMap } from "~/common-actions/signin";
 import AppHeader from "~/components/common/AppHeader";
@@ -21,8 +20,8 @@ export const loader: LoaderFunction = async ({ request }) => {
     const isStatusPage = pathname === accountStatusPath;
 
     try {
-        const response = await axios.get(`${API_BASE_URL}/user/${user.sub}`);
-        user.status = response.data.status;
+        const userData = await userApi.getUserById(user.sub);
+        user.status = userData.status;
         if (user.status === "email-verified" && !isUserInCompletePath) {
             return redirect(completeProfilePath);
         }
@@ -32,21 +31,14 @@ export const loader: LoaderFunction = async ({ request }) => {
         }
 
     } catch (error) {
-        if (axios.isAxiosError(error) && error.response) {
-            if (error.response.status === 404 && !isUserInCompletePath) {
-                return redirect(completeProfilePath);
-            }
-            return Response.json(
-                { error: error.response.data.error || "Failed to fetch user data" },
-                { status: error.response.status }
-            );
-        } else {
-            console.error("Error fetching user data:", error);
-            return Response.json(
-                { error: "Internal server error" },
-                { status: 500 }
-            );
+        console.error("Error fetching user data:", error);
+        if (!isUserInCompletePath) {
+            return redirect(completeProfilePath);
         }
+        return Response.json(
+            { error: "Failed to fetch user data" },
+            { status: 500 }
+        );
     }
     return user;
 }
@@ -57,7 +49,13 @@ export default function PharmacistAppLayout() {
     return (
         <div className="flex flex-col h-screen">
             <header className="h-50">
-                <AppHeader user={user} />
+                <AppHeader user={user} links={[{
+                    label: "Dashboard",
+                    href: "/pharmacist"
+                }, {
+                    label: "Profile",
+                    href: "/pharmacist/complete-profile"
+                }]} />
             </header>
             <div className="flex-1 overflow-y-auto">
                 <Outlet />

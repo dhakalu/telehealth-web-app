@@ -1,6 +1,5 @@
-import axios, { AxiosError } from "axios";
 import React, { useState } from "react";
-import { API_BASE_URL } from "~/api";
+import { userApi } from "~/api/users";
 import Button from "../common/Button";
 
 interface SignUpFormProps {
@@ -32,18 +31,16 @@ export const SignUpForm: React.FC<SignUpFormProps> = ({ onSuccess, onError }) =>
         setIsSubmitting(true);
 
         try {
-            const data = { ...form, status: "incomplete" };
-            const response = await axios.post(`${API_BASE_URL}/user`, data);
+            const user = await userApi.createUser({ ...form, status: "incomplete" });
 
-            if (response.status === 201 && response.data?.sub) {
+            if (user?.sub) {
                 onSuccess?.();
             } else {
                 onError?.("Failed to create user. Please try again.");
             }
         } catch (error) {
             console.error("Sign up error:", error);
-            const axiosError = error as AxiosError;
-            const errorMessage = (axiosError.response?.data as { error?: string })?.error || "An error occurred during sign up. Please try again.";
+            const errorMessage = error instanceof Error ? error.message : "An error occurred during sign up. Please try again.";
             onError?.(errorMessage);
         } finally {
             setIsSubmitting(false);

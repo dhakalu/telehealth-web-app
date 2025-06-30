@@ -1,7 +1,8 @@
-import axios from "axios";
 import { LoaderFunction, redirect, useLoaderData, useNavigate } from "react-router";
 import { API_BASE_URL } from "~/api";
+import { userApi } from "~/api/users";
 import { requireAuthCookie } from "~/auth";
+import ErrorPage from "~/components/common/ErrorPage";
 import { PharmacistForm } from "~/components/pharmacist";
 import { usePageTitle } from "~/hooks";
 import { User } from "../provider/complete-profile";
@@ -9,24 +10,34 @@ import { User } from "../provider/complete-profile";
 
 export const loader: LoaderFunction = async ({ request }) => {
     const loggedInUser = await requireAuthCookie(request);
-    const response = await axios.get<User>(`${API_BASE_URL}/user/${loggedInUser.sub}`);
-    console.log("User data:", response.data);
-    const user = response.data;
-    // If already complete, redirect to pharmacist dashboard
-    if (user?.status !== "email-verified") {
-        return redirect("/pharmacist");
+    try {
+        const user = await userApi.getUserById(loggedInUser.sub);
+        console.log("User data:", user);
+        // If already complete, redirect to pharmacist dashboard
+        if (user?.status !== "email-verified") {
+            return redirect("/pharmacist");
+        }
+        return { user, baseUrl: API_BASE_URL, loggedInUser };
+
+    } catch {
+        return {
+            error: "Failed to fetch user data. Please try again later."
+        }
     }
 
-    return { user, baseUrl: API_BASE_URL, loggedInUser };
 }
 
 
 export default function PharmacistProfile() {
     usePageTitle("Complete Your Profile - MedTok Pharmacist");
-    const { baseUrl, loggedInUser } = useLoaderData<{ loggedInUser: User, user: User, baseUrl: string }>();
+    const { baseUrl, loggedInUser, error } = useLoaderData<{ loggedInUser: User, user: User, baseUrl: string, error: string }>();
     const navigate = useNavigate();
     const handleCreateSuccess = async () => {
         navigate('/pharmacist');
+    }
+
+    if (error) {
+        return <ErrorPage error={error} />;
     }
 
     return (

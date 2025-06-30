@@ -1,4 +1,5 @@
-import { LoaderFunction, redirect, useLoaderData } from "react-router";
+import { LoaderFunction, useLoaderData } from "react-router";
+import { userApi } from "~/api/users";
 import { requireAuthCookie } from "~/auth";
 import AccountStatus from "~/components/common/AccountStatus";
 import { usePageTitle } from "~/hooks";
@@ -17,14 +18,7 @@ interface User {
 export const loader: LoaderFunction = async ({ request }) => {
     const loggedInUser = await requireAuthCookie(request);
     try {
-        const response = await fetch(`${process.env.API_BASE_URL}/user/${loggedInUser.sub}`);
-        if (!response.ok) {
-            if (response.status === 404) {
-                return redirect("/provider/complete-profile");
-            }
-            throw new Error("Failed to fetch user data");
-        }
-        const userData = await response.json();
+        const userData = await userApi.getUserById(loggedInUser.sub);
         loggedInUser.status = userData.status;
     } catch (error) {
         console.error("Error fetching user data:", error);

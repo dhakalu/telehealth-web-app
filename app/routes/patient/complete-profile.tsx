@@ -2,6 +2,7 @@ import { ActionFunctionArgs, Form, LoaderFunction, redirect } from "react-router
 
 import axios, { AxiosError } from "axios";
 import { API_BASE_URL } from "~/api";
+import { userApi } from "~/api/users";
 import { requireAuthCookie } from "~/auth";
 import Button from "~/components/common/Button";
 import { Input } from "~/components/common/Input";
@@ -48,9 +49,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
     try {
         await axios.post(`${API_BASE_URL}/patient`, practitionerData)
-        await axios.patch(`${API_BASE_URL}/user/${user.sub}/status`, {
-            status: "complete",
-        });
+        await userApi.updateUserStatus(user.sub, "complete");
         return redirect(`/patient/find-doctors`, {})
     } catch (error) {
         console.error("Error saving practitioner data:", error);

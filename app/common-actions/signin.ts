@@ -33,6 +33,7 @@ export const signInAction = () => async ({ request }: ActionFunctionArgs) => {
       });
     }
     const redirectPath = accountTypePathsMap[user.account_type] || "/404";
+    // localStorage.setItem("API_BASE_URL", API_BASE_URL || "");
     return redirect(redirectPath, {
       headers: {
         "Set-Cookie": await authCookie.serialize(JSON.stringify(user))

@@ -1,13 +1,14 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { LoaderFunction, useLoaderData } from "react-router";
 import { API_BASE_URL } from "~/api";
+import { userApi } from "~/api/users";
 import { requireAuthCookie } from "~/auth";
 import Button from "~/components/common/Button";
 import { Modal } from "~/components/common/Modal";
 import StatisticsCard from "~/components/support/StatisticsCard";
 import SupportPageLayout from "~/components/support/SupportPageLayout";
-import { User, UsersTable } from "~/components/support/UsersTable";
+import { UsersTable } from "~/components/support/UsersTable";
+import type { User } from "~/components/user/types";
 import { UserSignUp } from "~/components/UserSignUp";
 import { usePageTitle } from "~/hooks";
 
@@ -29,8 +30,8 @@ export default function TeamManagement() {
             try {
                 setLoading(true);
                 setError(null);
-                const response = await axios.get(`${baseUrl}/user`);
-                setUsers(response.data || []);
+                const users = await userApi.listUsers();
+                setUsers(users || []);
             } catch (err) {
                 console.error('Error fetching users:', err);
                 setError('Failed to load team members. Please try again.');
@@ -40,15 +41,15 @@ export default function TeamManagement() {
         };
 
         fetchUsers();
-    }, [baseUrl]);
+    }, []);
 
     const handleRefresh = () => {
         const fetchUsers = async () => {
             try {
                 setLoading(true);
                 setError(null);
-                const response = await axios.get(`${baseUrl}/user`);
-                setUsers(response.data || []);
+                const users = await userApi.listUsers();
+                setUsers(users || []);
             } catch (err) {
                 console.error('Error fetching users:', err);
                 setError('Failed to load team members. Please try again.');

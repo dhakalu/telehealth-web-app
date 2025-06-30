@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { LoaderFunction, useLoaderData, useNavigate, useParams } from "react-router";
 import { API_BASE_URL } from "~/api";
+import { userApi } from "~/api/users";
 import { requireAuthCookie } from "~/auth";
 import Button from "~/components/common/Button";
 import ErrorPage from "~/components/common/ErrorPage";
@@ -40,13 +41,15 @@ export default function PharmacistApproval() {
 
     useEffect(() => {
         const fetchData = async () => {
+            if (!userId) return;
+            
             try {
                 setLoading(true);
                 setError(null);
 
                 // Fetch user details
-                const userResponse = await axios.get(`${baseUrl}/user/${userId}`);
-                setUser(userResponse.data);
+                const user = await userApi.getUserById(userId);
+                setUser(user);
 
                 // Fetch pharmacist details
                 try {
@@ -75,9 +78,7 @@ export default function PharmacistApproval() {
 
         setProcessing(true);
         try {
-            await axios.patch(`${baseUrl}/user/${userId}/status`, {
-                status: 'complete'
-            });
+            await userApi.updateUserStatus(userId, 'complete');
 
             // Navigate back to team management with success message
             navigate('/support/team-management', {
@@ -96,9 +97,7 @@ export default function PharmacistApproval() {
 
         setProcessing(true);
         try {
-            await axios.patch(`${baseUrl}/user/${userId}/status`, {
-                status: 'rejected'
-            });
+            await userApi.updateUserStatus(userId, 'rejected');
 
             // Navigate back to team management with success message
             navigate('/support/team-management', {

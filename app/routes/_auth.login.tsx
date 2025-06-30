@@ -1,10 +1,9 @@
-import { LoaderFunction, redirect, useActionData, useNavigation } from "react-router";
+import { LoaderFunction, redirect } from "react-router";
 import { authCookie } from "~/auth";
 import { UserLogin } from "../components/UserLogin";
 
 import { accountTypePathsMap, signInAction } from "~/common-actions/signin";
 import Card from "~/components/common/Card";
-import { usePageTitle } from "~/hooks";
 import { User } from "./provider/complete-profile";
 
 export const loader: LoaderFunction = async ({ request }) => {
@@ -20,10 +19,6 @@ export const loader: LoaderFunction = async ({ request }) => {
 export const action = signInAction();
 
 export default function UserLoginPage() {
-  usePageTitle("Login to MedTok");
-  const { error } = useActionData<{ error: string }>() || {};
-  const navigation = useNavigation()
-  const isSubmitting = navigation.state === "submitting";
 
   return (
     <div className="min-h-screen flex items-center justify-center p-8">
@@ -38,7 +33,7 @@ export default function UserLoginPage() {
             Login to MedTok
           </h1>
         </header>
-        <UserLogin signupUrl="/signup" error={error} isLoading={isSubmitting} />
+        <UserLogin />
       </Card>
     </div>
   );

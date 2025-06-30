@@ -109,7 +109,8 @@ export const loader: LoaderFunction = async ({ request, params }) => {
         status: "open"
       }
     });
-    if (data.length === 0) {
+    console.log("Active encounters data:", data);
+    if (!data || data?.length === 0) {
       // no active encounts found, they have to fill screening questions
       return { user, baseUrl: API_BASE_URL };
     } else {

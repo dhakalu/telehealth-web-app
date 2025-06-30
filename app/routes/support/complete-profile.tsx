@@ -2,6 +2,7 @@ import axios from "axios";
 import { useState } from "react";
 import { LoaderFunction, redirect, useLoaderData } from "react-router";
 import { API_BASE_URL } from "~/api";
+import { userApi } from "~/api/users";
 import { requireAuthCookie } from "~/auth";
 import Button from "~/components/common/Button";
 import { Input } from "~/components/common/Input";
@@ -12,8 +13,7 @@ import { User } from "../provider/complete-profile";
 
 export const loader: LoaderFunction = async ({ request }) => {
     const loggedInUser = await requireAuthCookie(request);
-    const response = await axios.get<User>(`${API_BASE_URL}/user/${loggedInUser.sub}`);
-    const user = response.data;
+    const user = await userApi.getUserById(loggedInUser.sub);
     // If already complete, redirect to support dashboard
     if (user?.status === "complete") {
         return redirect("/support");
@@ -54,9 +54,7 @@ export default function SupportCompleteProfile() {
                 active: true,
             });
 
-            await axios.patch(`${baseUrl}/user/${user.sub}/status`, {
-                status: "complete",
-            });
+            await userApi.updateUserStatus(user.sub, "complete");
             toast.success("Profile updated successfully!");
             window.location.href = "/support";
         } catch {
