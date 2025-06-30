@@ -86,8 +86,8 @@ export default function ManageOrganizations() {
             header: "Name",
             accessor: (org) => (
                 <div>
-                    <div className="font-medium text-gray-900">{org.name}</div>
-                    <div className="text-sm text-gray-500">{org.organization_type}</div>
+                    <div className="font-medium opacity-90">{org.name}</div>
+                    <div className="text-sm opacity-50">{org.organization_type}</div>
                 </div>
             ),
         },
@@ -237,9 +237,9 @@ export default function ManageOrganizations() {
                 </div>
 
                 {/* Organizations Table */}
-                <div className="bg-white overflow-hidden shadow rounded-lg">
+                <div className="overflow-hidden shadow rounded-lg">
                     <div className="px-4 py-5 sm:p-6">
-                        <h3 className="text-lg font-medium text-gray-900 mb-4">Organizations</h3>
+                        <h3 className="text-lg font-medium opacity-90 mb-4">Organizations</h3>
                         <Table
                             columns={columns}
                             data={organizations}

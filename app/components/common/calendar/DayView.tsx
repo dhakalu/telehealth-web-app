@@ -77,7 +77,7 @@ const DayView: React.FC<DayViewProps> = ({
                         }}
                     >
                         <div className="border-t-2 border-red-500 w-full relative">
-                            <span className="absolute -left-20 -top-2 text-xs text-red-500 bg-white px-1 rounded">
+                            <span className="absolute -left-20 -top-2 text-xs text-red-500 px-1 rounded">
                                 Now
                             </span>
                         </div>

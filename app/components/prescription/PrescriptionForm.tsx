@@ -274,7 +274,7 @@ export default function PrescriptionForm({
         <div className="mx-auto">
             <form onSubmit={handleSubmit} className="space-y-6">
                 {/* Medication Information */}
-                <div className="bg-white p-6 rounded-lg border">
+                <div className="p-6 rounded-lg border">
                     <h3 className="text-lg font-semibold mb-4">Medication Information</h3>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -339,7 +339,7 @@ export default function PrescriptionForm({
                 </div>
 
                 {/* Dosage and Instructions */}
-                <div className="bg-white p-6 rounded-lg border">
+                <div className="p-6 rounded-lg border">
                     <h3 className="text-lg font-semibold mb-4">Dosage and Instructions</h3>
 
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -385,7 +385,7 @@ export default function PrescriptionForm({
                 </div>
 
                 {/* Refills and Status */}
-                <div className="bg-white p-6 rounded-lg border">
+                <div className="p-6 rounded-lg border">
                     <h3 className="text-lg font-semibold mb-4">Pharmacy and Status</h3>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -428,7 +428,7 @@ export default function PrescriptionForm({
                 </div>
 
                 {/* Controlled Substance Information */}
-                <div className="bg-white p-6 rounded-lg border">
+                <div className="p-6 rounded-lg border">
                     <h3 className="text-lg font-semibold mb-4">Controlled Substance Information</h3>
 
                     <div className="mb-4 flex items-center">
@@ -457,7 +457,7 @@ export default function PrescriptionForm({
                 </div>
 
                 {/* Additional Information */}
-                <div className="bg-white p-6 rounded-lg border">
+                <div className="p-6 rounded-lg border">
                     <h3 className="text-lg font-semibold mb-4">Additional Information</h3>
 
                     <Input

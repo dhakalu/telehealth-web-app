@@ -9,7 +9,12 @@ type SelectProps = React.SelectHTMLAttributes<HTMLSelectElement> & {
   label: string;
   options: SelectOption[];
   error?: string;
+  reactSelect?: boolean; // Optional prop for react-select compatibility
 };
+
+// const getItemByValue = (value: string, options: SelectOption[]) => {
+//   return options.find((option) => option.value === value);
+// }
 
 export const Select: React.FC<SelectProps> = ({ label, options, error, id, ...props }) => {
   const selectId = id || props.name;

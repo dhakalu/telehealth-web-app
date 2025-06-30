@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useToast } from "~/hooks/useToast";
+import PharmacistOrganizationForm from "../pharmacist/PharmacistOrganizationForm";
 import OrganizationAddressForm from "./OrganizationAddressForm";
 import OrganizationContactForm from "./OrganizationContactForm";
 import OrganizationForm from "./OrganizationForm";
@@ -12,6 +13,7 @@ import {
     OrganizationAddress,
     OrganizationContact,
     OrganizationLicense,
+    OrganizationPharmacist,
     OrganizationRelationship,
     PractitionerOrganization
 } from "./types";
@@ -22,7 +24,7 @@ interface OrganizationManagementProps {
     onOrganizationCreated?: (organization: Organization) => void;
 }
 
-type TabType = "organization" | "addresses" | "contacts" | "licenses" | "practitioners" | "relationships";
+type TabType = "organization" | "addresses" | "contacts" | "licenses" | "practitioners" | "pharmacists" | "relationships";
 
 export default function OrganizationManagement({
     baseUrl,
@@ -38,6 +40,7 @@ export default function OrganizationManagement({
     const [contacts, setContacts] = useState<OrganizationContact[]>([]);
     const [licenses, setLicenses] = useState<OrganizationLicense[]>([]);
     const [practitioners, setPractitioners] = useState<PractitionerOrganization[]>([]);
+    const [pharmacists, setPharmacists] = useState<OrganizationPharmacist[]>([]);
     const [relationships, setRelationships] = useState<OrganizationRelationship[]>([]);
 
     // Fetch organization details when organizationId is provided
@@ -71,6 +74,10 @@ export default function OrganizationManagement({
             // Fetch practitioners
             const practitionerResponse = await axios.get(`${baseUrl}/organizations/${organizationId}/practitioners`);
             setPractitioners(practitionerResponse.data || []);
+
+            // Fetch pharmacists
+            const pharmacistResponse = await axios.get(`${baseUrl}/organizations/${organizationId}/pharmacists`);
+            setPharmacists(pharmacistResponse.data || []);
 
             // Fetch relationships (both as parent and child)
             const parentRelationships = await axios.get(`${baseUrl}/organizations/${organizationId}/children`);
@@ -182,6 +189,27 @@ export default function OrganizationManagement({
         }
     };
 
+    // Pharmacist relationship handlers
+    const handlePharmacistRelationshipCreated = (newRelationship: OrganizationPharmacist) => {
+        setPharmacists(prev => [...prev, newRelationship]);
+    };
+
+    // TODO: Add edit functionality for pharmacist relationships
+    // const handlePharmacistRelationshipUpdated = (updatedRelationship: OrganizationPharmacist) => {
+    //     setPharmacists(prev => prev.map(rel => rel.id === updatedRelationship.id ? updatedRelationship : rel));
+    // };
+
+    const removePharmacistRelationship = async (relationshipId: string) => {
+        try {
+            await axios.delete(`${baseUrl}/organization-pharmacists/${relationshipId}`);
+            setPharmacists(prev => prev.filter(rel => rel.id !== relationshipId));
+            toast.success("Pharmacist relationship removed successfully!");
+        } catch (error) {
+            console.error("Failed to remove pharmacist relationship:", error);
+            toast.error("Failed to remove pharmacist relationship. Please try again.");
+        }
+    };
+
     // Organization relationship handlers
     const handleOrganizationRelationshipCreated = (newRelationship: OrganizationRelationship) => {
         setRelationships(prev => [...prev, newRelationship]);
@@ -247,6 +275,13 @@ export default function OrganizationManagement({
                         Practitioners {practitioners.length > 0 && <span className="ml-2 badge badge-sm badge-success">{practitioners.length}</span>}
                     </button>
                     <button
+                        className={`tab tab-bordered ${activeTab === "pharmacists" ? "tab-active" : ""}`}
+                        onClick={() => organization ? setActiveTab("pharmacists") : toast.info("Please save the organization first")}
+                        disabled={!organization}
+                    >
+                        Pharmacists {pharmacists.length > 0 && <span className="ml-2 badge badge-sm badge-success">{pharmacists.length}</span>}
+                    </button>
+                    <button
                         className={`tab tab-bordered ${activeTab === "relationships" ? "tab-active" : ""}`}
                         onClick={() => organization ? setActiveTab("relationships") : toast.info("Please save the organization first")}
                         disabled={!organization}
@@ -284,19 +319,19 @@ export default function OrganizationManagement({
                             <div className="mt-6">
                                 <h4 className="font-semibold text-md mb-4">Existing Addresses</h4>
                                 {addresses.length === 0 ? (
-                                    <p className="text-gray-500">No addresses added yet.</p>
+                                    <p className="opacity-50">No addresses added yet.</p>
                                 ) : (
                                     <div className="space-y-2">
                                         {addresses.map(address => (
-                                            <div key={address.id} className="border rounded-lg p-4 bg-white">
+                                            <div key={address.id} className="border rounded-lg p-4">
                                                 <div className="flex justify-between items-start">
                                                     <div>
                                                         <p className="font-medium">
                                                             {address.address_line_1}
                                                             {address.is_primary && <span className="ml-2 badge badge-sm badge-primary">Primary</span>}
                                                         </p>
-                                                        {address.address_line_2 && <p className="text-sm text-gray-600">{address.address_line_2}</p>}
-                                                        <p className="text-sm text-gray-600">
+                                                        {address.address_line_2 && <p className="text-sm opacity-60">{address.address_line_2}</p>}
+                                                        <p className="text-sm opacity-60">
                                                             {address.city}, {address.state} {address.postal_code}, {address.country}
                                                         </p>
                                                     </div>
@@ -335,18 +370,18 @@ export default function OrganizationManagement({
                             <div className="mt-6">
                                 <h4 className="font-semibold text-md mb-4">Existing Contacts</h4>
                                 {contacts.length === 0 ? (
-                                    <p className="text-gray-500">No contacts added yet.</p>
+                                    <p className="opacity-50">No contacts added yet.</p>
                                 ) : (
                                     <div className="space-y-2">
                                         {contacts.map(contact => (
-                                            <div key={contact.id} className="border rounded-lg p-4 bg-white">
+                                            <div key={contact.id} className="border rounded-lg p-4">
                                                 <div className="flex justify-between items-start">
                                                     <div>
                                                         <p className="font-medium">
                                                             {contact.contact_type.charAt(0).toUpperCase() + contact.contact_type.slice(1)}: {contact.value}
                                                             {contact.is_primary && <span className="ml-2 badge badge-sm badge-primary">Primary</span>}
                                                         </p>
-                                                        {contact.description && <p className="text-sm text-gray-600">{contact.description}</p>}
+                                                        {contact.description && <p className="text-sm opacity-60">{contact.description}</p>}
                                                     </div>
                                                     <button
                                                         onClick={() => removeContact(contact.id)}
@@ -383,11 +418,11 @@ export default function OrganizationManagement({
                             <div className="mt-6">
                                 <h4 className="font-semibold text-md mb-4">Existing Licenses</h4>
                                 {licenses.length === 0 ? (
-                                    <p className="text-gray-500">No licenses added yet.</p>
+                                    <p className="opacity-50">No licenses added yet.</p>
                                 ) : (
                                     <div className="space-y-2">
                                         {licenses.map(license => (
-                                            <div key={license.id} className="border rounded-lg p-4 bg-white">
+                                            <div key={license.id} className="border rounded-lg p-4">
                                                 <div className="flex justify-between items-start">
                                                     <div>
                                                         <p className="font-medium">
@@ -396,9 +431,9 @@ export default function OrganizationManagement({
                                                                 {license.status}
                                                             </span>
                                                         </p>
-                                                        <p className="text-sm text-gray-600">Issued by: {license.issuing_authority}</p>
+                                                        <p className="text-sm opacity-60">Issued by: {license.issuing_authority}</p>
                                                         {license.expiration_date && (
-                                                            <p className="text-sm text-gray-600">
+                                                            <p className="text-sm opacity-60">
                                                                 Expires: {new Date(license.expiration_date).toLocaleDateString()}
                                                             </p>
                                                         )}
@@ -438,26 +473,93 @@ export default function OrganizationManagement({
                             <div className="mt-6">
                                 <h4 className="font-semibold text-md mb-4">Existing Practitioner Relationships</h4>
                                 {practitioners.length === 0 ? (
-                                    <p className="text-gray-500">No practitioner relationships added yet.</p>
+                                    <p className="opacity-50">No practitioner relationships added yet.</p>
                                 ) : (
                                     <div className="space-y-2">
                                         {practitioners.map(practitioner => (
-                                            <div key={practitioner.id} className="border rounded-lg p-4 bg-white">
+                                            <div key={practitioner.id} className="border rounded-lg p-4">
                                                 <div className="flex justify-between items-start">
                                                     <div>
                                                         <p className="font-medium">
                                                             Practitioner ID: {practitioner.practitioner_id}
                                                             {practitioner.is_primary && <span className="ml-2 badge badge-sm badge-primary">Primary</span>}
                                                         </p>
-                                                        {practitioner.role && <p className="text-sm text-gray-600">Role: {practitioner.role}</p>}
+                                                        {practitioner.role && <p className="text-sm opacity-60">Role: {practitioner.role}</p>}
                                                         {practitioner.start_date && (
-                                                            <p className="text-sm text-gray-600">
+                                                            <p className="text-sm opacity-60">
                                                                 Start Date: {new Date(practitioner.start_date).toLocaleDateString()}
                                                             </p>
                                                         )}
                                                     </div>
                                                     <button
                                                         onClick={() => removePractitionerRelationship(practitioner.id)}
+                                                        className="btn btn-sm btn-error"
+                                                    >
+                                                        Remove
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
+                        </>
+                    )}
+                </div>
+
+                {/* Pharmacists Tab */}
+                <div className={activeTab === "pharmacists" ? "block" : "hidden"}>
+                    {!organization ? (
+                        <div className="alert alert-warning shadow-lg">
+                            <div>
+                                <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
+                                <span>Please save the organization first.</span>
+                            </div>
+                        </div>
+                    ) : (
+                        <>
+                            <PharmacistOrganizationForm
+                                baseUrl={baseUrl}
+                                organizationId={organization.id}
+                                onRelationshipCreated={handlePharmacistRelationshipCreated}
+                            />
+                            <div className="mt-6">
+                                <h4 className="font-semibold text-md mb-4">Existing Pharmacist Relationships</h4>
+                                {pharmacists.length === 0 ? (
+                                    <p className="opacity-50">No pharmacist relationships added yet.</p>
+                                ) : (
+                                    <div className="space-y-2">
+                                        {pharmacists.map(pharmacist => (
+                                            <div key={pharmacist.id} className="border rounded-lg p-4">
+                                                <div className="flex justify-between items-start">
+                                                    <div>
+                                                        <p className="font-medium">
+                                                            Pharmacist ID: {pharmacist.pharmacist_id}
+                                                            {pharmacist.is_primary && <span className="ml-2 badge badge-sm badge-primary">Primary</span>}
+                                                            <span className={`ml-2 badge badge-sm ${pharmacist.active ? 'badge-success' : 'badge-warning'}`}>
+                                                                {pharmacist.active ? 'Active' : 'Inactive'}
+                                                            </span>
+                                                        </p>
+                                                        {pharmacist.role && <p className="text-sm opacity-60">Role: {pharmacist.role}</p>}
+                                                        <p className="text-sm opacity-60">
+                                                            Employment: {pharmacist.employment_type.charAt(0).toUpperCase() + pharmacist.employment_type.slice(1).replace('_', ' ')}
+                                                        </p>
+                                                        {pharmacist.supervisor_id && (
+                                                            <p className="text-sm opacity-60">Supervisor: {pharmacist.supervisor_id}</p>
+                                                        )}
+                                                        {pharmacist.start_date && (
+                                                            <p className="text-sm opacity-60">
+                                                                Start Date: {new Date(pharmacist.start_date).toLocaleDateString()}
+                                                            </p>
+                                                        )}
+                                                        {pharmacist.end_date && (
+                                                            <p className="text-sm opacity-60">
+                                                                End Date: {new Date(pharmacist.end_date).toLocaleDateString()}
+                                                            </p>
+                                                        )}
+                                                    </div>
+                                                    <button
+                                                        onClick={() => removePharmacistRelationship(pharmacist.id)}
                                                         className="btn btn-sm btn-error"
                                                     >
                                                         Remove
@@ -491,20 +593,20 @@ export default function OrganizationManagement({
                             <div className="mt-6">
                                 <h4 className="font-semibold text-md mb-4">Existing Organization Relationships</h4>
                                 {relationships.length === 0 ? (
-                                    <p className="text-gray-500">No organization relationships added yet.</p>
+                                    <p className="opacity-50">No organization relationships added yet.</p>
                                 ) : (
                                     <div className="space-y-2">
                                         {relationships.map(relationship => (
-                                            <div key={relationship.id} className="border rounded-lg p-4 bg-white">
+                                            <div key={relationship.id} className="border rounded-lg p-4">
                                                 <div className="flex justify-between items-start">
                                                     <div>
                                                         <p className="font-medium">
                                                             {relationship.relationship_type.charAt(0).toUpperCase() + relationship.relationship_type.slice(1)} Relationship
                                                         </p>
-                                                        <p className="text-sm text-gray-600">
+                                                        <p className="text-sm opacity-60">
                                                             Parent: {relationship.parent_organization_id}
                                                         </p>
-                                                        <p className="text-sm text-gray-600">
+                                                        <p className="text-sm opacity-60">
                                                             Child: {relationship.child_organization_id}
                                                         </p>
                                                     </div>

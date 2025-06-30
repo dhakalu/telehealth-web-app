@@ -82,7 +82,7 @@ export default function PrescriptionTable({
 
     const SortableHeader = ({ field, children }: { field: string; children: React.ReactNode }) => (
         <th
-            className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-50"
+            className="px-6 py-3 text-left text-xs font-medium opacity-50 uppercase tracking-wider cursor-pointer hover:bg-gray-50"
             onClick={() => handleSort(field)}
         >
             <div className="flex items-center space-x-1">
@@ -107,7 +107,7 @@ export default function PrescriptionTable({
     if (prescriptions.length === 0) {
         return (
             <div className="text-center py-8">
-                <p className="text-gray-500">No prescriptions found.</p>
+                <p className="opacity-50">No prescriptions found.</p>
             </div>
         );
     }
@@ -116,7 +116,7 @@ export default function PrescriptionTable({
     return (
         <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200">
-                <thead className="bg-gray-50">
+                <thead>
                     <tr>
                         <SortableHeader field="prescription_number">Prescription #</SortableHeader>
                         <SortableHeader field="medication_name">Medication</SortableHeader>
@@ -127,39 +127,39 @@ export default function PrescriptionTable({
                         <SortableHeader field="quantity">Quantity</SortableHeader>
                         <SortableHeader field="refills_remaining">Refills Left</SortableHeader>
                         <SortableHeader field="prescribed_date">Prescribed Date</SortableHeader>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th className="px-6 py-3 text-left text-xs font-medium opacity-50 uppercase tracking-wider">
                             Actions
                         </th>
                     </tr>
                 </thead>
-                <tbody className="bg-white divide-y divide-gray-200">
+                <tbody className="divide-y divide-gray-200">
                     {sortedPrescriptions.map((prescription) => (
                         <tr key={prescription.id} className="hover:bg-gray-50">
-                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium opacity-90">
                                 {prescription.prescription_number}
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap">
-                                <div className="text-sm text-gray-900">
+                                <div className="text-sm opacity-90">
                                     {prescription.medication_name}
                                 </div>
                                 {prescription.generic_name && (
-                                    <div className="text-sm text-gray-500">
+                                    <div className="text-sm opacity-50">
                                         Generic: {prescription.generic_name}
                                     </div>
                                 )}
                                 {prescription.strength && (
-                                    <div className="text-sm text-gray-500">
+                                    <div className="text-sm opacity-50">
                                         {prescription.strength}
                                     </div>
                                 )}
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                            <td className="px-6 py-4 whitespace-nowrap text-sm opacity-90">
                                 {prescription.patient_name || prescription.patient_id}
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                            <td className="px-6 py-4 whitespace-nowrap text-sm opacity-90">
                                 {prescription.practitioner_name || prescription.practitioner_id}
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                            <td className="px-6 py-4 whitespace-nowrap text-sm opacity-90">
                                 {prescriptionTypeMap[prescription.prescription_type]}
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap">
@@ -167,14 +167,14 @@ export default function PrescriptionTable({
                                     {prescription.status}
                                 </span>
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                            <td className="px-6 py-4 whitespace-nowrap text-sm opacity-90">
                                 {prescription.quantity}
                                 {prescription.dosage_form && ` ${prescription.dosage_form}`}
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                            <td className="px-6 py-4 whitespace-nowrap text-sm opacity-90">
                                 {prescription.refills_remaining} / {prescription.refills_authorized}
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                            <td className="px-6 py-4 whitespace-nowrap text-sm opacity-90">
                                 {formatDate(prescription.prescribed_date)}
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">

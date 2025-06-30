@@ -72,6 +72,21 @@ export interface OrganizationRelationship {
     updated_at: string;
 }
 
+export interface OrganizationPharmacist {
+    id: string;
+    organization_id: string;
+    pharmacist_id: string;
+    supervisor_id?: string;
+    role?: string;
+    employment_type: string;
+    start_date?: string;
+    end_date?: string;
+    is_primary: boolean;
+    active: boolean;
+    created_at: string;
+    updated_at: string;
+}
+
 // Request types for API calls
 export interface CreateOrganizationRequest {
     name: string;
@@ -135,6 +150,17 @@ export interface CreateOrganizationRelationshipRequest {
     relationship_type: string;
 }
 
+export interface CreateOrganizationPharmacistRequest {
+    pharmacist_id: string;
+    organization_id: string;
+    supervisor_id?: string;
+    role?: string;
+    employment_type?: string;
+    start_date?: string;
+    end_date?: string;
+    is_primary?: boolean;
+}
+
 // Constants for dropdowns
 export const ORGANIZATION_TYPES = [
     "hospital",
@@ -179,4 +205,11 @@ export const RELATIONSHIP_TYPES = [
     "affiliate",
     "department",
     "division"
+] as const;
+
+export const EMPLOYMENT_TYPES = [
+    "full_time",
+    "part_time",
+    "relief",
+    "contractor"
 ] as const;

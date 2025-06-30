@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Input } from "~/components/common/Input";
 import { useToast } from "~/hooks/useToast";
+import Card from "../common/Card";
 import {
     CreateOrganizationLicenseRequest,
     LICENSE_TYPES,
@@ -144,7 +145,7 @@ export default function OrganizationLicenseForm({
     };
 
     return (
-        <div className="border rounded-lg p-4 mb-4 bg-gray-50">
+        <Card>
             <h4 className="font-semibold text-md mb-4">
                 {isEditing ? "Update License" : "Add New License"}
             </h4>
@@ -253,6 +254,6 @@ export default function OrganizationLicenseForm({
                     )}
                 </div>
             </form>
-        </div>
+        </Card>
     );
 }

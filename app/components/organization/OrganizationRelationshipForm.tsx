@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useToast } from "~/hooks/useToast";
+import Card from "../common/Card";
 import {
     CreateOrganizationRelationshipRequest,
     Organization,
@@ -141,7 +142,7 @@ export default function OrganizationRelationshipForm({
     };
 
     return (
-        <div className="border rounded-lg p-4 mb-4 bg-gray-50">
+        <Card>
             <h4 className="font-semibold text-md mb-4">
                 {isEditing ? "Update Organization Relationship" : "Add New Organization Relationship"}
             </h4>
@@ -247,6 +248,6 @@ export default function OrganizationRelationshipForm({
                     )}
                 </div>
             </form>
-        </div>
+        </Card>
     );
 }

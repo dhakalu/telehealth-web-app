@@ -26,7 +26,7 @@ export const loader: LoaderFunction = async ({ request }) => {
       return redirect(completeProfilePath);
     }
 
-    if (user.status !== "complete" && !isStatusPage) {
+    if (user.status !== "complete" && !isUserInCompletePath && !isStatusPage) {
       return redirect(accountStatusPath);
     }
 

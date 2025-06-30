@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Input } from "~/components/common/Input";
 import { useToast } from "~/hooks/useToast";
+import Card from "../common/Card";
 import {
     CONTACT_TYPES,
     CreateOrganizationContactRequest,
@@ -152,7 +153,7 @@ export default function OrganizationContactForm({
     };
 
     return (
-        <div className="border rounded-lg p-4 mb-4 bg-gray-50">
+        <Card>
             <h4 className="font-semibold text-md mb-4">
                 {isEditing ? "Update Contact" : "Add New Contact"}
             </h4>
@@ -238,6 +239,6 @@ export default function OrganizationContactForm({
                     )}
                 </div>
             </form>
-        </div>
+        </Card>
     );
 }

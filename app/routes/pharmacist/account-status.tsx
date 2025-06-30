@@ -1,6 +1,8 @@
 import { LoaderFunction, redirect, useLoaderData } from "react-router";
+import { API_BASE_URL } from "~/api";
 import { requireAuthCookie } from "~/auth";
 import AccountStatus from "~/components/common/AccountStatus";
+import ErrorPage from "~/components/common/ErrorPage";
 import { usePageTitle } from "~/hooks";
 
 interface User {
@@ -17,10 +19,10 @@ interface User {
 export const loader: LoaderFunction = async ({ request }) => {
     const loggedInUser = await requireAuthCookie(request);
     try {
-        const response = await fetch(`${process.env.API_BASE_URL}/user/${loggedInUser.sub}`);
+        const response = await fetch(`${API_BASE_URL}/user/${loggedInUser.sub}`);
         if (!response.ok) {
             if (response.status === 404) {
-                return redirect("/provider/complete-profile");
+                return redirect("/pharmacist/complete-profile");
             }
             throw new Error("Failed to fetch user data");
         }
@@ -35,26 +37,30 @@ export const loader: LoaderFunction = async ({ request }) => {
     return { user: loggedInUser };
 }
 
-export default function ProviderAccountStatus() {
-    usePageTitle("Account Status - MedTok Provider");
-    const { user } = useLoaderData<{ user: User }>();
+export default function PharmacistAccountStatus() {
+    usePageTitle("Account Status - MedTok Pharmacist");
+    const { user, error } = useLoaderData<{ user: User, error: string }>();
 
     const handleContactSupport = () => {
         window.location.href = '/help';
     };
 
     const handleCompleteProfile = () => {
-        window.location.href = '/provider/complete-profile';
+        window.location.href = '/pharmacist/complete-profile';
     };
 
     const handleSignOut = () => {
         window.location.href = '/logout';
     };
 
+    if (error) {
+        return (<ErrorPage error={error} />);
+    }
+
     return (
         <AccountStatus
             user={user}
-            userType="provider"
+            userType="pharmacist"
             onContactSupport={handleContactSupport}
             onCompleteProfile={handleCompleteProfile}
             onSignOut={handleSignOut}

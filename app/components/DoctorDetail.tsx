@@ -99,7 +99,7 @@ export const DoctorDetail: React.FC<DoctorDetailProps> = ({ doctor }) => {
                     <div className="text-2xl font-bold">{name}</div>
                     <div className="flex items-center gap-2">
                         <StarRating rating={rating} />
-                        {typeof rating === 'number' && <span className="text-xs text-gray-500">{rating.toFixed(1)}</span>}
+                        {typeof rating === 'number' && <span className="text-xs opacity-50">{rating.toFixed(1)}</span>}
                     </div>
                     <div className="mb-2">{doctor.gender || "Unknown"}</div>
                 </div>

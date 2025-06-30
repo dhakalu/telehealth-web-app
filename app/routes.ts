@@ -63,5 +63,10 @@ export default remixRoutesOptionAdapter((defineRoutes) => {
       route("manage-organizations/:organizationId", "./routes/support/create-update-organization.tsx");
       route("approval/practitioner/:userId", "./routes/support/practitioner-approval.tsx");
     });
+    route("/pharmacist", "./routes/pharmacist/route.tsx", () => {
+      route("complete-profile", "./routes/pharmacist/complete-profile.tsx");
+      route("account-status", "./routes/pharmacist/account-status.tsx");
+      // route("prescriptions", "./routes/pharmacist/prescriptions.tsx");
+    })
   });
 }) satisfies RouteConfig;

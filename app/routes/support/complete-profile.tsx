@@ -7,31 +7,8 @@ import Button from "~/components/common/Button";
 import { Input } from "~/components/common/Input";
 import { Select } from "~/components/common/Select";
 import { usePageTitle, useToast } from "~/hooks";
+import { User } from "../provider/complete-profile";
 
-export type User = {
-    sub: string;
-    name?: string;
-    given_name?: string;
-    family_name?: string;
-    middle_name?: string;
-    nickname?: string;
-    preferred_username?: string;
-    profile?: string;
-    picture?: string;
-    website?: string;
-    email?: string;
-    email_verified?: boolean;
-    gender?: string;
-    birthdate?: string;
-    zoneinfo?: string;
-    locale?: string;
-    phone_number?: string;
-    phone_number_verified?: boolean;
-    address?: string;
-    updated_at?: number;
-    account_type?: string;
-    status: "created" | "email-verified" | "complete" | "suspended";
-}
 
 export const loader: LoaderFunction = async ({ request }) => {
     const loggedInUser = await requireAuthCookie(request);
@@ -125,12 +102,12 @@ export default function SupportCompleteProfile() {
     ];
 
     return (
-        <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+        <div className="min-h-screen py-12 px-4 sm:px-6 lg:px-8">
             <div className="max-w-2xl mx-auto">
-                <div className="bg-white shadow rounded-lg p-8">
+                <div className="shadow rounded-lg p-8">
                     <div className="mb-8 text-center">
-                        <h1 className="text-3xl font-bold text-gray-900">Complete Your Support Profile</h1>
-                        <p className="mt-2 text-gray-600">
+                        <h1 className="text-3xl font-bold opacity-90">Complete Your Support Profile</h1>
+                        <p className="mt-2 opacity-60">
                             Please provide your employment details to complete your support staff profile.
                         </p>
                     </div>

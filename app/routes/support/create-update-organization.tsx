@@ -29,7 +29,7 @@ export default function ManageOrganizations() {
             subtitle="Create, view, and manage healthcare organizations in the system"
             breadcrumbs={breadcrumbs}
         >
-            <div className="bg-white overflow-hidden shadow rounded-lg">
+            <div className="overflow-hidden shadow rounded-lg">
                 <OrganizationManagement
                     organizationId={organizationId === "create" ? undefined : organizationId}
                     baseUrl={baseUrl}

@@ -197,7 +197,7 @@ export default function PractitionerApproval() {
 
     if (loading) {
         return (
-            <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+            <div className="min-h-screen flex items-center justify-center">
                 <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600"></div>
             </div>
         );
@@ -211,16 +211,16 @@ export default function PractitionerApproval() {
 
     if (!user) {
         return (
-            <div className="min-h-screen bg-gray-50">
+            <div className="min-h-screen">
                 <header className="shadow">
                     <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                        <h1 className="text-3xl font-bold text-gray-900">Practitioner Approval</h1>
+                        <h1 className="text-3xl font-bold opacity-90">Practitioner Approval</h1>
                     </div>
                 </header>
                 <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
                     <div className="text-center">
-                        <h3 className="text-lg font-medium text-gray-900">User not found</h3>
-                        <p className="mt-1 text-sm text-gray-500">The requested user could not be found.</p>
+                        <h3 className="text-lg font-medium opacity-90">User not found</h3>
+                        <p className="mt-1 text-sm opacity-50">The requested user could not be found.</p>
                     </div>
                 </main>
             </div>
@@ -252,26 +252,26 @@ export default function PractitionerApproval() {
             <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
                 {/* User Information */}
                 <div className="lg:col-span-2">
-                    <div className="bg-white shadow rounded-lg">
+                    <div className="shadow rounded-lg">
                         <div className="px-4 py-5 sm:p-6">
-                            <h3 className="text-lg font-medium text-gray-900 mb-4">User Information</h3>
+                            <h3 className="text-lg font-medium opacity-90 mb-4">User Information</h3>
 
                             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700">Name</label>
-                                    <p className="mt-1 text-sm text-gray-900">{displayName}</p>
+                                    <p className="mt-1 text-sm opacity-90">{displayName}</p>
                                 </div>
 
                                 {user.middle_name && (
                                     <div>
                                         <label className="block text-sm font-medium text-gray-700">Middle Name</label>
-                                        <p className="mt-1 text-sm text-gray-900">{user.middle_name}</p>
+                                        <p className="mt-1 text-sm opacity-90">{user.middle_name}</p>
                                     </div>
                                 )}
 
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700">Email</label>
-                                    <p className="mt-1 text-sm text-gray-900">{user.email}</p>
+                                    <p className="mt-1 text-sm opacity-90">{user.email}</p>
                                 </div>
 
                                 <div>
@@ -290,7 +290,7 @@ export default function PractitionerApproval() {
 
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700">User ID</label>
-                                    <p className="mt-1 text-sm text-gray-500 font-mono">{user.sub}</p>
+                                    <p className="mt-1 text-sm opacity-50 font-mono">{user.sub}</p>
                                 </div>
                             </div>
                         </div>
@@ -298,30 +298,30 @@ export default function PractitionerApproval() {
 
                     {/* Practitioner Details */}
                     {practitioner && (
-                        <div className="mt-6 bg-white shadow rounded-lg">
+                        <div className="mt-6 shadow rounded-lg">
                             <div className="px-4 py-5 sm:p-6">
-                                <h3 className="text-lg font-medium text-gray-900 mb-4">Practitioner Profile</h3>
+                                <h3 className="text-lg font-medium opacity-90 mb-4">Practitioner Profile</h3>
 
                                 {/* Qualifications */}
                                 {practitioner.qualification && practitioner.qualification.length > 0 && (
                                     <div className="mb-6">
-                                        <h4 className="text-md font-medium text-gray-900 mb-2">Qualifications</h4>
+                                        <h4 className="text-md font-medium opacity-90 mb-2">Qualifications</h4>
                                         <div className="space-y-3">
                                             {practitioner.qualification.map((qual, index) => (
                                                 <div key={index} className="border rounded-lg p-3">
                                                     <div className="flex justify-between items-start">
                                                         <div>
-                                                            <p className="text-sm font-medium text-gray-900">
+                                                            <p className="text-sm font-medium opacity-90">
                                                                 {qual.code?.text || qual.code?.coding?.[0]?.display || 'Unknown Qualification'}
                                                             </p>
                                                             {qual.issuer && (
-                                                                <p className="text-sm text-gray-500">
+                                                                <p className="text-sm opacity-50">
                                                                     Issued by: {qual.issuer.display}
                                                                 </p>
                                                             )}
                                                         </div>
                                                         {qual.period && (
-                                                            <div className="text-sm text-gray-500">
+                                                            <div className="text-sm opacity-50">
                                                                 {qual.period.start} - {qual.period.end || 'Present'}
                                                             </div>
                                                         )}
@@ -335,14 +335,14 @@ export default function PractitionerApproval() {
                                 {/* Contact Information */}
                                 {practitioner.telecom && practitioner.telecom.length > 0 && (
                                     <div className="mb-6">
-                                        <h4 className="text-md font-medium text-gray-900 mb-2">Contact Information</h4>
+                                        <h4 className="text-md font-medium opacity-90 mb-2">Contact Information</h4>
                                         <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
                                             {practitioner.telecom.map((contact, index) => (
                                                 <div key={index}>
                                                     <label className="block text-sm font-medium text-gray-700 capitalize">
                                                         {contact.system} ({contact.use})
                                                     </label>
-                                                    <p className="mt-1 text-sm text-gray-900">{contact.value}</p>
+                                                    <p className="mt-1 text-sm opacity-90">{contact.value}</p>
                                                 </div>
                                             ))}
                                         </div>
@@ -352,9 +352,9 @@ export default function PractitionerApproval() {
                                 {/* Address */}
                                 {practitioner.address && practitioner.address.length > 0 && (
                                     <div>
-                                        <h4 className="text-md font-medium text-gray-900 mb-2">Address</h4>
+                                        <h4 className="text-md font-medium opacity-90 mb-2">Address</h4>
                                         {practitioner.address.map((addr, index) => (
-                                            <div key={index} className="text-sm text-gray-900">
+                                            <div key={index} className="text-sm opacity-90">
                                                 <p>{addr.text || addr.line?.join(', ')}</p>
                                                 <p>{addr.city}, {addr.state} {addr.postalCode}</p>
                                                 <p>{addr.country}</p>
@@ -390,9 +390,9 @@ export default function PractitionerApproval() {
 
                 {/* Actions */}
                 <div className="lg:col-span-1">
-                    <div className="bg-white shadow rounded-lg">
+                    <div className="shadow rounded-lg">
                         <div className="px-4 py-5 sm:p-6">
-                            <h3 className="text-lg font-medium text-gray-900 mb-4">Actions</h3>
+                            <h3 className="text-lg font-medium opacity-90 mb-4">Actions</h3>
 
                             <div className="space-y-4">
                                 <Button
@@ -423,8 +423,8 @@ export default function PractitionerApproval() {
                             </div>
 
                             <div className="mt-6 pt-6 border-t border-gray-200">
-                                <h4 className="text-sm font-medium text-gray-900 mb-2">Status Information</h4>
-                                <div className="text-sm text-gray-600">
+                                <h4 className="text-sm font-medium opacity-90 mb-2">Status Information</h4>
+                                <div className="text-sm opacity-60">
                                     <p><strong>Approve:</strong> Sets status to "complete" and allows the practitioner to use the platform.</p>
                                     <p className="mt-2"><strong>Reject:</strong> Sets status to "rejected" and prevents platform access.</p>
                                 </div>

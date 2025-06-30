@@ -15,12 +15,12 @@ export default function SupportDashboard() {
 
     return (
         <SupportPageLayout title="Support Dashboard">
-            <div className="bg-white overflow-hidden shadow rounded-lg">
+            <div className="overflow-hidden shadow rounded-lg bg-base-100">
                 <div className="px-4 py-5 sm:p-6">
-                    <h2 className="text-lg font-medium text-gray-900 mb-4">
+                    <h2 className="text-lg font-medium text-base-content mb-4">
                         Welcome to MedTok Support
                     </h2>
-                    <p className="text-gray-600 mb-6">
+                    <p className="text-base-content opacity-70 mb-6">
                         Your support staff dashboard is being set up. You'll have access to customer support tools, ticket management, and team collaboration features.
                     </p>
 

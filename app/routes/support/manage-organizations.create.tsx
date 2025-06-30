@@ -45,7 +45,7 @@ export default function CreateOrganization() {
             breadcrumbs={breadcrumbs}
             headerActions={headerActions}
         >
-            <div className="bg-white overflow-hidden shadow rounded-lg">
+            <div className="overflow-hidden shadow rounded-lg">
                 <OrganizationManagement
                     baseUrl={baseUrl}
                     onOrganizationCreated={handleOrganizationCreated}

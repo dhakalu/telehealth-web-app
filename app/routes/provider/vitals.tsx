@@ -169,7 +169,7 @@ export default function Vitals() {
                 onClose={() => setAddModalOpen(false)}
             >
                 <div className="p-4">
-                    <p className="text-gray-600">
+                    <p className="opacity-60">
                         Vital signs recording form will be implemented here.
                     </p>
                     <div className="flex justify-end mt-4">

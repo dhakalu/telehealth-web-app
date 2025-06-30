@@ -18,7 +18,7 @@ export default function SupportDashboardCard({
     href
 }: SupportDashboardCardProps) {
     const cardContent = (
-        <div className="bg-gray-50 border border-gray-200 rounded-lg p-6 hover:bg-gray-100 transition-colors">
+        <div className="border border-base-300 shadow-sm bg-base-100 rounded-lg p-6 hover:bg-base-300 transition-colors">
             <div className="flex items-center">
                 <div className="flex-shrink-0">
                     <div className={`w-8 h-8 ${iconBgColor} rounded-full flex items-center justify-center`}>
@@ -29,10 +29,10 @@ export default function SupportDashboardCard({
                 </div>
                 <div className="ml-5 w-0 flex-1">
                     <dl>
-                        <dt className="text-sm font-medium text-gray-500 truncate">
+                        <dt className="text-sm font-medium opacity-50 truncate">
                             {title}
                         </dt>
-                        <dd className="text-lg font-medium text-gray-900">
+                        <dd className="text-lg font-medium">
                             {content}
                         </dd>
                     </dl>

@@ -186,7 +186,7 @@ export default function Results() {
             accessor: (row) => (
                 <div>
                     <div className="font-medium">{row.result}</div>
-                    {row.units && <div className="text-sm text-gray-500">{row.units}</div>}
+                    {row.units && <div className="text-sm opacity-50">{row.units}</div>}
                 </div>
             ),
         },
@@ -272,7 +272,7 @@ export default function Results() {
                 onClose={() => setAddModalOpen(false)}
             >
                 <div className="p-4">
-                    <p className="text-gray-600">
+                    <p className="opacity-60">
                         Test result entry form will be implemented here.
                     </p>
                     <div className="flex justify-end mt-4">

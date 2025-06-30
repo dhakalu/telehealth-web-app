@@ -78,7 +78,7 @@ export const supportCards: SupportCardConfig[] = [
 //     href: "/support/settings",
 //     linkText: "Configure System",
 //     iconBgColor: "bg-gray-100",
-//     iconColor: "text-gray-600",
+//     iconColor: "opacity-60",
 //     icon: SupportIcons.settings,
 // },
 

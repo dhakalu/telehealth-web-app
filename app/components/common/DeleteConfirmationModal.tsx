@@ -65,15 +65,15 @@ export default function DeleteConfirmationModal({
                     </svg>
                 </div>
                 <div className="text-center">
-                    <h3 className="text-lg font-medium text-gray-900 mb-2">
+                    <h3 className="text-lg font-medium opacity-90 mb-2">
                         Are you sure you want to delete this item?
                     </h3>
                     {itemName && (
-                        <p className="text-sm text-gray-500 mb-2">
+                        <p className="text-sm opacity-50 mb-2">
                             <strong>{itemName}</strong>
                         </p>
                     )}
-                    <p className="text-sm text-gray-500 mb-6">
+                    <p className="text-sm opacity-50 mb-6">
                         {description}
                     </p>
                     <div className="flex justify-center space-x-3">

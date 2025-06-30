@@ -31,25 +31,25 @@ export default function SupportPageLayout({
 }: SupportPageLayoutProps) {
     if (loading) {
         return (
-            <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+            <div className="min-h-screen flex items-center justify-center">
                 <div className="text-center">
                     <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600 mx-auto"></div>
-                    <p className="mt-4 text-gray-600">{loadingMessage}</p>
+                    <p className="mt-4 opacity-60">{loadingMessage}</p>
                 </div>
             </div>
         );
     }
 
     return (
-        <div className="min-h-screen bg-gray-50">
+        <div className="min-h-screen">
             {/* Header */}
-            <header className="bg-white shadow">
+            <header className="shadow">
                 <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
                     <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between">
                         <div className="flex-1 min-w-0">
-                            <h1 className="text-3xl font-bold text-gray-900">{title}</h1>
+                            <h1 className="text-3xl font-bold">{title}</h1>
                             {subtitle && (
-                                <p className="mt-1 text-sm text-gray-500">{subtitle}</p>
+                                <p className="mt-1 text-sm opacity-60">{subtitle}</p>
                             )}
                         </div>
                         {(headerActions || breadcrumbs) && (
@@ -62,7 +62,7 @@ export default function SupportPageLayout({
                                                     {index === 0 ? (
                                                         <div>
                                                             {item.href ? (
-                                                                <a href={item.href} className="text-gray-400 hover:text-gray-500">
+                                                                <a href={item.href} className="text-gray-400 hover:opacity-50">
                                                                     {item.icon || (
                                                                         <svg className="flex-shrink-0 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                                                                             <path d="M10.707 2.293a1 1 0 00-1.414 0l-9 9a1 1 0 001.414 1.414L10 4.414l8.293 8.293a1 1 0 001.414-1.414l-9-9z" />
@@ -79,15 +79,15 @@ export default function SupportPageLayout({
                                                         </div>
                                                     ) : (
                                                         <div className="flex items-center">
-                                                            <svg className="flex-shrink-0 h-5 w-5 text-gray-300" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                                                            <svg className="flex-shrink-0 h-5 w-5 opacity-60" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                                                                 <path d="M5.555 17.776l8-16 .894.448-8 16-.894-.448z" />
                                                             </svg>
                                                             {item.href ? (
-                                                                <a href={item.href} className="ml-4 text-sm font-medium text-gray-500 hover:text-gray-700">
+                                                                <a href={item.href} className="ml-4 text-sm font-medium opacity-60 hover:text-gray-700">
                                                                     {item.label}
                                                                 </a>
                                                             ) : (
-                                                                <span className="ml-4 text-sm font-medium text-gray-500" aria-current="page">
+                                                                <span className="ml-4 text-sm font-medium opacity-60" aria-current="page">
                                                                     {item.label}
                                                                 </span>
                                                             )}

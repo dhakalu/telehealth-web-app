@@ -15,12 +15,12 @@ const colorClasses = {
     red: 'bg-red-100 text-red-600',
     yellow: 'bg-yellow-100 text-yellow-600',
     indigo: 'bg-indigo-100 text-indigo-600',
-    gray: 'bg-gray-100 text-gray-600',
+    gray: 'bg-gray-100 opacity-60',
 };
 
 export default function StatisticsCard({ title, value, icon, colorClass }: StatisticsCardProps) {
     return (
-        <div className="overflow-hidden shadow rounded-lg bg-white">
+        <div className="overflow-hidden shadow rounded-lg bg-base-300 border">
             <div className="p-5">
                 <div className="flex items-center">
                     <div className="flex-shrink-0">
@@ -30,8 +30,8 @@ export default function StatisticsCard({ title, value, icon, colorClass }: Stati
                     </div>
                     <div className="ml-5 w-0 flex-1">
                         <dl>
-                            <dt className="text-sm font-medium text-gray-500 truncate">{title}</dt>
-                            <dd className="text-lg font-medium text-gray-900">{value}</dd>
+                            <dt className="text-sm font-medium opacity-50 truncate">{title}</dt>
+                            <dd className="text-lg font-medium opacity-90">{value}</dd>
                         </dl>
                     </div>
                 </div>

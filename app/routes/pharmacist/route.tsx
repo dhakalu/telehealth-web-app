@@ -2,6 +2,7 @@ import { LoaderFunction, Outlet, redirect, useLoaderData } from "react-router";
 
 // Update the import path below to the correct location of requireAuthCookie
 import axios from "axios";
+import { API_BASE_URL } from "~/api";
 import { requireAuthCookie } from "~/auth"; // or "./auth" or the actual relative path
 import { accountTypePathsMap } from "~/common-actions/signin";
 import AppHeader from "~/components/common/AppHeader";
@@ -20,13 +21,13 @@ export const loader: LoaderFunction = async ({ request }) => {
     const isStatusPage = pathname === accountStatusPath;
 
     try {
-        const response = axios.get(`${process.env.API_BASE_URL}/user/${user.sub}`);
-        user.status = (await response).data.status;
+        const response = await axios.get(`${API_BASE_URL}/user/${user.sub}`);
+        user.status = response.data.status;
         if (user.status === "email-verified" && !isUserInCompletePath) {
             return redirect(completeProfilePath);
         }
 
-        if (user.status !== "complete" && !isStatusPage) {
+        if (user.status !== "complete" && !isUserInCompletePath && !isStatusPage) {
             return redirect(accountStatusPath);
         }
 
@@ -51,7 +52,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 }
 
 
-export default function ProviderAppLayout() {
+export default function PharmacistAppLayout() {
     const user = useLoaderData<User>();
     return (
         <div className="flex flex-col h-screen">

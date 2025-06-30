@@ -146,11 +146,11 @@ export const UsersTable: React.FC<UsersTableProps> = ({ users, loading = false }
                             </div>
                         </div>
                         <div className="ml-4">
-                            <div className="text-sm font-medium text-gray-900">
+                            <div className="text-sm font-medium opacity-90">
                                 {displayName}
                             </div>
                             {user.middle_name && (
-                                <div className="text-sm text-gray-500">
+                                <div className="text-sm opacity-50">
                                     Middle: {user.middle_name}
                                 </div>
                             )}
@@ -162,7 +162,7 @@ export const UsersTable: React.FC<UsersTableProps> = ({ users, loading = false }
         {
             header: 'Email',
             accessor: (user) => (
-                <div className="text-sm text-gray-900">{user.email || 'N/A'}</div>
+                <div className="text-sm opacity-90">{user.email || 'N/A'}</div>
             )
         },
         {
@@ -176,7 +176,7 @@ export const UsersTable: React.FC<UsersTableProps> = ({ users, loading = false }
         {
             header: 'User ID',
             accessor: (user) => (
-                <div className="text-sm text-gray-500 font-mono">
+                <div className="text-sm opacity-50 font-mono">
                     {user.sub || 'N/A'}
                 </div>
             )
@@ -191,7 +191,7 @@ export const UsersTable: React.FC<UsersTableProps> = ({ users, loading = false }
 
     if (loading) {
         return (
-            <div className="bg-white shadow rounded-lg">
+            <div className="shadow rounded-lg">
                 <div className="p-6">
                     <div className="animate-pulse">
                         <div className="h-4 bg-gray-200 rounded w-1/4 mb-4"></div>
@@ -208,24 +208,24 @@ export const UsersTable: React.FC<UsersTableProps> = ({ users, loading = false }
 
     if (!users || users.length === 0) {
         return (
-            <div className="bg-white shadow rounded-lg">
+            <div className="shadow rounded-lg">
                 <div className="p-6 text-center">
                     <div className="w-12 h-12 mx-auto mb-4 text-gray-400">
                         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z" />
                         </svg>
                     </div>
-                    <h3 className="text-lg font-medium text-gray-900 mb-2">No users found</h3>
-                    <p className="text-gray-500">There are no users to display at this time.</p>
+                    <h3 className="text-lg font-medium opacity-90 mb-2">No users found</h3>
+                    <p className="opacity-50">There are no users to display at this time.</p>
                 </div>
             </div>
         );
     }
 
     return (
-        <div className="bg-white shadow rounded-lg overflow-hidden">
+        <div className="shadow rounded-lg overflow-hidden">
             <div className="px-4 py-5 sm:p-6">
-                <h3 className="text-lg font-medium text-gray-900 mb-4">Team Members</h3>
+                <h3 className="text-lg font-medium opacity-90 mb-4">Team Members</h3>
 
                 <Table
                     columns={columns}
@@ -233,7 +233,7 @@ export const UsersTable: React.FC<UsersTableProps> = ({ users, loading = false }
                     emptyMessage="No team members found."
                 />
 
-                <div className="mt-4 text-sm text-gray-500">
+                <div className="mt-4 text-sm opacity-50">
                     Showing {users.length} user{users.length !== 1 ? 's' : ''}
                 </div>
             </div>

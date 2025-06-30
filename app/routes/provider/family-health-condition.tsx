@@ -137,7 +137,7 @@ export default function FamilyHealthCondition() {
                 onClose={() => setAddModalOpen(false)}
             >
                 <div className="p-4">
-                    <p className="text-gray-600">
+                    <p className="opacity-60">
                         Add Family Health Condition form will be implemented here.
                     </p>
                     <div className="flex justify-end mt-4">

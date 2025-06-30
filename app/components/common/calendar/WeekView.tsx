@@ -155,7 +155,7 @@ const WeekView: React.FC<WeekViewProps> = ({
                                             style={{ top: 12 + nowTop, height: 0 }}
                                         >
                                             <div className="border-t-2 border-red-500 w-full relative">
-                                                <span className="absolute -left-10 -top-2 text-xs text-red-500 bg-white px-1 rounded">
+                                                <span className="absolute -left-10 -top-2 text-xs text-red-500 px-1 rounded">
                                                     Now
                                                 </span>
                                             </div>
