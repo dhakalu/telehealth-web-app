@@ -1,7 +1,7 @@
-import { LoaderFunctionArgs } from "react-router";
-import { requireAuthCookie } from "~/auth";
 import axios from "axios";
+import { LoaderFunctionArgs } from "react-router";
 import { API_BASE_URL } from "~/api";
+import { requireAuthCookie } from "~/auth";
 import { HealthCondition } from "~/components/common/health-condition/types";
 
 export async function healthConditionLoader({ request, params }: LoaderFunctionArgs) {

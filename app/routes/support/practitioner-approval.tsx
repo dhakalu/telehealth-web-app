@@ -6,7 +6,7 @@ import { userApi } from "~/api/users";
 import { requireAuthCookie } from "~/auth";
 import Button from "~/components/common/Button";
 import ErrorPage from "~/components/common/ErrorPage";
-import SupportPageLayout from "~/components/support/SupportPageLayout";
+import SupportPageLayout from "~/components/common/page-layout/PageLayout";
 import { usePageTitle } from "~/hooks";
 
 interface User {

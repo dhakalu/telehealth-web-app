@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { LoadingSpinner } from "../common";
+import { LoadingSpinner } from "~/components/common";
 
 interface BreadcrumbItem {
     label: string;
@@ -7,7 +7,7 @@ interface BreadcrumbItem {
     icon?: ReactNode;
 }
 
-interface SupportPageLayoutProps {
+interface PageLayoutProps {
     title: string;
     subtitle?: string;
     children: ReactNode;
@@ -19,7 +19,7 @@ interface SupportPageLayoutProps {
     loadingMessage?: string;
 }
 
-export default function SupportPageLayout({
+export default function PageLayout({
     title,
     subtitle,
     children,
@@ -29,7 +29,7 @@ export default function SupportPageLayout({
     onErrorDismiss,
     loading = false,
     loadingMessage = "Loading..."
-}: SupportPageLayoutProps) {
+}: PageLayoutProps) {
     if (loading) {
         return (
             <LoadingSpinner

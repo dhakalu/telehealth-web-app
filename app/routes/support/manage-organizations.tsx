@@ -5,10 +5,10 @@ import { API_BASE_URL } from "~/api";
 import { requireAuthCookie } from "~/auth";
 import Button from "~/components/common/Button";
 import DeleteConfirmationModal from "~/components/common/DeleteConfirmationModal";
+import SupportPageLayout from "~/components/common/page-layout/PageLayout";
 import { Column, Table } from "~/components/common/Table";
 import { Organization } from "~/components/organization/types";
 import StatisticsCard from "~/components/support/StatisticsCard";
-import SupportPageLayout from "~/components/support/SupportPageLayout";
 import { usePageTitle } from "~/hooks";
 
 export const loader: LoaderFunction = async ({ request }) => {

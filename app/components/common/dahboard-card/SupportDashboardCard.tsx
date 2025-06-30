@@ -1,6 +1,6 @@
 import React from "react";
 
-export interface SupportDashboardCardProps {
+export interface DashboardCardProps {
     title: string;
     content: string | React.ReactNode;
     icon: React.ReactNode;
@@ -9,14 +9,14 @@ export interface SupportDashboardCardProps {
     href?: string;
 }
 
-export default function SupportDashboardCard({
+export default function DashboardCard({
     title,
     content,
     icon,
     iconBgColor,
     iconColor,
     href
-}: SupportDashboardCardProps) {
+}: DashboardCardProps) {
     const cardContent = (
         <div className="border border-base-300 shadow-sm bg-base-100 rounded-lg p-6 hover:bg-base-300 transition-colors">
             <div className="flex items-center">
@@ -53,7 +53,7 @@ export default function SupportDashboardCard({
 }
 
 // Helper type for predefined card configurations
-export type SupportCardConfig = {
+export type DashboardCardConfig = {
     title: string;
     content?: string;
     href?: string;

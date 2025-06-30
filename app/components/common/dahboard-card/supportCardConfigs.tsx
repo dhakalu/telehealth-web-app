@@ -1,4 +1,4 @@
-import { SupportCardConfig } from "./SupportDashboardCard";
+import { DashboardCardConfig } from "./SupportDashboardCard";
 
 // Helper function to create link content
 export const createLinkContent = (text: string, href: string) => (
@@ -38,7 +38,7 @@ export const SupportIcons = {
 };
 
 // Predefined card configurations
-export const supportCards: SupportCardConfig[] = [
+export const supportCards: DashboardCardConfig[] = [
     {
         title: "Support Tickets",
         content: "Coming Soon",
@@ -83,7 +83,7 @@ export const supportCards: SupportCardConfig[] = [
 // },
 
 // Helper function to convert config to card props
-export const configToCardProps = (config: SupportCardConfig) => ({
+export const configToCardProps = (config: DashboardCardConfig) => ({
     title: config.title,
     content: config.href && config.linkText
         ? createLinkContent(config.linkText, config.href)

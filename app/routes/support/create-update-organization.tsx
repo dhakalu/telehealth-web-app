@@ -1,8 +1,8 @@
 import { LoaderFunction, useLoaderData, useParams } from "react-router";
 import { API_BASE_URL } from "~/api";
 import { requireAuthCookie } from "~/auth";
+import SupportPageLayout from "~/components/common/page-layout/PageLayout";
 import OrganizationManagement from "~/components/organization/OrganizationManagement";
-import SupportPageLayout from "~/components/support/SupportPageLayout";
 import { usePageTitle } from "~/hooks";
 
 export const loader: LoaderFunction = async ({ request }) => {
