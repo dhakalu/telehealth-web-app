@@ -2,12 +2,15 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { LoaderFunction, useLoaderData, useNavigate } from "react-router";
 import { API_BASE_URL } from "~/api";
+import { reviewApi } from "~/api/review";
 import { requireAuthCookie } from "~/auth";
 import Button from "~/components/common/Button";
 import ErrorPage from "~/components/common/ErrorPage";
+import { Modal } from "~/components/common/Modal";
 import PageHeader from "~/components/common/PageHeader";
+import { BookAppointment } from "~/components/provider/BookAppointment";
 import { ReviewModal } from "~/components/ReviewModal";
-import { usePageTitle } from "~/hooks";
+import { usePageTitle, useToast } from "~/hooks";
 import { User } from "../provider/complete-profile";
 
 
@@ -51,10 +54,13 @@ type PractitionerSummary = {
 
 export default function Providers() {
     usePageTitle("My Doctors");
+    const toast = useToast();
 
     const navigate = useNavigate();
 
     const [reviewModalDoctor, setReviewModalDoctor] = useState<PractitionerSummary | null>(null);
+    const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
+    const [selectedProviderId, setSelectedProviderId] = useState<string | null>(null);
 
 
     const { practitioners, error, user, baseUrl } = useLoaderData() as {
@@ -78,6 +84,17 @@ export default function Providers() {
             (document.getElementById('review_modal') as HTMLDialogElement)?.showModal()
         }
     }, [reviewModalDoctor?.id])
+
+
+    const handleBookingModalClose = () => {
+        setIsBookingModalOpen(false);
+        setSelectedProviderId(null);
+    }
+
+    const handleAppointmentBooked = () => {
+        handleBookingModalClose();
+    }
+
 
     if (error) {
         return (
@@ -103,14 +120,26 @@ export default function Providers() {
                         <li
                             onClick={() => handleSelect(practitioner)}
                             key={practitioner.id}
-                            className="flex flex-col md:flex-row"
+                            className="flex flex-col md:flex-row py-4 border-b cursor-pointer hover:bg-base-200 transition-colors"
                         >
                             <div className="md:flex-1">
                                 <div className="font-bold">{practitioner.first_name} {practitioner.last_name}</div>
-                                <div className="opacity-60">{practitioner.email}</div>
+                                <div className="opacity-60 truncate">{practitioner.email}</div>
                             </div>
                             <div className="divider"></div>
-                            <div>
+                            <div className="flex md:items-center flex-col md:flex-row gap-2 mt-2 md:mt-0">
+                                <Button
+                                    buttonType="primary"
+                                    soft
+                                    title="Book appointment"
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        setSelectedProviderId(practitioner.id);
+                                        setIsBookingModalOpen(true);
+                                    }}
+                                >
+                                    Book Appointment
+                                </Button>
                                 <Button
                                     buttonType="info"
                                     soft
@@ -131,16 +160,38 @@ export default function Providers() {
                 doctorName={`${reviewModalDoctor.first_name} ${reviewModalDoctor.last_name}`}
                 onClose={() => setReviewModalDoctor(null)}
                 onSubmit={async (rating, comment) => {
-                    await axios.post(`${baseUrl}/review`, {
-                        rating,
-                        comment,
-                        reviewerId: user.sub,
-                        encounterId: "badfb50c-89d3-4297-9c6f-3f7c4a38f28f",
-                        revieweeId: reviewModalDoctor.id,
-                    });
-                    setReviewModalDoctor(null);
+                    try {
+                        await reviewApi.createReview({
+                            rating,
+                            comment,
+                            reviewerId: user.sub,
+                            revieweeId: reviewModalDoctor.id,
+                            encounterId: "badfb50c-89d3-4297-9c6f-3f7c4a38f28f",
+                        });
+                        toast.success("Review submitted successfully!");
+                        setReviewModalDoctor(null);
+                    } catch (error) {
+                        console.error('Error creating review:', error);
+                        toast.error("Failed to submit review. Please try again.");
+                    } finally {
+                        setReviewModalDoctor(null);
+                    }
                 }} />
             }
+            <Modal
+                isOpen={isBookingModalOpen && selectedProviderId !== null}
+                onClose={handleBookingModalClose}
+                title="Schedule an Appointment"
+            >
+                {selectedProviderId && (
+                    <BookAppointment
+                        providerId={selectedProviderId}
+                        patientId={user.sub}
+                        baseUrl={baseUrl}
+                        onAppointmentBooked={handleAppointmentBooked}
+                    />
+                )}
+            </Modal>
         </div>
     );
 }

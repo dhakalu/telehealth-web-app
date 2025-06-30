@@ -1,4 +1,4 @@
-import { LoaderFunctionArgs, useLoaderData } from "react-router";
+import { LoaderFunctionArgs, useLoaderData, useParams } from "react-router";
 
 import axios from "axios";
 import { API_BASE_URL } from "~/api";
@@ -30,6 +30,7 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
 
 export default function DoctorDetailRoute() {
   usePageTitle("Doctor Profile - Patient - MedTok");
+  const { doctorId } = useParams<{ doctorId: string }>();
 
   const { data, error } = useLoaderData<{ data: FHIRPractitioner, error: string }>();
   if (error) {
@@ -37,5 +38,5 @@ export default function DoctorDetailRoute() {
       <ErrorPage error={error} />
     );
   }
-  return <DoctorDetail doctor={data} />;
+  return <DoctorDetail doctor={data} id={doctorId || ""} />;
 }

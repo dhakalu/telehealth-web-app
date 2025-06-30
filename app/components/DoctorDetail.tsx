@@ -1,7 +1,7 @@
-import axios from "axios";
 import React from "react";
-import { LoaderFunction, useLoaderData } from "react-router";
+import { Column, Table } from "./common/Table";
 import { StarRating } from "./RatingStar";
+import { ReviewList } from "./ReviewList";
 
 
 // FHIR Practitioner resource type (simplified for this context)
@@ -52,7 +52,23 @@ export type FHIRPractitioner = {
 };
 
 type DoctorDetailProps = {
+    id: string;
     doctor: FHIRPractitioner;
+};
+
+// Types for table data
+type QualificationTableRow = {
+    id: string;
+    qualification: string;
+    issuedBy: string;
+    validFor: string;
+};
+
+type TelecomTableRow = {
+    id: string;
+    type: string;
+    value: string;
+    use: string;
 };
 
 // Helper functions to extract FHIR fields
@@ -64,26 +80,60 @@ const getName = (practitioner: FHIRPractitioner) => {
     return [given, family].filter(Boolean).join(" ") || "Unknown";
 };
 
-export const loader: LoaderFunction = async ({ params }) => {
-    const { practitionerId } = params;
-    try {
-        const res = await axios.get(`${process.env.API_URL || "http://localhost:8090"}/practitioner/${practitionerId}`);
-        return { data: res.data };
-    } catch (error) {
-        if (axios.isAxiosError(error)) {
-            return { error: error.response?.data?.error || error.message || "cannot fetch provider" };
+
+export const DoctorDetail: React.FC<DoctorDetailProps> = ({ doctor, id }) => {
+    const photoUrl = doctor?.photo?.[0].url;
+    const name = getName(doctor);
+    const rating = doctor.extension?.rating || 0;
+    const bio = doctor.extension?.bio
+
+    // Transform qualifications data for Table component
+    const qualificationsData: QualificationTableRow[] = doctor.qualification?.map((q, idx) => ({
+        id: `qual-${idx}`,
+        qualification: q.code?.text || "N/A",
+        issuedBy: q.issuer?.display || "N/A",
+        validFor: q.period?.start
+            ? `${q.period.start}${q.period.end ? ` - ${q.period.end}` : " - Present"}`
+            : "N/A"
+    })) || [];
+
+    const qualificationColumns: Column<QualificationTableRow>[] = [
+        {
+            header: "Qualification",
+            accessor: (row) => row.qualification
+        },
+        {
+            header: "Issued By",
+            accessor: (row) => row.issuedBy
+        },
+        {
+            header: "Valid for",
+            accessor: (row) => row.validFor
         }
-        return { error: (error as Error).message || "cannot fetch provider" };
-    }
-}
+    ];
 
+    // Transform telecom data for Table component
+    const telecomData: TelecomTableRow[] = doctor.telecom?.map((contact, idx) => ({
+        id: `telecom-${idx}`,
+        type: contact.system || "N/A",
+        value: contact.value || "N/A",
+        use: contact.use || "N/A"
+    })) || [];
 
-export const DoctorDetail: React.FC<DoctorDetailProps> = ({ doctor }) => {
-    const { data } = useLoaderData<{ data: FHIRPractitioner, error: string }>()
-    const photoUrl = data?.photo?.[0].url;
-    const name = getName(data);
-    const rating = data.extension?.rating || 0;
-    const bio = data.extension?.bio
+    const telecomColumns: Column<TelecomTableRow>[] = [
+        {
+            header: "Type",
+            accessor: (row) => row.type
+        },
+        {
+            header: "Value",
+            accessor: (row) => row.value
+        },
+        {
+            header: "Use",
+            accessor: (row) => row.use
+        }
+    ];
 
     return (
         <div className=" rounded shadow p-6 max-w-lg mx-auto mt-8">
@@ -106,58 +156,37 @@ export const DoctorDetail: React.FC<DoctorDetailProps> = ({ doctor }) => {
             </div>
 
             <span className="font-semibold">Qualifications</span>
-            {doctor.qualification && doctor.qualification.length > 0 ? (
-                <table className="min-w-full text-sm mt-2">
-                    <thead>
-                        <tr>
-                            <th className="text-left font-semibold">Qualification</th>
-                            <th className="text-left font-semibold">Issued By</th>
-                            <th className="text-left font-semibold">Valid for</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {doctor.qualification.map((q, idx) => (
-                            <tr key={idx}>
-                                <td>{q.code?.text || "N/A"}</td>
-                                <td>{q.issuer?.display || "N/A"}</td>
-                                <td>
-                                    {q.period?.start
-                                        ? `${q.period.start}-${q.period.end ? ` ${q.period.end}` : " Present"}`
-                                        : "N/A"}
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-            ) : (
-                <span className="ml-2">N/A</span>
-            )}
+            <div className="mt-2">
+                <Table
+                    columns={qualificationColumns}
+                    data={qualificationsData}
+                    emptyMessage="No qualifications available"
+                />
+            </div>
+
             <span className="font-semibold mt-4 block">Contacts</span>
-            {doctor.telecom && doctor.telecom.length > 0 ? (
-                <table className="min-w-full text-sm mt-2 mb-4">
-                    <thead>
-                        <tr>
-                            <th className="text-left font-semibold">Type</th>
-                            <th className="text-left font-semibold">Value</th>
-                            <th className="text-left font-semibold">Use</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {doctor.telecom.map((contact, idx) => (
-                            <tr key={idx}>
-                                <td>{contact.system || "N/A"}</td>
-                                <td>{contact.value || "N/A"}</td>
-                                <td>{contact.use || "N/A"}</td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-            ) : (
-                <span className="ml-2">N/A</span>
-            )}
+            <div className="mt-2 mb-4">
+                <Table
+                    columns={telecomColumns}
+                    data={telecomData}
+                    emptyMessage="No contact information available"
+                />
+            </div>
+
             <div>
                 {bio && <div className="mb-2"><span className="font-semibold">Bio:</span> {bio}</div>}
             </div>
+
+            {/* Reviews Section */}
+            <ReviewList
+                revieweeId={id}
+                title="Reviews"
+                maxReviews={5}
+                onViewAll={() => {
+                    // TODO: Navigate to full reviews page or open modal
+                    console.log('View all reviews clicked');
+                }}
+            />
         </div>
     );
 };
