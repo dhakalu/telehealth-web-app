@@ -42,7 +42,7 @@ export default function PharmacistApproval() {
     useEffect(() => {
         const fetchData = async () => {
             if (!userId) return;
-            
+
             try {
                 setLoading(true);
                 setError(null);

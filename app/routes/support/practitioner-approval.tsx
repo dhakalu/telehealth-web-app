@@ -125,7 +125,7 @@ export default function PractitionerApproval() {
     useEffect(() => {
         const fetchData = async () => {
             if (!userId) return;
-            
+
             try {
                 setLoading(true);
                 setError(null);
