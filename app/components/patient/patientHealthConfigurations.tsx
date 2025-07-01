@@ -76,7 +76,7 @@ export const patientHealthCards: DashboardCardConfig[] = [
     },
     {
         title: "Procedures",
-        href: "/patient/my-health/procedure",
+        href: "/patient/my-health/procedures",
         linkText: "View Procedures",
         iconBgColor: "bg-purple-100",
         iconColor: "text-purple-600",

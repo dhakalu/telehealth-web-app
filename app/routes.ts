@@ -22,7 +22,7 @@ export default remixRoutesOptionAdapter((defineRoutes) => {
         route("prescriptions", "./routes/patient/my-health/prescriptions.tsx");
         route("medication", "./routes/patient/medication.tsx");
         route("immunization", "./routes/patient/my-health/immunizations.tsx");
-        route("procedure", "./routes/patient/procedure.tsx");
+        route("procedures", "./routes/patient/my-health/procedures.tsx");
       });
     });
     route("/signup", "./routes/_auth.provider.signup.tsx");

@@ -6,5 +6,7 @@ export { MyHealth } from "./MyHealth";
 export { configToCardProps, patientHealthCards } from "./patientHealthConfigurations";
 export { PrescriptionItem } from "./PrescriptionItem";
 export { PrescriptionList } from "./PrescriptionList";
+export { ProcedureItem } from "./ProcedureItem";
+export { ProcedureList } from "./ProcedureList";
 export * from "./shared/PatientResourceList";
 

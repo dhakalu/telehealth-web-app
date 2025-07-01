@@ -839,6 +839,53 @@ export const patientUtils = {
             return groups;
         }, {} as Record<string, Immunization[]>);
     },
+
+    /**
+     * Sort procedures by date
+     */
+    sortProceduresByDate(procedures: Procedure[]): Procedure[] {
+        return [...procedures].sort((a, b) => {
+            const dateA = new Date(a.performed_on || 0);
+            const dateB = new Date(b.performed_on || 0);
+            return dateB.getTime() - dateA.getTime();
+        });
+    },
+
+    /**
+     * Group procedures by outcome
+     */
+    groupProceduresByOutcome(procedures: Procedure[]): Record<string, Procedure[]> {
+        return procedures.reduce((groups, procedure) => {
+            const outcome = procedure.outcome || 'unknown';
+            if (!groups[outcome]) {
+                groups[outcome] = [];
+            }
+            groups[outcome].push(procedure);
+            return groups;
+        }, {} as Record<string, Procedure[]>);
+    },
+
+    /**
+     * Get procedure outcome color class
+     */
+    getProcedureOutcomeColor(outcome: string): string {
+        switch (outcome.toLowerCase()) {
+            case 'successful':
+            case 'completed':
+                return 'text-green-600';
+            case 'partial':
+                return 'text-yellow-600';
+            case 'unsuccessful':
+            case 'failed':
+                return 'text-red-600';
+            case 'cancelled':
+                return 'text-gray-600';
+            case 'pending':
+                return 'text-blue-600';
+            default:
+                return 'text-gray-600';
+        }
+    },
 };
 
 /**

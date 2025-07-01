@@ -41,7 +41,7 @@ export default function PageLayout({
     }
 
     return (
-        <div className="min-h-screen flex flex-col">
+        <div className="min-h-screen">
             {/* Header */}
             <header className="shadow">
                 <div className="mx-auto py-6 px-4 sm:px-6 lg:px-8">
@@ -110,7 +110,7 @@ export default function PageLayout({
             </header>
 
             {/* Main content */}
-            <main className="py-6 sm:px-6 lg:px-8 flex-1 overflow-y-auto">
+            <main className="py-6 sm:px-6 lg:px-8 flex-1">
                 <div>
                     {/* Error Banner */}
                     {error && (
