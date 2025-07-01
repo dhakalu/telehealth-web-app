@@ -1,31 +1,30 @@
 import React from "react";
-import type { HealthCondition } from "~/api/patient";
+import type { Immunization } from "~/api/patient";
 import { patientUtils } from "~/api/patient";
 import Card from "~/components/common/Card";
 
-export interface HealthConditionItemProps {
-    /** Health condition data */
-    condition: HealthCondition;
+export interface ImmunizationItemProps {
+    /** Immunization data */
+    immunization: Immunization;
     /** Additional CSS classes */
     className?: string;
     /** Whether to show detailed information */
     showDetails?: boolean;
-    /** Callback when condition is clicked */
-    onClick?: (condition: HealthCondition) => void;
+    /** Callback when immunization is clicked */
+    onClick?: (immunization: Immunization) => void;
 }
 
-export const HealthConditionItem: React.FC<HealthConditionItemProps> = ({
-    condition,
+export const ImmunizationItem: React.FC<ImmunizationItemProps> = ({
+    immunization,
     className = "",
     showDetails = true,
     onClick
 }) => {
-    const statusColor = patientUtils.getConditionStatusColor(condition.status);
-    const diagnosedDate = condition.diagnosed_on ? patientUtils.formatDate(condition.diagnosed_on) : null;
+    const administeredDate = immunization.date_administered ? patientUtils.formatDate(immunization.date_administered) : null;
 
     const handleClick = () => {
         if (onClick) {
-            onClick(condition);
+            onClick(immunization);
         }
     };
 
@@ -51,17 +50,17 @@ export const HealthConditionItem: React.FC<HealthConditionItemProps> = ({
                     <div className="flex items-start justify-between mb-3">
                         <div className="flex-1">
                             <h3 className="text-lg font-semibold text-base-content">
-                                {condition.name}
+                                {immunization.vaccine}
                             </h3>
-                            {diagnosedDate && (
+                            {administeredDate && (
                                 <p className="text-sm text-base-content/70 mt-1">
-                                    Diagnosed: {diagnosedDate}
+                                    Administered: {administeredDate}
                                 </p>
                             )}
                         </div>
                         <div className="flex items-center gap-2">
-                            <span className={`badge badge-sm ${statusColor} border-current`}>
-                                {condition.status}
+                            <span className="badge badge-sm badge-success border-current">
+                                Vaccinated
                             </span>
                         </div>
                     </div>
@@ -69,18 +68,7 @@ export const HealthConditionItem: React.FC<HealthConditionItemProps> = ({
                     {/* Details - grows to fill available space */}
                     {showDetails && (
                         <div className="flex-1 space-y-2">
-                            {condition.source_id && (
-                                <div>
-                                    <span className="text-xs font-medium text-base-content/60 uppercase tracking-wide">
-                                        Source ID
-                                    </span>
-                                    <p className="text-sm text-base-content opacity-80 mt-1">
-                                        {condition.source_id}
-                                    </p>
-                                </div>
-                            )}
-
-                            {condition.notes && (
+                            {immunization.notes && (
                                 <div>
                                     <span className="text-xs font-medium text-base-content/60 uppercase tracking-wide">
                                         Notes
@@ -90,7 +78,18 @@ export const HealthConditionItem: React.FC<HealthConditionItemProps> = ({
                                         WebkitLineClamp: 3,
                                         WebkitBoxOrient: 'vertical'
                                     }}>
-                                        {condition.notes}
+                                        {immunization.notes}
+                                    </p>
+                                </div>
+                            )}
+
+                            {immunization.date_administered && (
+                                <div>
+                                    <span className="text-xs font-medium text-base-content/60 uppercase tracking-wide">
+                                        Administration Date
+                                    </span>
+                                    <p className="text-sm text-base-content opacity-80 mt-1">
+                                        {patientUtils.formatDate(immunization.date_administered)}
                                     </p>
                                 </div>
                             )}
@@ -100,11 +99,9 @@ export const HealthConditionItem: React.FC<HealthConditionItemProps> = ({
                     {/* Compact view for when details are hidden - stays at bottom */}
                     {!showDetails && (
                         <div className="flex items-center justify-between text-sm text-base-content/70 mt-auto">
-                            {condition.source_id && (
-                                <span>Source: {condition.source_id}</span>
-                            )}
-                            {diagnosedDate && (
-                                <span>{diagnosedDate}</span>
+                            <span>Vaccine</span>
+                            {administeredDate && (
+                                <span>{administeredDate}</span>
                             )}
                         </div>
                     )}
@@ -114,4 +111,4 @@ export const HealthConditionItem: React.FC<HealthConditionItemProps> = ({
     );
 };
 
-export default HealthConditionItem;
+export default ImmunizationItem;

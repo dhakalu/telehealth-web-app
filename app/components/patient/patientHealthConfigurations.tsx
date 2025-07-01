@@ -100,7 +100,7 @@ export const patientHealthCards: DashboardCardConfig[] = [
     },
     {
         title: "Immunizations",
-        href: "/patient/my-health/immunization",
+        href: "/patient/my-health/immunizations",
         linkText: "View Immunizations",
         iconBgColor: "bg-teal-100",
         iconColor: "text-teal-600",

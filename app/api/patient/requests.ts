@@ -812,6 +812,33 @@ export const patientUtils = {
     filterActive<T extends { deleted_at?: string }>(items: T[]): T[] {
         return items.filter(item => !item.deleted_at);
     },
+
+    /**
+     * Sort immunizations by administration date
+     */
+    sortImmunizationsByDate(immunizations: Immunization[]): Immunization[] {
+        return [...immunizations].sort((a, b) => {
+            const dateA = new Date(a.date_administered || 0);
+            const dateB = new Date(b.date_administered || 0);
+            return dateB.getTime() - dateA.getTime();
+        });
+    },
+
+    /**
+     * Group immunizations by year
+     */
+    groupImmunizationsByYear(immunizations: Immunization[]): Record<string, Immunization[]> {
+        return immunizations.reduce((groups, immunization) => {
+            const year = immunization.date_administered
+                ? new Date(immunization.date_administered).getFullYear().toString()
+                : 'Unknown';
+            if (!groups[year]) {
+                groups[year] = [];
+            }
+            groups[year].push(immunization);
+            return groups;
+        }, {} as Record<string, Immunization[]>);
+    },
 };
 
 /**

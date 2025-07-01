@@ -125,7 +125,7 @@ export const ReviewList: React.FC<ReviewListProps> = ({
                                         {formattedReview.formattedDate}
                                     </span>
                                 </div>
-                                <p className="text-base-content/80">
+                                <p className="text-base-content opacity-80">
                                     {review.comment}
                                 </p>
                                 {review.encounterId && (

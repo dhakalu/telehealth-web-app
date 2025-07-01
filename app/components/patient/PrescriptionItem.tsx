@@ -76,7 +76,7 @@ export const PrescriptionItem: React.FC<PrescriptionItemProps> = ({
                                     <span className="text-xs font-medium text-base-content/60 uppercase tracking-wide">
                                         Directions
                                     </span>
-                                    <p className="text-sm text-base-content/80 mt-1 overflow-hidden" style={{
+                                    <p className="text-sm text-base-content opacity-80 mt-1 overflow-hidden" style={{
                                         display: '-webkit-box',
                                         WebkitLineClamp: 3,
                                         WebkitBoxOrient: 'vertical'
@@ -91,7 +91,7 @@ export const PrescriptionItem: React.FC<PrescriptionItemProps> = ({
                                     <span className="text-xs font-medium text-base-content/60 uppercase tracking-wide">
                                         Prescribed by
                                     </span>
-                                    <p className="text-sm text-base-content/80 mt-1">
+                                    <p className="text-sm text-base-content opacity-80 mt-1">
                                         {prescription.prescribed_by}
                                     </p>
                                 </div>
@@ -102,7 +102,7 @@ export const PrescriptionItem: React.FC<PrescriptionItemProps> = ({
                                     <span className="text-xs font-medium text-base-content/60 uppercase tracking-wide">
                                         Duration
                                     </span>
-                                    <p className="text-sm text-base-content/80 mt-1">
+                                    <p className="text-sm text-base-content opacity-80 mt-1">
                                         {startDate && `Start: ${startDate}`}
                                         {startDate && endDate && ' • '}
                                         {endDate && `End: ${endDate}`}
@@ -115,7 +115,7 @@ export const PrescriptionItem: React.FC<PrescriptionItemProps> = ({
                                     <span className="text-xs font-medium text-base-content/60 uppercase tracking-wide">
                                         Notes
                                     </span>
-                                    <p className="text-sm text-base-content/80 mt-1 overflow-hidden" style={{
+                                    <p className="text-sm text-base-content opacity-80 mt-1 overflow-hidden" style={{
                                         display: '-webkit-box',
                                         WebkitLineClamp: 2,
                                         WebkitBoxOrient: 'vertical'
