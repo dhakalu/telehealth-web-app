@@ -82,14 +82,14 @@ export const patientHealthCards: DashboardCardConfig[] = [
         iconColor: "text-purple-600",
         icon: PatientHealthIcons.procedure,
     },
-    {
-        title: "Medications",
-        href: "/patient/my-health/medication",
-        linkText: "View Medications",
-        iconBgColor: "bg-green-100",
-        iconColor: "text-green-600",
-        icon: PatientHealthIcons.medication,
-    },
+    // {
+    //     title: "Medications",
+    //     href: "/patient/my-health/medication",
+    //     linkText: "View Medications",
+    //     iconBgColor: "bg-green-100",
+    //     iconColor: "text-green-600",
+    //     icon: PatientHealthIcons.medication,
+    // },
     {
         title: "Allergies",
         href: "/patient/my-health/allergies",
