@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router";
 import type { Prescription, PrescriptionFulfillment, PrescriptionWithDetails } from "~/api/prescription";
-import { prescriptionUtils } from "~/api/prescription";
+import prescriptionApi, { prescriptionUtils } from "~/api/prescription";
 import Card from "~/components/common/Card";
+import { useToast } from "~/hooks";
 import { Button } from "../common";
 
 export interface PrescriptionDetailProps {
@@ -29,9 +30,9 @@ export const PrescriptionDetail: React.FC<PrescriptionDetailProps> = ({
     onCancel,
     canCancel = false
 }) => {
-
+    const toast = useToast();
     const navigate = useNavigate();
-
+    const [fulfillments, setFFulfillments] = React.useState<PrescriptionFulfillment[] | undefined>();
     const statusColor = prescriptionUtils.getStatusColor(prescription.status);
     const prescriptionTypeLabel = prescriptionUtils.formatPrescriptionType(prescription.prescription_type);
     const prescribedDate = prescriptionUtils.formatDate(prescription.prescribed_date);
@@ -44,10 +45,19 @@ export const PrescriptionDetail: React.FC<PrescriptionDetailProps> = ({
     const canRefill = prescriptionUtils.canRefill(prescription);
     const daysUntilExpiry = prescriptionUtils.getDaysUntilExpiry(prescription);
 
-    const fulfillments = 'fulfillments' in prescription ? prescription.fulfillments : undefined;
     const patientName = 'patient_name' in prescription ? prescription.patient_name : undefined;
     const practitionerName = 'practitioner_name' in prescription ? prescription.practitioner_name : undefined;
     const pharmacyName = 'pharmacy_name' in prescription ? prescription.pharmacy_name : undefined;
+
+    useEffect(() => {
+        prescriptionApi.getPrescriptionFulfillments(prescription.id).then((fulfillments) => {
+            setFFulfillments(fulfillments || []);
+        }).catch(() => {
+            toast.error("Failed to load prescription fulfillments");
+            setFFulfillments([]);
+        });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [prescription.id]);
 
     const handleCancel = () => {
         if (onCancel) {

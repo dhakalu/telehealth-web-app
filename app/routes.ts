@@ -70,6 +70,7 @@ export default remixRoutesOptionAdapter((defineRoutes) => {
       route("complete-profile", "./routes/pharmacist/complete-profile.tsx");
       route("account-status", "./routes/pharmacist/account-status.tsx");
       route("prescriptions/:prescriptionId", "./routes/pharmacist/prescriptions/detail.tsx");
+      route("prescriptions/:prescriptionId/fulfill", "./routes/pharmacist/prescriptions/fulfill.tsx");
       // route(":prescriptionId/fu", "./routes/pharmacist/prescription-edit.tsx");
 
     })
