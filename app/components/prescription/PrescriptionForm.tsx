@@ -1,9 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Input } from "~/components/common/Input";
-import { Select } from "~/components/common/Select";
-import TypeAHeadSearch from "~/components/common/TypeAHeadSearch";
-import { useToast } from "~/hooks/useToast";
+import prescriptionApi from "~/api/prescription";
 import {
     CreatePrescriptionRequest,
     DrugDatabase,
@@ -11,7 +8,11 @@ import {
     PrescriptionStatus,
     PrescriptionType,
     UpdatePrescriptionRequest
-} from "./types";
+} from "~/api/prescription/types";
+import { Input } from "~/components/common/Input";
+import { Select } from "~/components/common/Select";
+import TypeAHeadSearch from "~/components/common/TypeAHeadSearch";
+import { useToast } from "~/hooks/useToast";
 
 interface PrescriptionFormProps {
     baseUrl: string;
@@ -118,15 +119,15 @@ export default function PrescriptionForm({
     // Fetch drug database for medication suggestions
     useEffect(() => {
         fetchDrugDatabase();
-    }, []); // eslint-disable-line react-hooks/exhaustive-deps
+    }, []);
 
     const fetchPrescriptionDetails = async () => {
         if (!prescriptionId) return;
 
         setLoading(true);
         try {
-            const response = await axios.get(`${baseUrl}/prescriptions/${prescriptionId}`);
-            setPrescription(response.data);
+            const data = await prescriptionApi.getPrescription(prescriptionId);
+            setPrescription(data);
             setIsEditing(true);
         } catch (error) {
             console.error("Failed to fetch prescription details:", error);
@@ -138,8 +139,8 @@ export default function PrescriptionForm({
 
     const fetchDrugDatabase = async () => {
         try {
-            const response = await axios.get(`${baseUrl}/drugs`);
-            setDrugOptions(response.data || []);
+            const data = await prescriptionApi.getAllDrugs();
+            setDrugOptions(data || []);
         } catch (error) {
             console.error("Failed to fetch drug database:", error);
         }
@@ -208,15 +209,10 @@ export default function PrescriptionForm({
                     indication: prescription.indication,
                     notes: prescription.notes,
                 };
-                response = await axios.put(`${baseUrl}/prescriptions/${prescriptionId}`, updateData, {
-                    headers: {
-                        "Content-Type": "application/json",
-                        "X-Practitioner-ID": practitionerId, // Include practitioner ID in headers
-                    }
-                });
+                const savedPrescription = await prescriptionApi.updatePrescription(prescriptionId, updateData, practitionerId);
                 toast.success("Prescription updated successfully!");
                 if (onPrescriptionUpdated) {
-                    onPrescriptionUpdated(response.data);
+                    onPrescriptionUpdated(savedPrescription);
                 }
             } else {
                 // Create new prescription

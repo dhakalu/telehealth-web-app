@@ -1,13 +1,13 @@
 import { LoaderFunction, useLoaderData, useParams, useRevalidator } from "react-router";
 
-import axios from "axios";
 import { useState } from "react";
+import prescriptionApi from "~/api/prescription";
+import { Prescription, PrescriptionWithDetails } from "~/api/prescription/types";
 import { loadPrescriptions } from "~/common-actions/prescription";
 import Button from "~/components/common/Button";
 import ErrorPage from "~/components/common/ErrorPage";
 import { Modal } from "~/components/common/Modal";
 import { PrescriptionForm, PrescriptionTable } from "~/components/prescription";
-import { Prescription, PrescriptionWithDetails } from "~/components/prescription/types";
 import { usePageTitle, useToast } from "~/hooks";
 import { User } from "./complete-profile";
 
@@ -42,12 +42,7 @@ export default function ProviderPrescription() {
 
     const handleDelete = async (prescriptionId: string) => {
         try {
-            await axios.delete(`${baseUrl}/prescriptions/${prescriptionId}`, {
-                headers: {
-                    "Content-Type": "application/json",
-                    "X-Practitioner-ID": user?.sub || "",
-                },
-            });
+            await prescriptionApi.cancelPrescription(prescriptionId, user.sub);
             revalidator.revalidate();
         } catch {
             toast.error("Failed to cancel prescription");

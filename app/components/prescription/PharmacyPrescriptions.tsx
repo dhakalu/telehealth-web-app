@@ -1,14 +1,14 @@
 import { useCallback, useEffect, useState } from "react";
 import { Link } from "react-router";
-import Button from "../common/Button";
-import Card from "../common/Card";
-import { Input } from "../common/Input";
 import {
     PrescriptionFilter,
     PrescriptionStatus,
     PrescriptionType,
     PrescriptionWithDetails,
-} from "./types";
+} from "~/api/prescription/types";
+import Button from "../common/Button";
+import Card from "../common/Card";
+import { Input } from "../common/Input";
 
 interface PharmacyPrescriptionsProps {
     pharmacyId: string;
