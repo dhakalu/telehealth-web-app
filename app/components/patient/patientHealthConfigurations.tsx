@@ -92,7 +92,7 @@ export const patientHealthCards: DashboardCardConfig[] = [
     },
     {
         title: "Allergies",
-        href: "/patient/my-health/allergy",
+        href: "/patient/my-health/allergies",
         linkText: "View Allergies",
         iconBgColor: "bg-yellow-100",
         iconColor: "text-yellow-600",

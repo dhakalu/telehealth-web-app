@@ -18,10 +18,10 @@ export default remixRoutesOptionAdapter((defineRoutes) => {
       route("my-health", "./routes/patient/my-health/route.tsx", () => {
         route("", "./routes/patient/my-health.tsx", { index: true });
         route("health-conditions", "./routes/patient/my-health/health-conditions.tsx");
-        route("allergy", "./routes/patient/allergy.tsx");
+        route("allergies", "./routes/patient/my-health/allergies.tsx");
         route("prescriptions", "./routes/patient/my-health/prescriptions.tsx");
         route("medication", "./routes/patient/medication.tsx");
-        route("immunization", "./routes/patient/my-health/immunizations.tsx");
+        route("immunizations", "./routes/patient/my-health/immunizations.tsx");
         route("procedures", "./routes/patient/my-health/procedures.tsx");
       });
     });

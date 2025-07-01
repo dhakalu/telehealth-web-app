@@ -1,3 +1,5 @@
+export { AllergyItem } from "./AllergyItem";
+export { AllergyList } from "./AllergyList";
 export { HealthConditionItem } from "./HealthConditionItem";
 export { HealthConditionList } from "./HealthConditionList";
 export { ImmunizationItem } from "./ImmunizationItem";

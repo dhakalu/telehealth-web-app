@@ -886,6 +886,50 @@ export const patientUtils = {
                 return 'text-gray-600';
         }
     },
+
+    /**
+     * Sort allergies by severity (most severe first)
+     */
+    sortAllergiesBySeverity(allergies: Allergy[]): Allergy[] {
+        const severityOrder = { 'life-threatening': 4, 'severe': 3, 'moderate': 2, 'mild': 1 };
+        return [...allergies].sort((a, b) => {
+            const severityA = severityOrder[a.severity as keyof typeof severityOrder] || 0;
+            const severityB = severityOrder[b.severity as keyof typeof severityOrder] || 0;
+            return severityB - severityA;
+        });
+    },
+
+    /**
+     * Group allergies by severity
+     */
+    groupAllergiesBySeverity(allergies: Allergy[]): Record<string, Allergy[]> {
+        return allergies.reduce((groups, allergy) => {
+            const severity = allergy.severity || 'unknown';
+            if (!groups[severity]) {
+                groups[severity] = [];
+            }
+            groups[severity].push(allergy);
+            return groups;
+        }, {} as Record<string, Allergy[]>);
+    },
+
+    /**
+     * Get allergy status color class
+     */
+    getAllergyStatusColor(status: string): string {
+        switch (status.toLowerCase()) {
+            case 'active':
+                return 'text-red-600';
+            case 'resolved':
+                return 'text-green-600';
+            case 'inactive':
+                return 'text-gray-600';
+            case 'suspected':
+                return 'text-yellow-600';
+            default:
+                return 'text-gray-600';
+        }
+    },
 };
 
 /**
