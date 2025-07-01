@@ -2,6 +2,7 @@ import React from "react";
 import type { FamilyHealthCondition } from "~/api/patient";
 import { patientUtils } from "~/api/patient";
 import Card from "~/components/common/Card";
+import DetailItem from "~/components/common/DetailItem";
 
 export interface FamilyHealthConditionItemProps {
     /** Family Health Condition data */
@@ -72,66 +73,41 @@ export const FamilyHealthConditionItem: React.FC<FamilyHealthConditionItemProps>
                     {showDetails && (
                         <div className="flex-1 space-y-2">
                             {familyHealthCondition.relation && (
-                                <div>
-                                    <span className="text-xs font-medium text-base-content/60 uppercase tracking-wide">
-                                        Family Relation
-                                    </span>
-                                    <p className="text-sm text-base-content opacity-80 mt-1">
-                                        {familyHealthCondition.relation.charAt(0).toUpperCase() + familyHealthCondition.relation.slice(1)}
-                                    </p>
-                                </div>
+                                <DetailItem
+                                    label="Family Relation"
+                                    value={familyHealthCondition.relation.charAt(0).toUpperCase() + familyHealthCondition.relation.slice(1)}
+                                />
                             )}
 
                             {familyHealthCondition.condition && (
-                                <div>
-                                    <span className="text-xs font-medium text-base-content/60 uppercase tracking-wide">
-                                        Condition
-                                    </span>
-                                    <p className="text-sm text-base-content opacity-80 mt-1 overflow-hidden" style={{
-                                        display: '-webkit-box',
-                                        WebkitLineClamp: 3,
-                                        WebkitBoxOrient: 'vertical'
-                                    }}>
-                                        {familyHealthCondition.condition}
-                                    </p>
-                                </div>
+                                <DetailItem
+                                    label="Condition"
+                                    value={familyHealthCondition.condition}
+                                    maxLines={3}
+                                />
                             )}
 
                             {familyHealthCondition.status && (
-                                <div>
-                                    <span className="text-xs font-medium text-base-content/60 uppercase tracking-wide">
-                                        Status
-                                    </span>
-                                    <p className={`text-sm mt-1 ${statusColor} font-medium`}>
-                                        {familyHealthCondition.status.charAt(0).toUpperCase() + familyHealthCondition.status.slice(1)}
-                                    </p>
-                                </div>
+                                <DetailItem
+                                    label="Status"
+                                    value={familyHealthCondition.status.charAt(0).toUpperCase() + familyHealthCondition.status.slice(1)}
+                                    className={statusColor}
+                                />
                             )}
 
                             {familyHealthCondition.notes && (
-                                <div>
-                                    <span className="text-xs font-medium text-base-content/60 uppercase tracking-wide">
-                                        Notes
-                                    </span>
-                                    <p className="text-sm text-base-content opacity-80 mt-1 overflow-hidden" style={{
-                                        display: '-webkit-box',
-                                        WebkitLineClamp: 2,
-                                        WebkitBoxOrient: 'vertical'
-                                    }}>
-                                        {familyHealthCondition.notes}
-                                    </p>
-                                </div>
+                                <DetailItem
+                                    label="Notes"
+                                    value={familyHealthCondition.notes}
+                                    maxLines={2}
+                                />
                             )}
 
                             {createdDate && (
-                                <div>
-                                    <span className="text-xs font-medium text-base-content/60 uppercase tracking-wide">
-                                        Recorded
-                                    </span>
-                                    <p className="text-sm text-base-content opacity-80 mt-1">
-                                        {createdDate}
-                                    </p>
-                                </div>
+                                <DetailItem
+                                    label="Recorded"
+                                    value={createdDate}
+                                />
                             )}
                         </div>
                     )}

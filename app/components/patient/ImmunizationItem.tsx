@@ -2,6 +2,7 @@ import React from "react";
 import type { Immunization } from "~/api/patient";
 import { patientUtils } from "~/api/patient";
 import Card from "~/components/common/Card";
+import DetailItem from "~/components/common/DetailItem";
 
 export interface ImmunizationItemProps {
     /** Immunization data */
@@ -69,29 +70,18 @@ export const ImmunizationItem: React.FC<ImmunizationItemProps> = ({
                     {showDetails && (
                         <div className="flex-1 space-y-2">
                             {immunization.notes && (
-                                <div>
-                                    <span className="text-xs font-medium text-base-content/60 uppercase tracking-wide">
-                                        Notes
-                                    </span>
-                                    <p className="text-sm text-base-content opacity-80 mt-1 overflow-hidden" style={{
-                                        display: '-webkit-box',
-                                        WebkitLineClamp: 3,
-                                        WebkitBoxOrient: 'vertical'
-                                    }}>
-                                        {immunization.notes}
-                                    </p>
-                                </div>
+                                <DetailItem
+                                    label="Notes"
+                                    value={immunization.notes}
+                                    maxLines={3}
+                                />
                             )}
 
                             {immunization.date_administered && (
-                                <div>
-                                    <span className="text-xs font-medium text-base-content/60 uppercase tracking-wide">
-                                        Administration Date
-                                    </span>
-                                    <p className="text-sm text-base-content opacity-80 mt-1">
-                                        {patientUtils.formatDate(immunization.date_administered)}
-                                    </p>
-                                </div>
+                                <DetailItem
+                                    label="Administration Date"
+                                    value={patientUtils.formatDate(immunization.date_administered)}
+                                />
                             )}
                         </div>
                     )}

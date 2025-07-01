@@ -2,6 +2,7 @@ import React from "react";
 import type { Allergy } from "~/api/patient";
 import { patientUtils } from "~/api/patient";
 import Card from "~/components/common/Card";
+import DetailItem from "~/components/common/DetailItem";
 
 export interface AllergyItemProps {
     /** Allergy data */
@@ -74,66 +75,41 @@ export const AllergyItem: React.FC<AllergyItemProps> = ({
                     {showDetails && (
                         <div className="flex-1 space-y-2">
                             {allergy.reaction && (
-                                <div>
-                                    <span className="text-xs font-medium text-base-content/60 uppercase tracking-wide">
-                                        Reaction
-                                    </span>
-                                    <p className="text-sm text-base-content opacity-80 mt-1 overflow-hidden" style={{
-                                        display: '-webkit-box',
-                                        WebkitLineClamp: 3,
-                                        WebkitBoxOrient: 'vertical'
-                                    }}>
-                                        {allergy.reaction}
-                                    </p>
-                                </div>
+                                <DetailItem
+                                    label="Reaction"
+                                    value={allergy.reaction}
+                                    maxLines={3}
+                                />
                             )}
 
                             {allergy.severity && (
-                                <div>
-                                    <span className="text-xs font-medium text-base-content/60 uppercase tracking-wide">
-                                        Severity
-                                    </span>
-                                    <p className={`text-sm mt-1 ${severityColor} font-medium`}>
-                                        {allergy.severity.charAt(0).toUpperCase() + allergy.severity.slice(1).replace('-', ' ')}
-                                    </p>
-                                </div>
+                                <DetailItem
+                                    label="Severity"
+                                    value={allergy.severity.charAt(0).toUpperCase() + allergy.severity.slice(1).replace('-', ' ')}
+                                    className={severityColor}
+                                />
                             )}
 
                             {allergy.status && (
-                                <div>
-                                    <span className="text-xs font-medium text-base-content/60 uppercase tracking-wide">
-                                        Status
-                                    </span>
-                                    <p className="text-sm text-base-content opacity-80 mt-1">
-                                        {allergy.status.charAt(0).toUpperCase() + allergy.status.slice(1)}
-                                    </p>
-                                </div>
+                                <DetailItem
+                                    label="Status"
+                                    value={allergy.status.charAt(0).toUpperCase() + allergy.status.slice(1)}
+                                />
                             )}
 
                             {allergy.notes && (
-                                <div>
-                                    <span className="text-xs font-medium text-base-content/60 uppercase tracking-wide">
-                                        Notes
-                                    </span>
-                                    <p className="text-sm text-base-content opacity-80 mt-1 overflow-hidden" style={{
-                                        display: '-webkit-box',
-                                        WebkitLineClamp: 2,
-                                        WebkitBoxOrient: 'vertical'
-                                    }}>
-                                        {allergy.notes}
-                                    </p>
-                                </div>
+                                <DetailItem
+                                    label="Notes"
+                                    value={allergy.notes}
+                                    maxLines={2}
+                                />
                             )}
 
                             {allergy.created_at && (
-                                <div>
-                                    <span className="text-xs font-medium text-base-content/60 uppercase tracking-wide">
-                                        Recorded
-                                    </span>
-                                    <p className="text-sm text-base-content opacity-80 mt-1">
-                                        {patientUtils.formatDate(allergy.created_at)}
-                                    </p>
-                                </div>
+                                <DetailItem
+                                    label="Recorded"
+                                    value={patientUtils.formatDate(allergy.created_at)}
+                                />
                             )}
                         </div>
                     )}

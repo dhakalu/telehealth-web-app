@@ -2,6 +2,7 @@ import React from "react";
 import type { Procedure } from "~/api/patient";
 import { patientUtils } from "~/api/patient";
 import Card from "~/components/common/Card";
+import DetailItem from "~/components/common/DetailItem";
 
 export interface ProcedureItemProps {
     /** Procedure data */
@@ -70,40 +71,25 @@ export const ProcedureItem: React.FC<ProcedureItemProps> = ({
                     {showDetails && (
                         <div className="flex-1 space-y-2">
                             {procedure.location && (
-                                <div>
-                                    <span className="text-xs font-medium text-base-content/60 uppercase tracking-wide">
-                                        Location
-                                    </span>
-                                    <p className="text-sm text-base-content/80 mt-1">
-                                        {procedure.location}
-                                    </p>
-                                </div>
+                                <DetailItem
+                                    label="Location"
+                                    value={procedure.location}
+                                />
                             )}
 
                             {procedure.source_id && (
-                                <div>
-                                    <span className="text-xs font-medium text-base-content/60 uppercase tracking-wide">
-                                        Source ID
-                                    </span>
-                                    <p className="text-sm text-base-content/80 mt-1">
-                                        {procedure.source_id}
-                                    </p>
-                                </div>
+                                <DetailItem
+                                    label="Source ID"
+                                    value={procedure.source_id}
+                                />
                             )}
 
                             {procedure.notes && (
-                                <div>
-                                    <span className="text-xs font-medium text-base-content/60 uppercase tracking-wide">
-                                        Notes
-                                    </span>
-                                    <p className="text-sm text-base-content/80 mt-1 overflow-hidden" style={{
-                                        display: '-webkit-box',
-                                        WebkitLineClamp: 3,
-                                        WebkitBoxOrient: 'vertical'
-                                    }}>
-                                        {procedure.notes}
-                                    </p>
-                                </div>
+                                <DetailItem
+                                    label="Notes"
+                                    value={procedure.notes}
+                                    maxLines={3}
+                                />
                             )}
                         </div>
                     )}

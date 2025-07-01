@@ -2,6 +2,7 @@ import React from "react";
 import type { HealthCondition } from "~/api/patient";
 import { patientUtils } from "~/api/patient";
 import Card from "~/components/common/Card";
+import DetailItem from "~/components/common/DetailItem";
 
 export interface HealthConditionItemProps {
     /** Health condition data */
@@ -70,29 +71,18 @@ export const HealthConditionItem: React.FC<HealthConditionItemProps> = ({
                     {showDetails && (
                         <div className="flex-1 space-y-2">
                             {condition.source_id && (
-                                <div>
-                                    <span className="text-xs font-medium text-base-content/60 uppercase tracking-wide">
-                                        Source ID
-                                    </span>
-                                    <p className="text-sm text-base-content opacity-80 mt-1">
-                                        {condition.source_id}
-                                    </p>
-                                </div>
+                                <DetailItem
+                                    label="Source ID"
+                                    value={condition.source_id}
+                                />
                             )}
 
                             {condition.notes && (
-                                <div>
-                                    <span className="text-xs font-medium text-base-content/60 uppercase tracking-wide">
-                                        Notes
-                                    </span>
-                                    <p className="text-sm text-base-content opacity-80 mt-1 overflow-hidden" style={{
-                                        display: '-webkit-box',
-                                        WebkitLineClamp: 3,
-                                        WebkitBoxOrient: 'vertical'
-                                    }}>
-                                        {condition.notes}
-                                    </p>
-                                </div>
+                                <DetailItem
+                                    label="Notes"
+                                    value={condition.notes}
+                                    maxLines={3}
+                                />
                             )}
                         </div>
                     )}

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import type { Medication } from "~/api/patient";
-import { patientApi, patientUtils } from "~/api/patient";
+import type { PrescriptionWithDetails } from "~/api/prescription";
+import { prescriptionApi, prescriptionUtils } from "~/api/prescription";
 import Card from "~/components/common/Card";
 import { PrescriptionItem } from "./PrescriptionItem";
 import {
@@ -14,7 +14,7 @@ import {
 
 export interface PrescriptionListProps extends BasePatientResourceListProps {
     /** Callback when a prescription is clicked */
-    onPrescriptionClick?: (prescription: Medication) => void;
+    onPrescriptionClick?: (prescription: PrescriptionWithDetails) => void;
 }
 
 export const PrescriptionList: React.FC<PrescriptionListProps> = ({
@@ -27,7 +27,7 @@ export const PrescriptionList: React.FC<PrescriptionListProps> = ({
     onViewAll,
     onPrescriptionClick
 }) => {
-    const [prescriptions, setPrescriptions] = useState<Medication[]>([]);
+    const [prescriptions, setPrescriptions] = useState<PrescriptionWithDetails[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
@@ -38,10 +38,18 @@ export const PrescriptionList: React.FC<PrescriptionListProps> = ({
 
             try {
                 setLoading(true);
-                const medications = await patientApi.getMedications(patientId);
+                const response = await prescriptionApi.getPrescriptions({
+                    patient_id: patientId,
+                    limit: 100, // Get more than we need for proper filtering
+                    offset: 0
+                });
 
-                // Filter and sort medications
-                setPrescriptions(medications);
+                // Sort prescriptions by prescribed date (newest first)
+                const sortedPrescriptions = response.prescriptions.sort((a, b) =>
+                    new Date(b.prescribed_date).getTime() - new Date(a.prescribed_date).getTime()
+                );
+
+                setPrescriptions(sortedPrescriptions);
                 setError(null);
             } catch (err) {
                 console.error('Error fetching prescriptions:', err);
@@ -55,13 +63,20 @@ export const PrescriptionList: React.FC<PrescriptionListProps> = ({
     }, [patientId]);
 
     // Group prescriptions by status for better organization
-    const groupedPrescriptions = patientUtils.groupMedicationsByStatus(prescriptions);
+    const groupedPrescriptions = prescriptions.reduce((groups, prescription) => {
+        const status = prescription.status;
+        if (!groups[status]) {
+            groups[status] = [];
+        }
+        groups[status].push(prescription);
+        return groups;
+    }, {} as Record<string, PrescriptionWithDetails[]>);
     const displayedPrescriptions = prescriptions.slice(0, maxItems);
     const hasMorePrescriptions = prescriptions.length > maxItems;
 
     // Statistics
     const totalPrescriptions = prescriptions.length;
-    const activePrescriptions = groupedPrescriptions.active?.length || 0;
+    const activePrescriptions = groupedPrescriptions.pending?.length + groupedPrescriptions.sent?.length || 0;
 
     const handleRetry = () => {
         window.location.reload();
@@ -127,13 +142,13 @@ export const PrescriptionList: React.FC<PrescriptionListProps> = ({
                                     Prescription Status Breakdown
                                 </h3>
                                 <div className="flex flex-wrap gap-2">
-                                    {Object.entries(groupedPrescriptions).map(([status, meds]) => (
+                                    {Object.entries(groupedPrescriptions).map(([status, prescriptions]) => (
                                         <div
                                             key={status}
                                             className="flex items-center gap-2 text-sm"
                                         >
-                                            <div className={`w-3 h-3 rounded-full ${patientUtils.getMedicationStatusColor(status).replace('text-', 'bg-')}`}></div>
-                                            <span className="capitalize">{status}: {meds.length}</span>
+                                            <div className={`w-3 h-3 rounded-full ${prescriptionUtils.getStatusColor(status as 'pending' | 'sent' | 'filled' | 'cancelled' | 'rejected' | 'expired').replace('text-', 'bg-')}`}></div>
+                                            <span className="capitalize">{status}: {prescriptions.length}</span>
                                         </div>
                                     ))}
                                 </div>

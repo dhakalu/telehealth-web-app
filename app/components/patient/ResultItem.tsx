@@ -2,6 +2,7 @@ import React from "react";
 import type { Result } from "~/api/patient";
 import { patientUtils } from "~/api/patient";
 import Card from "~/components/common/Card";
+import DetailItem from "~/components/common/DetailItem";
 
 export interface ResultItemProps {
     /** Result data */
@@ -82,83 +83,53 @@ export const ResultItem: React.FC<ResultItemProps> = ({
                     {/* Details - grows to fill available space */}
                     {showDetails && (
                         <div className="flex-1 space-y-2">
-                            <div>
-                                <span className="text-xs font-medium text-base-content/60 uppercase tracking-wide">
-                                    Result
-                                </span>
-                                <p className={`text-sm mt-1 ${statusColor} font-medium`}>
-                                    {formatResultValue(result.value, result.unit)}
-                                </p>
-                            </div>
+                            <DetailItem
+                                label="Result"
+                                value={formatResultValue(result.value, result.unit)}
+                                className={statusColor}
+                            />
 
                             {result.reference_range && (
-                                <div>
-                                    <span className="text-xs font-medium text-base-content/60 uppercase tracking-wide">
-                                        Reference Range
-                                    </span>
-                                    <p className="text-sm text-base-content opacity-80 mt-1">
-                                        {result.reference_range}
-                                    </p>
-                                </div>
+                                <DetailItem
+                                    label="Reference Range"
+                                    value={result.reference_range}
+                                />
                             )}
 
                             {result.type && (
-                                <div>
-                                    <span className="text-xs font-medium text-base-content/60 uppercase tracking-wide">
-                                        Test Type
-                                    </span>
-                                    <p className="text-sm text-base-content opacity-80 mt-1">
-                                        {result.type.charAt(0).toUpperCase() + result.type.slice(1).replace('_', ' ')}
-                                    </p>
-                                </div>
+                                <DetailItem
+                                    label="Test Type"
+                                    value={result.type.charAt(0).toUpperCase() + result.type.slice(1).replace('_', ' ')}
+                                />
                             )}
 
                             {result.unit && (
-                                <div>
-                                    <span className="text-xs font-medium text-base-content/60 uppercase tracking-wide">
-                                        Unit
-                                    </span>
-                                    <p className="text-sm text-base-content opacity-80 mt-1">
-                                        {result.unit}
-                                    </p>
-                                </div>
+                                <DetailItem
+                                    label="Unit"
+                                    value={result.unit}
+                                />
                             )}
 
                             {result.notes && (
-                                <div>
-                                    <span className="text-xs font-medium text-base-content/60 uppercase tracking-wide">
-                                        Notes
-                                    </span>
-                                    <p className="text-sm text-base-content opacity-80 mt-1 overflow-hidden" style={{
-                                        display: '-webkit-box',
-                                        WebkitLineClamp: 2,
-                                        WebkitBoxOrient: 'vertical'
-                                    }}>
-                                        {result.notes}
-                                    </p>
-                                </div>
+                                <DetailItem
+                                    label="Notes"
+                                    value={result.notes}
+                                    maxLines={2}
+                                />
                             )}
 
                             {resultDate && (
-                                <div>
-                                    <span className="text-xs font-medium text-base-content/60 uppercase tracking-wide">
-                                        Test Date
-                                    </span>
-                                    <p className="text-sm text-base-content opacity-80 mt-1">
-                                        {resultDate}
-                                    </p>
-                                </div>
+                                <DetailItem
+                                    label="Test Date"
+                                    value={resultDate}
+                                />
                             )}
 
                             {createdDate && !resultDate && (
-                                <div>
-                                    <span className="text-xs font-medium text-base-content/60 uppercase tracking-wide">
-                                        Recorded
-                                    </span>
-                                    <p className="text-sm text-base-content opacity-80 mt-1">
-                                        {createdDate}
-                                    </p>
-                                </div>
+                                <DetailItem
+                                    label="Recorded"
+                                    value={createdDate}
+                                />
                             )}
                         </div>
                     )}

@@ -2,6 +2,7 @@ import React from "react";
 import type { Vital } from "~/api/patient";
 import { patientUtils } from "~/api/patient";
 import Card from "~/components/common/Card";
+import DetailItem from "~/components/common/DetailItem";
 
 export interface VitalItemProps {
     /** Vital data */
@@ -75,57 +76,38 @@ export const VitalItem: React.FC<VitalItemProps> = ({
                     {/* Details - grows to fill available space */}
                     {showDetails && (
                         <div className="flex-1 space-y-2">
-                            <div>
-                                <span className="text-xs font-medium text-base-content/60 uppercase tracking-wide">
-                                    Measurement
-                                </span>
-                                <p className={`text-sm mt-1 ${vitalTypeColor} font-medium`}>
-                                    {formatVitalValue(vital.value, vital.unit)}
-                                </p>
-                            </div>
+                            <DetailItem
+                                label="Measurement"
+                                value={formatVitalValue(vital.value, vital.unit)}
+                                className={vitalTypeColor}
+                            />
 
                             {vital.type && (
-                                <div>
-                                    <span className="text-xs font-medium text-base-content/60 uppercase tracking-wide">
-                                        Type
-                                    </span>
-                                    <p className="text-sm text-base-content opacity-80 mt-1">
-                                        {vital.type.charAt(0).toUpperCase() + vital.type.slice(1).replace('_', ' ')}
-                                    </p>
-                                </div>
+                                <DetailItem
+                                    label="Type"
+                                    value={vital.type.charAt(0).toUpperCase() + vital.type.slice(1).replace('_', ' ')}
+                                />
                             )}
 
                             {vital.unit && (
-                                <div>
-                                    <span className="text-xs font-medium text-base-content/60 uppercase tracking-wide">
-                                        Unit
-                                    </span>
-                                    <p className="text-sm text-base-content opacity-80 mt-1">
-                                        {vital.unit}
-                                    </p>
-                                </div>
+                                <DetailItem
+                                    label="Unit"
+                                    value={vital.unit}
+                                />
                             )}
 
                             {measuredDate && (
-                                <div>
-                                    <span className="text-xs font-medium text-base-content/60 uppercase tracking-wide">
-                                        Measured On
-                                    </span>
-                                    <p className="text-sm text-base-content opacity-80 mt-1">
-                                        {measuredDate}
-                                    </p>
-                                </div>
+                                <DetailItem
+                                    label="Measured On"
+                                    value={measuredDate}
+                                />
                             )}
 
                             {createdDate && !measuredDate && (
-                                <div>
-                                    <span className="text-xs font-medium text-base-content/60 uppercase tracking-wide">
-                                        Recorded
-                                    </span>
-                                    <p className="text-sm text-base-content opacity-80 mt-1">
-                                        {createdDate}
-                                    </p>
-                                </div>
+                                <DetailItem
+                                    label="Recorded"
+                                    value={createdDate}
+                                />
                             )}
                         </div>
                     )}

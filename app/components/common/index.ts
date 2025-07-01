@@ -4,6 +4,7 @@ export { default as AppHeader } from './AppHeader';
 export { default as Button } from './Button';
 export { default as Card } from './Card';
 export { default as DeleteConfirmationModal } from './DeleteConfirmationModal';
+export { default as DetailItem } from './DetailItem';
 export { default as ErrorPage } from './ErrorPage';
 export { default as LoadingSpinner } from './LoadingSpinner';
 export { default as PageHeader } from './PageHeader';
