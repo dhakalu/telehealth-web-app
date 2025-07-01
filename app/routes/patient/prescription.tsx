@@ -1,9 +1,9 @@
 import { LoaderFunction, useLoaderData } from "react-router";
 
+import { PrescriptionWithDetails } from "~/api/prescription";
 import { loadPrescriptions } from "~/common-actions/prescription";
 import ErrorPage from "~/components/common/ErrorPage";
 import { PrescriptionTable } from "~/components/prescription";
-import { PrescriptionWithDetails } from "~/components/prescription/types";
 import { usePageTitle } from "~/hooks";
 
 export const loader: LoaderFunction = loadPrescriptions();

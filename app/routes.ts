@@ -66,9 +66,12 @@ export default remixRoutesOptionAdapter((defineRoutes) => {
       route("approval/pharmacist/:userId", "./routes/support/pharmacist-approval.tsx");
     });
     route("/pharmacist", "./routes/pharmacist/route.tsx", () => {
-      route("", "./routes/pharmacist/prescriptions.tsx", { index: true });
+      route("", "./routes/pharmacist/prescriptions/index.tsx", { index: true });
       route("complete-profile", "./routes/pharmacist/complete-profile.tsx");
       route("account-status", "./routes/pharmacist/account-status.tsx");
+      route("prescriptions/:prescriptionId", "./routes/pharmacist/prescriptions/detail.tsx");
+      // route(":prescriptionId/fu", "./routes/pharmacist/prescription-edit.tsx");
+
     })
   });
 }) satisfies RouteConfig;

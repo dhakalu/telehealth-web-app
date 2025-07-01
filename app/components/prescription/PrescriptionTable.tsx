@@ -1,12 +1,12 @@
 import { useState } from "react";
-import Button from "../common/Button";
-import DeleteConfirmationModal from "../common/DeleteConfirmationModal";
 import {
     Prescription,
     PrescriptionStatus,
     PrescriptionType,
     PrescriptionWithDetails
-} from "./types";
+} from "~/api/prescription";
+import Button from "../common/Button";
+import DeleteConfirmationModal from "../common/DeleteConfirmationModal";
 
 interface PrescriptionTableProps {
     prescriptions: PrescriptionWithDetails[];

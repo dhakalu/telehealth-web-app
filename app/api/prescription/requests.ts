@@ -107,7 +107,7 @@ export const prescriptionApi = {
 
     /**
      * Get prescription by prescription number
-     * GET /prescriptions/number/{number}
+     * GET /prescriptions/{number}
      */
     async getPrescriptionByNumber(prescriptionNumber: string): Promise<Prescription> {
         try {
@@ -116,7 +116,7 @@ export const prescriptionApi = {
             }
 
             const response: AxiosResponse<Prescription> = await axios.get(
-                `${API_BASE_URL}/prescriptions/number/${encodeURIComponent(prescriptionNumber)}`
+                `${API_BASE_URL}/prescriptions/${encodeURIComponent(prescriptionNumber)}`
             );
             return response.data;
         } catch (error) {

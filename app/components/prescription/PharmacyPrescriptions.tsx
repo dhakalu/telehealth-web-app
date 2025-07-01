@@ -369,14 +369,14 @@ export default function PharmacyPrescriptions({
                                 {/* Actions */}
                                 <div className="flex gap-2 pt-2">
                                     <Link
-                                        to={`/prescriptions/${prescription.id}`}
+                                        to={`/pharmacist/prescriptions/${prescription.id}`}
                                         className="btn btn-primary btn-sm flex-1"
                                     >
                                         View Details
                                     </Link>
                                     {prescription.status === "sent" && (
                                         <Link
-                                            to={`/prescriptions/${prescription.id}/fulfill`}
+                                            to={`/pharmacist/prescriptions/${prescription.id}/fulfill`}
                                             className="btn btn-success btn-sm flex-1"
                                         >
                                             Fill Prescription

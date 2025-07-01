@@ -18,7 +18,6 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
         return {
             error: "Failed to load pharmacy prescriptions. Please try again later."
         }
-
     }
 }
 

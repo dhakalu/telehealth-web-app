@@ -1,8 +1,8 @@
 import axios from "axios";
 import { LoaderFunctionArgs } from "react-router";
 import { API_BASE_URL } from "~/api";
+import { PrescriptionWithDetails } from "~/api/prescription";
 import { requireAuthCookie } from "~/auth";
-import { PrescriptionWithDetails } from "~/components/prescription/types";
 
 export const loadPrescriptions = () => async ({ request, params }: LoaderFunctionArgs) => {
     const user = await requireAuthCookie(request);
