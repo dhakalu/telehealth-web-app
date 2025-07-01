@@ -6,6 +6,7 @@ export default function Card({ children, size = "md", hasBorder = false, additio
 
     const className = clsx({
         "card": true,
+        [`shadow-${size}`]: true,
         [`card-${size}`]: true,
         "card-border": hasBorder,
         [`${additionalClassName}`]: additionalClassName,

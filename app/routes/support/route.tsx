@@ -9,6 +9,9 @@ export const loader: LoaderFunction = async ({ request }) => {
     const loggedInUser = await requireAuthCookie(request);
     try {
         const user = await userApi.getUserById(loggedInUser.sub);
+        if (user.account_type !== "support") {
+            return redirect("/");
+        }
         const url = new URL(request.url);
         if (user?.status !== "complete" && url.pathname !== "/support/complete-profile") {
             return redirect("/support/complete-profile");

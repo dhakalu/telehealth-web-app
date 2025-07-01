@@ -40,7 +40,7 @@ export const PatientIcons = {
 export const patientCards: DashboardCardConfig[] = [
     {
         title: "My Health",
-        href: "/patient/health-condition",
+        href: "/patient/my-health",
         linkText: "View Health Records",
         iconBgColor: "bg-red-100",
         iconColor: "text-red-600",

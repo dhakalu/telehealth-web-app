@@ -11,7 +11,7 @@ export const PatientAppHeader = ({ user }: PatientAppHeaderProps) => {
 
             {
                 label: "My Health",
-                href: `/patient/${user?.sub}`
+                href: `/patient/my-health`,
             },
             {
                 label: "My Providers",
