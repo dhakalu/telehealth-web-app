@@ -41,7 +41,7 @@ export default function PageLayout({
     }
 
     return (
-        <div className="min-h-screen">
+        <div className="min-h-screen mb-16">
             {/* Header */}
             <header className="shadow">
                 <div className="mx-auto py-6 px-4 sm:px-6 lg:px-8">

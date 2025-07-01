@@ -11,7 +11,7 @@ export const MyHealth: React.FC<MyHealthProps> = ({
     className = ""
 }) => {
     return (
-        <div className={`min-h-screen bg-base-200 ${className}`}>
+        <div className={`bg-base-200 ${className}`}>
             <div className="mx-auto sm:px-6 lg:px-8">
                 <div className="px-4 sm:px-0">
                     <div className="overflow-hidden shadow rounded-lg bg-base-100">
