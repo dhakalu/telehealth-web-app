@@ -108,7 +108,7 @@ export const patientHealthCards: DashboardCardConfig[] = [
     },
     {
         title: "Family Health",
-        href: "/patient/my-health/family-health-condition",
+        href: "/patient/my-health/family-health-conditions",
         linkText: "View Family History",
         iconBgColor: "bg-indigo-100",
         iconColor: "text-indigo-600",

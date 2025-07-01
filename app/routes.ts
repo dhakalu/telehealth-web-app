@@ -18,6 +18,7 @@ export default remixRoutesOptionAdapter((defineRoutes) => {
       route("my-health", "./routes/patient/my-health/route.tsx", () => {
         route("", "./routes/patient/my-health.tsx", { index: true });
         route("health-conditions", "./routes/patient/my-health/health-conditions.tsx");
+        route("family-health-conditions", "./routes/patient/my-health/family-health-conditions.tsx");
         route("allergies", "./routes/patient/my-health/allergies.tsx");
         route("prescriptions", "./routes/patient/my-health/prescriptions.tsx");
         route("medication", "./routes/patient/medication.tsx");

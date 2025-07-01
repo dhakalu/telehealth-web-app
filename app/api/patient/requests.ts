@@ -381,7 +381,7 @@ export const patientApi = {
 
     /**
      * Add family health condition for a patient
-     * POST /patient/{id}/family_health_condition
+     * POST /patient/{id}/family-health-condition
      */
     async addFamilyHealthCondition(patientId: string, conditionData: CreateFamilyHealthConditionData): Promise<FamilyHealthCondition> {
         try {
@@ -390,7 +390,7 @@ export const patientApi = {
             }
 
             const response: AxiosResponse<FamilyHealthCondition> = await axios.post(
-                `${API_BASE_URL}/patient/${encodeURIComponent(patientId)}/family_health_condition`,
+                `${API_BASE_URL}/patient/${encodeURIComponent(patientId)}/family-health-condition`,
                 conditionData,
                 {
                     headers: {
@@ -411,7 +411,7 @@ export const patientApi = {
 
     /**
      * Get family health conditions for a patient
-     * GET /patient/{id}/family_health_condition
+     * GET /patient/{id}/family-health-condition
      */
     async getFamilyHealthConditions(patientId: string): Promise<FamilyHealthCondition[]> {
         try {
@@ -420,7 +420,7 @@ export const patientApi = {
             }
 
             const response: AxiosResponse<FamilyHealthCondition[]> = await axios.get(
-                `${API_BASE_URL}/patient/${encodeURIComponent(patientId)}/family_health_condition`
+                `${API_BASE_URL}/patient/${encodeURIComponent(patientId)}/family-health-condition`
             );
             return response.data || [];
         } catch (error) {
@@ -926,6 +926,75 @@ export const patientUtils = {
                 return 'text-gray-600';
             case 'suspected':
                 return 'text-yellow-600';
+            default:
+                return 'text-gray-600';
+        }
+    },
+
+    /**
+     * Sort family health conditions by relation (immediate family first)
+     */
+    sortFamilyHealthConditionsByRelation(conditions: FamilyHealthCondition[]): FamilyHealthCondition[] {
+        const relationOrder = {
+            'parent': 5,
+            'father': 5,
+            'mother': 5,
+            'sibling': 4,
+            'brother': 4,
+            'sister': 4,
+            'child': 3,
+            'son': 3,
+            'daughter': 3,
+            'grandparent': 2,
+            'grandchild': 1
+        };
+
+        return [...conditions].sort((a, b) => {
+            const relationA = relationOrder[a.relation?.toLowerCase() as keyof typeof relationOrder] || 0;
+            const relationB = relationOrder[b.relation?.toLowerCase() as keyof typeof relationOrder] || 0;
+            return relationB - relationA;
+        });
+    },
+
+    /**
+     * Group family health conditions by relation
+     */
+    groupFamilyHealthConditionsByRelation(conditions: FamilyHealthCondition[]): Record<string, FamilyHealthCondition[]> {
+        return conditions.reduce((groups, condition) => {
+            const relation = condition.relation || 'unknown';
+            if (!groups[relation]) {
+                groups[relation] = [];
+            }
+            groups[relation].push(condition);
+            return groups;
+        }, {} as Record<string, FamilyHealthCondition[]>);
+    },
+
+    /**
+     * Get family relation color class
+     */
+    getFamilyRelationColor(relation: string): string {
+        switch (relation.toLowerCase()) {
+            case 'parent':
+            case 'father':
+            case 'mother':
+                return 'text-red-600';
+            case 'sibling':
+            case 'brother':
+            case 'sister':
+                return 'text-blue-600';
+            case 'child':
+            case 'son':
+            case 'daughter':
+                return 'text-green-600';
+            case 'grandparent':
+            case 'grandfather':
+            case 'grandmother':
+                return 'text-purple-600';
+            case 'grandchild':
+            case 'grandson':
+            case 'granddaughter':
+                return 'text-pink-600';
             default:
                 return 'text-gray-600';
         }
