@@ -999,6 +999,131 @@ export const patientUtils = {
                 return 'text-gray-600';
         }
     },
+
+    /**
+     * Sort vitals by measurement date
+     */
+    sortVitalsByDate(vitals: Vital[]): Vital[] {
+        return [...vitals].sort((a, b) => {
+            const dateA = new Date(a.measured_at || a.created_at || 0);
+            const dateB = new Date(b.measured_at || b.created_at || 0);
+            return dateB.getTime() - dateA.getTime();
+        });
+    },
+
+    /**
+     * Group vitals by type
+     */
+    groupVitalsByType(vitals: Vital[]): Record<string, Vital[]> {
+        return vitals.reduce((groups, vital) => {
+            const type = vital.type || 'unknown';
+            if (!groups[type]) {
+                groups[type] = [];
+            }
+            groups[type].push(vital);
+            return groups;
+        }, {} as Record<string, Vital[]>);
+    },
+
+    /**
+     * Get vital type color class
+     */
+    getVitalTypeColor(type: string): string {
+        switch (type.toLowerCase()) {
+            case 'blood_pressure':
+            case 'blood pressure':
+                return 'text-red-600';
+            case 'heart_rate':
+            case 'heart rate':
+            case 'pulse':
+                return 'text-pink-600';
+            case 'temperature':
+                return 'text-orange-600';
+            case 'weight':
+                return 'text-blue-600';
+            case 'height':
+                return 'text-green-600';
+            case 'bmi':
+                return 'text-purple-600';
+            case 'oxygen_saturation':
+            case 'oxygen saturation':
+            case 'spo2':
+                return 'text-cyan-600';
+            case 'respiratory_rate':
+            case 'respiratory rate':
+                return 'text-teal-600';
+            case 'glucose':
+            case 'blood_glucose':
+                return 'text-yellow-600';
+            default:
+                return 'text-gray-600';
+        }
+    },
+
+    /**
+     * Get vital range status (normal, high, low)
+     */
+    getVitalRangeStatus(type: string, value: string, unit: string): 'normal' | 'high' | 'low' | 'unknown' {
+        const numValue = parseFloat(value);
+        if (isNaN(numValue)) return 'unknown';
+
+        switch (type.toLowerCase()) {
+            case 'heart_rate':
+            case 'heart rate':
+            case 'pulse':
+                if (unit === 'bpm') {
+                    if (numValue < 60) return 'low';
+                    if (numValue > 100) return 'high';
+                    return 'normal';
+                }
+                break;
+            case 'temperature':
+                if (unit === '°f') {
+                    if (numValue < 97.0) return 'low';
+                    if (numValue > 99.5) return 'high';
+                    return 'normal';
+                } else if (unit === '°c') {
+                    if (numValue < 36.1) return 'low';
+                    if (numValue > 37.5) return 'high';
+                    return 'normal';
+                }
+                break;
+            case 'oxygen_saturation':
+            case 'spo2':
+                if (unit === '%') {
+                    if (numValue < 95) return 'low';
+                    return 'normal';
+                }
+                break;
+            case 'respiratory_rate':
+                if (unit === 'breaths/min') {
+                    if (numValue < 12) return 'low';
+                    if (numValue > 20) return 'high';
+                    return 'normal';
+                }
+                break;
+            default:
+                return 'unknown';
+        }
+        return 'unknown';
+    },
+
+    /**
+     * Get vital range color class
+     */
+    getVitalRangeColor(status: 'normal' | 'high' | 'low' | 'unknown'): string {
+        switch (status) {
+            case 'normal':
+                return 'text-green-600';
+            case 'high':
+                return 'text-red-600';
+            case 'low':
+                return 'text-blue-600';
+            case 'unknown':
+            default:
+                return 'text-gray-600';
+        }
+    },
 };
 
 /**
