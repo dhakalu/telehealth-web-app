@@ -12,6 +12,8 @@ export { PrescriptionItem } from "./PrescriptionItem";
 export { PrescriptionList } from "./PrescriptionList";
 export { ProcedureItem } from "./ProcedureItem";
 export { ProcedureList } from "./ProcedureList";
+export { ResultItem } from "./ResultItem";
+export { ResultList } from "./ResultList";
 export * from "./shared/PatientResourceList";
 export { VitalItem } from "./VitalItem";
 export { VitalList } from "./VitalList";

@@ -1124,6 +1124,162 @@ export const patientUtils = {
                 return 'text-gray-600';
         }
     },
+
+    /**
+     * Sort results by test date
+     */
+    sortResultsByDate(results: Result[]): Result[] {
+        return [...results].sort((a, b) => {
+            const dateA = new Date(a.result_date || a.created_at || 0);
+            const dateB = new Date(b.result_date || b.created_at || 0);
+            return dateB.getTime() - dateA.getTime();
+        });
+    },
+
+    /**
+     * Group results by type
+     */
+    groupResultsByType(results: Result[]): Record<string, Result[]> {
+        return results.reduce((groups, result) => {
+            const type = result.type || 'unknown';
+            if (!groups[type]) {
+                groups[type] = [];
+            }
+            groups[type].push(result);
+            return groups;
+        }, {} as Record<string, Result[]>);
+    },
+
+    /**
+     * Get result type color class
+     */
+    getResultTypeColor(type: string): string {
+        switch (type.toLowerCase()) {
+            case 'blood_test':
+            case 'blood test':
+            case 'cbc':
+            case 'complete_blood_count':
+                return 'text-red-600';
+            case 'lipid_panel':
+            case 'lipid panel':
+            case 'cholesterol':
+                return 'text-blue-600';
+            case 'liver_function':
+            case 'liver function':
+            case 'alt':
+            case 'ast':
+                return 'text-orange-600';
+            case 'kidney_function':
+            case 'kidney function':
+            case 'creatinine':
+            case 'bun':
+                return 'text-purple-600';
+            case 'thyroid':
+            case 'tsh':
+            case 't3':
+            case 't4':
+                return 'text-teal-600';
+            case 'diabetes':
+            case 'glucose':
+            case 'hba1c':
+            case 'a1c':
+                return 'text-yellow-600';
+            case 'urinalysis':
+            case 'urine_test':
+                return 'text-cyan-600';
+            case 'imaging':
+            case 'x_ray':
+            case 'ct_scan':
+            case 'mri':
+                return 'text-indigo-600';
+            case 'cardiac':
+            case 'ecg':
+            case 'ekg':
+            case 'troponin':
+                return 'text-pink-600';
+            default:
+                return 'text-gray-600';
+        }
+    },
+
+    /**
+     * Get result status based on value and reference range
+     */
+    getResultStatus(value: string, referenceRange: string): 'normal' | 'high' | 'low' | 'abnormal' | 'unknown' {
+        if (!value || !referenceRange) return 'unknown';
+
+        const numValue = parseFloat(value);
+        if (isNaN(numValue)) {
+            // Handle non-numeric values
+            const valueLower = value.toLowerCase();
+            const rangeLower = referenceRange.toLowerCase();
+
+            if (rangeLower.includes('normal') && valueLower.includes('normal')) return 'normal';
+            if (rangeLower.includes('negative') && valueLower.includes('negative')) return 'normal';
+            if (rangeLower.includes('positive') && valueLower.includes('positive')) return 'abnormal';
+            return 'unknown';
+        }
+
+        // Parse reference range for numeric values
+        // Common formats: "0-10", "< 5", "> 2", "2.0-4.0"
+        const rangeMatch = referenceRange.match(/(\d+\.?\d*)\s*-\s*(\d+\.?\d*)/);
+        if (rangeMatch) {
+            const minRange = parseFloat(rangeMatch[1]);
+            const maxRange = parseFloat(rangeMatch[2]);
+
+            if (numValue < minRange) return 'low';
+            if (numValue > maxRange) return 'high';
+            return 'normal';
+        }
+
+        // Handle single threshold formats
+        const lessThanMatch = referenceRange.match(/[<≤]\s*(\d+\.?\d*)/);
+        if (lessThanMatch) {
+            const threshold = parseFloat(lessThanMatch[1]);
+            return numValue <= threshold ? 'normal' : 'high';
+        }
+
+        const greaterThanMatch = referenceRange.match(/[>≥]\s*(\d+\.?\d*)/);
+        if (greaterThanMatch) {
+            const threshold = parseFloat(greaterThanMatch[1]);
+            return numValue >= threshold ? 'normal' : 'low';
+        }
+
+        return 'unknown';
+    },
+
+    /**
+     * Get result status color class
+     */
+    getResultStatusColor(status: 'normal' | 'high' | 'low' | 'abnormal' | 'unknown'): string {
+        switch (status) {
+            case 'normal':
+                return 'text-green-600';
+            case 'high':
+                return 'text-red-600';
+            case 'low':
+                return 'text-blue-600';
+            case 'abnormal':
+                return 'text-orange-600';
+            case 'unknown':
+            default:
+                return 'text-gray-600';
+        }
+    },
+
+    /**
+     * Group results by status
+     */
+    groupResultsByStatus(results: Result[]): Record<string, Result[]> {
+        return results.reduce((groups, result) => {
+            const status = patientUtils.getResultStatus(result.value, result.reference_range);
+            if (!groups[status]) {
+                groups[status] = [];
+            }
+            groups[status].push(result);
+            return groups;
+        }, {} as Record<string, Result[]>);
+    },
 };
 
 /**

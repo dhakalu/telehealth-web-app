@@ -124,7 +124,7 @@ export const patientHealthCards: DashboardCardConfig[] = [
     },
     {
         title: "Results",
-        href: "/patient/my-health/result",
+        href: "/patient/my-health/results",
         linkText: "View Results",
         iconBgColor: "bg-orange-100",
         iconColor: "text-orange-600",
