@@ -64,6 +64,9 @@ export default remixRoutesOptionAdapter((defineRoutes) => {
       route("manage-organizations/:organizationId", "./routes/support/create-update-organization.tsx");
       route("approval/practitioner/:userId", "./routes/support/practitioner-approval.tsx");
       route("approval/pharmacist/:userId", "./routes/support/pharmacist-approval.tsx");
+      route("notification-templates", "./routes/support/notification-templates.tsx");
+      route("notification-templates/create", "./routes/support/notification-templates/create.tsx");
+      route("notification-templates/edit/:id", "./routes/support/notification-templates/edit.$id.tsx");
     });
     route("/pharmacist", "./routes/pharmacist/route.tsx", () => {
       route("", "./routes/pharmacist/prescriptions/index.tsx", { index: true });
