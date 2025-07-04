@@ -122,14 +122,14 @@ export interface Notification {
 export interface NotificationTemplate {
     /** Unique identifier for the template */
     id: string;
-    /** Template name */
-    name: string;
     /** Type of notification this template is for */
     type: NotificationType;
-    /** Subject line for the notification */
-    subject: string;
+    /** Name of the template */
+    name: string;
+    /** Title line for the notification */
+    title: string;
     /** Template content with variable placeholders */
-    content_template: string;
+    body: string;
     /** Available variables for this template */
     variables: Variables | null;
     /** Whether the template is active */

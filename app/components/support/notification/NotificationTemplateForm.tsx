@@ -15,8 +15,8 @@ import { useToast } from "~/hooks/useToast";
 interface NotificationTemplateFormData {
     name: string;
     type: NotificationType;
-    subject: string;
-    content_template: string;
+    title: string;
+    body: string;
     variables: Variables | null;
     is_active: boolean;
 }
@@ -40,8 +40,8 @@ export default function NotificationTemplateForm({
     const [formData, setFormData] = useState<NotificationTemplateFormData>({
         name: "",
         type: "system",
-        subject: "",
-        content_template: "",
+        title: "",
+        body: "",
         variables: null,
         is_active: true,
     });
@@ -64,8 +64,8 @@ export default function NotificationTemplateForm({
                 setFormData({
                     name: template.name,
                     type: template.type,
-                    subject: template.subject,
-                    content_template: template.content_template,
+                    title: template.title,
+                    body: template.body,
                     variables: template.variables,
                     is_active: template.is_active,
                 });
@@ -95,14 +95,14 @@ export default function NotificationTemplateForm({
             return;
         }
 
-        if (!formData.subject.trim()) {
+        if (!formData.title.trim()) {
             toast.error("Subject is required.");
             setIsSubmitting(false);
             return;
         }
 
-        if (!formData.content_template.trim()) {
-            toast.error("Content template is required.");
+        if (!formData.body.trim()) {
+            toast.error("Body is required.");
             setIsSubmitting(false);
             return;
         }
@@ -131,8 +131,8 @@ export default function NotificationTemplateForm({
                 const updateData = {
                     name: formData.name,
                     type: formData.type,
-                    subject: formData.subject,
-                    content_template: formData.content_template,
+                    title: formData.title,
+                    body: formData.body,
                     variables: parsedVariables,
                     is_active: formData.is_active,
                 };
@@ -145,8 +145,8 @@ export default function NotificationTemplateForm({
                 const createData = {
                     name: formData.name,
                     type: formData.type,
-                    subject: formData.subject,
-                    content_template: formData.content_template,
+                    title: formData.title,
+                    body: formData.body,
                     variables: parsedVariables,
                     is_active: formData.is_active,
                 };
@@ -159,8 +159,8 @@ export default function NotificationTemplateForm({
                 setFormData({
                     name: "",
                     type: "system",
-                    subject: "",
-                    content_template: "",
+                    title: "",
+                    body: "",
                     variables: null,
                     is_active: true,
                 });
@@ -239,9 +239,9 @@ export default function NotificationTemplateForm({
                         </div>
 
                         <Input
-                            label="Subject"
-                            name="subject"
-                            value={formData.subject}
+                            label="Title"
+                            name="title"
+                            value={formData.title}
                             onChange={handleInputChange}
                             placeholder="Enter notification subject"
                             required
@@ -253,9 +253,9 @@ export default function NotificationTemplateForm({
                         <h3 className="text-lg font-semibold">Template Content</h3>
 
                         <TextArea
-                            label="Content Template"
-                            name="content_template"
-                            value={formData.content_template}
+                            label="Body"
+                            name="body"
+                            value={formData.body}
                             onChange={handleInputChange}
                             placeholder="Enter template content with variables like {{variable_name}}"
                             rows={6}

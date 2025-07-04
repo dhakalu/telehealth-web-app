@@ -103,8 +103,8 @@ export const NotificationTemplateTable: React.FC<NotificationTemplateTableProps>
         {
             header: 'Subject',
             accessor: (template) => (
-                <div className="text-sm max-w-xs truncate" title={template.subject}>
-                    {template.subject}
+                <div className="text-sm max-w-xs truncate" title={template.title}>
+                    {template.title}
                 </div>
             )
         },
