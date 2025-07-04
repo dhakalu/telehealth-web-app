@@ -32,7 +32,7 @@ export const UserLogin: React.FC = () => {
   };
 
   return (
-    <Form className="max-w-md mx-auto p-6  rounded shadow space-y-4" onSubmit={handleSubmit}>
+    <Form className="p-6  rounded shadow space-y-4" onSubmit={handleSubmit}>
       <fieldset className="fieldset">
         <Input label="Email" name="email" placeholder="Email" type="email" required />
         <Input label="Password" name="password" placeholder="Password" type="password" required />

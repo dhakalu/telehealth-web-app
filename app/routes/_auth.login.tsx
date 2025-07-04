@@ -21,7 +21,7 @@ export const action = signInAction();
 export default function UserLoginPage() {
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-8">
+    <div className="min-h-screen flex items-center justify-center md:p-8">
       <Card>
         <header className="flex flex-col items-center gap-9">
           <img
